@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnCrypto - User Panel</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ================== ADS SECTION ================== -->
+    <!-- Popunder Script -->
+    <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="428813"></script>
+    
+    <!-- Banner Ad Settings -->
+    <script>
+        window.atOptions = {
+            'key' : 'b4457942a63e691b166fad379a531c3d',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+        };
+    </script>
+    <!-- ================================================= -->
+
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #8b5cf6; --accent: #10b981; --text: #f1f5f9; --danger: #ef4444; --warning: #f59e0b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
+
+        /* SIDEBAR */
+        .sidebar { 
+            width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; 
+            display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease-in-out;
+            position: relative; height: 100%;
+        }
+        .brand { font-family: 'Righteous', cursive; color: var(--accent); font-size: 1.5rem; margin-bottom: 30px; text-align: center; letter-spacing: 1px; }
+        
+        .nav-item { 
+            padding: 12px 15px; margin: 5px 0; color: #94a3b8; cursor: pointer; border-radius: 8px; 
+            display: flex; gap: 12px; align-items: center; font-size: 0.95rem; transition: 0.2s;
+        }
+        .nav-item:hover, .nav-item.active { background: rgba(139,92,246,0.15); color: var(--primary); font-weight: 600; }
+
+        /* MAIN AREA */
+        .main-content { flex: 1; padding: 20px; overflow-y: auto; position: relative; scroll-behavior: smooth; }
+        
+        /* HEADER & CARDS */
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid #334155; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+
+        /* COIN DISPLAY */
+        .balance-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--primary);
+            text-align: center;
+            padding: 25px;
+        }
+        .usd-val { font-size: 0.9rem; color: #94a3b8; margin-top: 5px; }
+
+        /* ADS */
+        .banner-ad { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; background: #020617; padding: 5px; border-radius: 8px; min-height: 90px; overflow: hidden; }
+
+        /* FORMS */
+        .form-control { width: 100%; padding: 14px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 10px; outline: none; }
+        .btn { padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; color: white; width: 100%; font-weight: bold; transition: 0.2s; }
+        .btn-primary { background: var(--primary); }
+        .btn-success { background: var(--accent); color: #000; }
+        .btn-ads { background: linear-gradient(45deg, #ff0000, #ff8800); border: 2px solid white; animation: pulse 2s infinite; }
+        
+        /* STATUS BADGES */
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+        .badge-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+        .badge-approved { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .badge-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+        .hidden { display: none !important; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--card); border-left: 4px solid var(--accent); padding: 15px; border-radius: 5px; transform: translateX(150%); transition: 0.3s; z-index: 5000; }
+        .toast.show { transform: translateX(0); }
+
+        /* MOBILE RESPONSIVE */
+        .menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer; }
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 99; display: none; }
+        
+        @media(max-width: 768px) {
+            .sidebar { position: fixed; left: -270px; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+            .sidebar.active { transform: translateX(270px); }
+            .menu-btn { display: block; }
+            .mobile-overlay.active { display: block; }
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <!-- MOBILE OVERLAY -->
+    <div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="brand"><i class="fas fa-cube"></i> EarnCrypto</div>
+        <div class="nav-item active" onclick="nav('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
+        <div class="nav-item" onclick="nav('ptc', this)"><i class="fas fa-eye"></i> PTC Ads</div>
+        <div class="nav-item" onclick="nav('shortlinks', this)"><i class="fas fa-link"></i> Shortlinks</div>
+        <div class="nav-item" onclick="nav('tasks', this)"><i class="fas fa-tasks"></i> Custom Tasks</div>
+        <div class="nav-item" onclick="nav('history', this)"><i class="fas fa-history"></i> My Activity</div>
+        <div class="nav-item" onclick="nav('withdraw', this)"><i class="fas fa-wallet"></i> Withdraw</div>
+        <div class="nav-item" onclick="nav('help', this)"><i class="fas fa-headset"></i> Support</div>
+        
+        <div style="margin-top:auto; font-size:0.75rem; color:#64748b; padding-top:15px; border-top:1px solid #334155; text-align:center;">
+            User ID: <span id="uid-display">Loading...</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="header-bar">
+            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <div style="font-weight:bold; color:var(--accent);"> <i class="fas fa-shield-alt"></i> Secure Connection</div>
+        </div>
+
+        <!-- TOP BANNER AD -->
+        <div class="banner-ad">
+            <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
+        </div>
+
+        <!-- ADMIN UPDATE -->
+        <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.15); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h4 style="color:var(--primary); margin-bottom:5px;"><i class="fas fa-bullhorn"></i> Announcement</h4>
+            <p id="update-text" style="font-size:0.9rem; color:#cbd5e1;"></p>
+        </div>
+
+        <!-- 1. DASHBOARD -->
+        <div id="dashboard-view">
+            <div class="card balance-card">
+                <p style="color:#94a3b8; margin-bottom:5px;">Total Balance</p>
+                <h1 style="color:var(--accent); font-size:2.8rem; margin:0;"><span id="user-balance">0.00</span></h1>
+                <p style="color:var(--text); font-weight:bold;">COINS</p>
+                <div class="usd-val">≈ $<span id="usd-balance">0.0000</span> USD</div>
+            </div>
+            
+            <div class="grid">
+                <div class="card" style="text-align:center;">
+                    <h3 id="stat-ptc">0</h3>
+                    <small style="color:#94a3b8">Ads Watched</small>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <h3 id="stat-link">0</h3>
+                    <small style="color:#94a3b8">Links Visited</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. PTC ADS -->
+        <div id="ptc-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-mouse-pointer"></i> PTC Ads</h2>
+            <div class="grid" id="ptc-list"></div>
+        </div>
+
+        <!-- 3. SHORTLINKS -->
+        <div id="shortlinks-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-link"></i> Shortlinks</h2>
+            <div class="grid" id="sl-list"></div>
+        </div>
+
+        <!-- 4. CUSTOM TASKS -->
+        <div id="tasks-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-tasks"></i> Custom Tasks</h2>
+            <div class="grid" id="task-list"></div>
+        </div>
+
+        <!-- 5. MY ACTIVITY (Pending/Approved) -->
+        <div id="history-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-history"></i> My Activity</h2>
+            <div class="card">
+                <h4 style="margin-bottom:15px; color:var(--primary);">Task Submission Status</h4>
+                <div id="my-submissions-list">Loading...</div>
+            </div>
+        </div>
+
+        <!-- 6. WITHDRAW -->
+        <div id="withdraw-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-wallet"></i> Withdraw Funds</h2>
+            <div class="card">
+                <div style="background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.9rem;">
+                    <i class="fas fa-info-circle"></i> Minimum Withdrawal: <strong>$10.00 USD</strong>
+                </div>
+
+                <label>Select Method</label>
+                <select class="form-control" id="w-method">
+                    <option value="PayPal">PayPal</option>
+                    <option value="FaucetPay">FaucetPay (USDT/BTC)</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+
+                <label>Payment Details (Email / Wallet / Bank Info)</label>
+                <textarea id="w-addr" class="form-control" rows="2" placeholder="Enter your payment details correctly..."></textarea>
+
+                <label>Amount (Coins)</label>
+                <input type="number" id="w-amt" class="form-control" placeholder="1000 Coins = $0.01">
+                
+                <div style="text-align:right; margin-bottom:10px; color:#94a3b8; font-size:0.9rem;">
+                    Equivalent: <span id="w-usd-preview" style="color:var(--accent); font-weight:bold;">$0.00</span>
+                </div>
+
+                <button class="btn btn-success" onclick="requestWithdraw()">Submit Request</button>
+            </div>
+            
+            <h3>History</h3>
+            <div id="withdraw-list"></div>
+        </div>
+
+        <!-- 7. HELP -->
+        <div id="help-view" class="hidden">
+            <h2 style="margin-bottom:15px;"><i class="fas fa-headset"></i> Support</h2>
+            <div class="card">
+                <input type="text" id="h-subject" class="form-control" placeholder="Subject">
+                <textarea id="h-msg" class="form-control" rows="5" placeholder="Describe your problem..."></textarea>
+                <button class="btn btn-primary" onclick="sendTicket()">Send Ticket</button>
+            </div>
+            <h3>My Tickets</h3>
+            <div id="ticket-list"></div>
+        </div>
+        
+        <!-- BOTTOM ADS -->
+        <div style="margin-top:30px; text-align:center;">
+             <p style="color:#475569; font-size:0.8rem; margin-bottom:5px;">Sponsored</p>
+             <script src="https://pl28191149.effectivegatecpm.com/69/6f/c9/696fc9362d213ad97a6e549507572c3d.js"></script>
+             <div id="container-6b4bf9ba798b54640fc50410686f93d7"></div>
+             <script async="async" data-cfasync="false" src="https://pl28191148.effectivegatecpm.com/6b4bf9ba798b54640fc50410686f93d7/invoke.js"></script>
+        </div>
+    </div>
+
+    <!-- TASK MODAL -->
+    <div id="task-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2500; display:flex; justify-content:center; align-items:center;">
+        <div class="card" style="width:90%; max-width:500px; max-height:90vh; overflow-y:auto; position:relative;">
+            <button onclick="document.getElementById('task-modal').classList.add('hidden')" style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            
+            <h3 id="tm-title" style="color:var(--primary); margin-bottom:10px;">Task Details</h3>
+            
+            <div style="background:#0f172a; padding:15px; border-radius:8px; margin-bottom:15px; border:1px dashed #334155;">
+                <strong style="color:var(--accent)">Instructions:</strong>
+                <p id="tm-inst" style="color:#cbd5e1; font-size:0.9rem; margin-top:5px; white-space: pre-wrap; line-height:1.5;"></p>
+                <br>
+                <a id="tm-link" href="#" target="_blank" class="btn btn-primary" style="display:inline-block; text-decoration:none; font-size:0.85rem; padding:8px 15px;">Open Link <i class="fas fa-external-link-alt"></i></a>
+            </div>
+
+            <label>Submit Proof</label>
+            <input type="text" id="tm-proof" class="form-control" placeholder="Enter Username / Screenshot URL...">
+            
+            <button class="btn btn-ads" onclick="submitTaskReview()">
+                <i class="fas fa-play-circle"></i> Watch Ads to Send Review
+            </button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Action Successful!</div>
+
+    <!-- FIREBASE LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyArDD2xHOncY3vLg3bquG31n9cVX81IWSA",
+            authDomain: "prime-faucet.firebaseapp.com",
+            databaseURL: "https://prime-faucet-default-rtdb.firebaseio.com",
+            projectId: "prime-faucet",
+            storageBucket: "prime-faucet.firebasestorage.app",
+            messagingSenderId: "127466716847",
+            appId: "1:127466716847:web:13963d545f547989d89e5a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let currentUser = null;
+        let activeTask = null;
+        // Tracking completed IDs locally for filtering
+        let completedPtc = {};
+        let completedLinks = {};
+        let submittedTasks = []; 
+
+        // 1. ANONYMOUS AUTH (Unique per device/browser)
+        signInAnonymously(auth).catch(console.error);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('uid-display').innerText = user.uid.substring(0,8);
+                // Run AI Self Repair & Init
+                selfHealing();
+                initApp();
+            }
+        });
+
+        // 2. AI SYSTEM: SELF HEALING (Fixes missing data fields)
+        async function selfHealing() {
+            const userRef = ref(db, 'users/' + currentUser.uid);
+            const snapshot = await get(userRef);
+            if (!snapshot.exists()) {
+                // New User: Create fresh profile
+                await set(userRef, { balance: 0, joined: Date.now() });
+            } else {
+                // Existing User: Check for corrupted data
+                const data = snapshot.val();
+                if (data.balance === undefined || data.balance === null || isNaN(data.balance)) {
+                    await update(userRef, { balance: 0 }); // Fix balance
+                }
+            }
+        }
+
+        // 3. MAIN APP LOGIC
+        function initApp() {
+            // Live Balance & Stats
+            onValue(ref(db, 'users/' + currentUser.uid), (s) => {
+                const data = s.val() || {};
+                const bal = data.balance || 0;
+                
+                document.getElementById('user-balance').innerText = bal.toFixed(2);
+                document.getElementById('usd-balance').innerText = (bal * 0.00001).toFixed(4); // 1000 = 0.01 -> 1 = 0.00001
+
+                completedPtc = data.completed_ptc || {};
+                completedLinks = data.completed_links || {};
+                
+                // Update stats
+                document.getElementById('stat-ptc').innerText = Object.keys(completedPtc).length;
+                document.getElementById('stat-link').innerText = Object.keys(completedLinks).length;
+
+                // Re-render lists to update removals
+                loadPtc();
+                loadLinks();
+            });
+
+            // Load Custom Tasks Submissions (To hide them from available)
+            const subQuery = query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid));
+            onValue(subQuery, (s) => {
+                submittedTasks = [];
+                const listHtml = document.getElementById('my-submissions-list');
+                listHtml.innerHTML = "";
+                
+                if (s.exists()) {
+                    s.forEach(c => {
+                        const val = c.val();
+                        submittedTasks.push(val.taskId); // Store ID to filter main list
+                        
+                        let badgeClass = val.status === 'Approved' ? 'badge-approved' : val.status === 'Rejected' ? 'badge-rejected' : 'badge-pending';
+                        
+                        listHtml.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding:10px 0;">
+                            <div>
+                                <div style="font-weight:bold;">${val.taskName}</div>
+                                <div style="font-size:0.8rem; color:#64748b;">Reward: ${val.reward}</div>
+                            </div>
+                            <span class="badge ${badgeClass}">${val.status}</span>
+                        </div>`;
+                    });
+                } else {
+                    listHtml.innerHTML = "<p style='color:#64748b; text-align:center;'>No submissions yet.</p>";
+                }
+                loadTasks(); // Re-render available tasks
+            });
+
+            loadWithdrawHistory();
+            loadAdminUpdates();
+        }
+
+        // --- RENDER FUNCTIONS (With Filters) ---
+
+        function loadPtc() {
+            onValue(ref(db, 'ptc_ads'), (s) => {
+                const div = document.getElementById('ptc-list'); div.innerHTML = "";
+                let count = 0;
+                s.forEach(c => {
+                    if (completedPtc[c.key]) return; // Skip if done
+                    count++;
+                    const v = c.val();
+                    div.innerHTML += `
+                    <div class="card">
+                        <h4>${v.title}</h4>
+                        <p style="color:#94a3b8"><i class="far fa-clock"></i> ${v.timer} Sec</p>
+                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
+                        <button class="btn btn-primary" onclick="doPtc('${c.key}','${v.link}',${v.timer},${v.reward})">View Ad</button>
+                    </div>`;
+                });
+                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Ads Available.</p>";
+            });
+        }
+
+        function loadLinks() {
+            onValue(ref(db, 'shortlinks'), (s) => {
+                const div = document.getElementById('sl-list'); div.innerHTML = "";
+                let count = 0;
+                s.forEach(c => {
+                    if (completedLinks[c.key]) return; // Skip if done
+                    count++;
+                    const v = c.val();
+                    div.innerHTML += `
+                    <div class="card">
+                        <h4>${v.title}</h4>
+                        <p style="color:#94a3b8"><i class="fas fa-link"></i> ${v.timer || 10} Sec</p>
+                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
+                        <button class="btn btn-primary" onclick="doLink('${c.key}','${v.link}',${v.timer||10},${v.reward})">Visit Link</button>
+                    </div>`;
+                });
+                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Shortlinks Available.</p>";
+            });
+        }
+
+        function loadTasks() {
+            onValue(ref(db, 'tasks'), (s) => {
+                const div = document.getElementById('task-list'); div.innerHTML = "";
+                let count = 0;
+                s.forEach(c => {
+                    if (submittedTasks.includes(c.key)) return; // Skip if submitted (Pending/App/Rej)
+                    count++;
+                    const v = c.val();
+                    div.innerHTML += `
+                    <div class="card">
+                        <img src="${v.thumb}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;">
+                        <h4>${v.title}</h4>
+                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
+                        <button class="btn btn-primary" onclick="openTask('${c.key}')">Start Task</button>
+                    </div>`;
+                });
+                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Tasks Available.</p>";
+            });
+        }
+
+        // --- ACTIONS ---
+
+        // PTC: Add Coins & Remove
+        window.doPtc = async (key, link, time, reward) => {
+            window.open(link, '_blank');
+            showToast(`Wait ${time} seconds...`);
+            setTimeout(async () => {
+                const updates = {};
+                const userPath = `users/${currentUser.uid}`;
+                const snap = await get(ref(db, userPath));
+                const bal = snap.val().balance || 0;
+                
+                updates[`${userPath}/balance`] = bal + parseInt(reward);
+                updates[`${userPath}/completed_ptc/${key}`] = true; // Mark done
+                
+                await update(ref(db), updates);
+                showToast(`Success! +${reward} Coins`);
+            }, time * 1000);
+        }
+
+        // Links: Add Coins & Remove
+        window.doLink = async (key, link, time, reward) => {
+            window.open(link, '_blank');
+            showToast(`Processing Link...`);
+            setTimeout(async () => {
+                const updates = {};
+                const userPath = `users/${currentUser.uid}`;
+                const snap = await get(ref(db, userPath));
+                const bal = snap.val().balance || 0;
+                
+                updates[`${userPath}/balance`] = bal + parseInt(reward);
+                updates[`${userPath}/completed_links/${key}`] = true; // Mark done
+                
+                await update(ref(db), updates);
+                showToast(`Verified! +${reward} Coins`);
+            }, time * 1000);
+        }
+
+        // Custom Task: Submit Only (No Coins yet), Move to History
+        window.openTask = (key) => {
+            onValue(ref(db, 'tasks/' + key), (s) => {
+                activeTask = { key, ...s.val() };
+                document.getElementById('tm-title').innerText = activeTask.title;
+                document.getElementById('tm-inst').innerText = activeTask.instructions || "No instructions.";
+                document.getElementById('tm-link').href = activeTask.link;
+                document.getElementById('tm-proof').value = "";
+                document.getElementById('task-modal').classList.remove('hidden');
+            }, {onlyOnce:true});
+        }
+
+        window.submitTaskReview = () => {
+            const proof = document.getElementById('tm-proof').value;
+            if(!proof) return showToast("Enter Proof");
+            
+            // DIRECT LINK
+            window.open("https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d", "_blank");
+            
+            setTimeout(() => {
+                push(ref(db, 'submissions'), {
+                    uid: currentUser.uid,
+                    taskId: activeTask.key, // Store ID to hide from list
+                    taskName: activeTask.title,
+                    reward: activeTask.reward,
+                    proof: proof,
+                    status: 'Pending',
+                    timestamp: Date.now()
+                });
+                showToast("Sent for Review! Check 'My Activity'.");
+                document.getElementById('task-modal').classList.add('hidden');
+            }, 3000);
+        }
+
+        // Withdraw Logic ($10 Min)
+        document.getElementById('w-amt').addEventListener('input', (e) => {
+            const val = e.target.value * 0.00001; // 1000 = 0.01
+            document.getElementById('w-usd-preview').innerText = `$${val.toFixed(2)}`;
+        });
+
+        window.requestWithdraw = () => {
+            const amt = parseFloat(document.getElementById('w-amt').value);
+            const addr = document.getElementById('w-addr').value;
+            const bal = parseFloat(document.getElementById('user-balance').innerText);
+            
+            if(!addr) return showToast("Enter Payment Details");
+            
+            const usdValue = amt * 0.00001;
+            if(usdValue < 10) return showToast(`Min Withdraw $10 (You entered $${usdValue.toFixed(2)})`);
+            
+            if(amt > bal) return showToast("Insufficient Funds");
+
+            push(ref(db, 'withdrawals'), {
+                uid: currentUser.uid,
+                amount: amt,
+                usd: usdValue.toFixed(2),
+                address: addr,
+                method: document.getElementById('w-method').value,
+                status: 'Pending',
+                timestamp: Date.now()
+            });
+            update(ref(db, 'users/' + currentUser.uid), { balance: bal - amt });
+            showToast("Withdrawal Requested!");
+            document.getElementById('w-amt').value = "";
+        }
+
+        function loadWithdrawHistory() {
+            const q = query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid));
+            onValue(q, (s) => {
+                const div = document.getElementById('withdraw-list'); div.innerHTML = "";
+                if(s.exists()) {
+                    s.forEach(c => {
+                        const v = c.val();
+                        let color = v.status === 'Paid' ? '#10b981' : '#f59e0b';
+                        div.innerHTML += `
+                        <div style="border-bottom:1px solid #334155; padding:12px 0; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <div style="font-weight:bold;">${v.amount} Coins ($${v.usd})</div>
+                                <div style="font-size:0.8rem; color:#64748b;">${v.method}</div>
+                            </div>
+                            <span style="color:${color}; font-weight:bold;">${v.status}</span>
+                        </div>`;
+                    });
+                } else { div.innerHTML = "<p style='text-align:center;color:#64748b'>No history.</p>"; }
+            });
+        }
+
+        function loadAdminUpdates() {
+            onValue(ref(db, 'admin_update'), (s) => {
+                const d = s.val();
+                if(d && (Date.now() - d.ts < 259200000)) {
+                    document.getElementById('update-msg-box').classList.remove('hidden');
+                    document.getElementById('update-text').innerText = d.msg;
+                }
+            });
+        }
+
+        // Support
+        window.sendTicket = () => {
+            const sub = document.getElementById('h-subject').value;
+            const msg = document.getElementById('h-msg').value;
+            if(!msg) return showToast("Enter message");
+            push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: sub, message: msg });
+            document.getElementById('h-msg').value = "";
+            showToast("Ticket Sent");
+        }
+
+        // UI Helpers
+        window.nav = (id, el) => {
+            ['dashboard','ptc','shortlinks','tasks','withdraw','help','history'].forEach(x => document.getElementById(x+'-view').classList.add('hidden'));
+            document.getElementById(id+'-view').classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            if(window.innerWidth < 768) toggleSidebar();
+        }
+
+        window.toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+        
+        // Expose
+        window.doPtc = window.doPtc;
+        window.doLink = window.doLink;
+        window.openTask = window.openTask;
+        window.submitTaskReview = window.submitTaskReview;
+        window.requestWithdraw = window.requestWithdraw;
+        window.sendTicket = window.sendTicket;
+        window.nav = window.nav;
+        window.toggleSidebar = window.toggleSidebar;
+    </script>
+</body>
+</html>
