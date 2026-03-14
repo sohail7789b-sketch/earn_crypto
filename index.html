@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnCrypto - User Panel</title>
     
-    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Righteous&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- ================== ADS SECTION ================== -->
-    <!-- Popunder Script -->
+    <!-- ================== MAIN ADS SECTION ================== -->
+    <!-- 1. Popunder Script -->
     <script async src="https://js.onclckmn.com/static/onclicka.js" data-admpid="428813"></script>
     
-    <!-- Banner Ad Settings -->
+    <!-- 2. Banner Ad Config -->
     <script>
         window.atOptions = {
             'key' : 'b4457942a63e691b166fad379a531c3d',
@@ -23,237 +24,312 @@
             'params' : {}
         };
     </script>
-    <!-- ================================================= -->
+    <!-- ====================================================== -->
 
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --primary: #8b5cf6; --accent: #10b981; --text: #f1f5f9; --danger: #ef4444; --warning: #f59e0b; }
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #8b5cf6; --accent: #10b981; --text: #f1f5f9; --warning: #f59e0b; --danger: #ef4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
 
-        /* SIDEBAR */
-        .sidebar { 
-            width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; 
-            display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease-in-out;
-            position: relative; height: 100%;
-        }
-        .brand { font-family: 'Righteous', cursive; color: var(--accent); font-size: 1.5rem; margin-bottom: 30px; text-align: center; letter-spacing: 1px; }
-        
-        .nav-item { 
-            padding: 12px 15px; margin: 5px 0; color: #94a3b8; cursor: pointer; border-radius: 8px; 
-            display: flex; gap: 12px; align-items: center; font-size: 0.95rem; transition: 0.2s;
-        }
-        .nav-item:hover, .nav-item.active { background: rgba(139,92,246,0.15); color: var(--primary); font-weight: 600; }
+        .sidebar { width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 100; transition: 0.3s; overflow-y: auto; }
+        .brand { font-family: 'Righteous', cursive; color: var(--accent); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
+        .nav-item { padding: 12px; margin: 5px 0; color: #94a3b8; cursor: pointer; border-radius: 8px; display: flex; gap: 10px; align-items: center; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { background: rgba(139,92,246,0.15); color: var(--primary); }
 
-        /* MAIN AREA */
         .main-content { flex: 1; padding: 20px; overflow-y: auto; position: relative; scroll-behavior: smooth; }
-        
-        /* HEADER & CARDS */
-        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .card { background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid #334155; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 
-        /* COIN DISPLAY */
-        .balance-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid var(--primary);
-            text-align: center;
-            padding: 25px;
-        }
-        .usd-val { font-size: 0.9rem; color: #94a3b8; margin-top: 5px; }
+        .banner-ad { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; background: #000; padding: 5px; border-radius: 5px; min-height: 90px; overflow: hidden; }
+        .welcome-box { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--primary); padding: 25px; border-radius: 15px; text-align: center; margin-bottom: 25px; animation: float 3s ease-in-out infinite; }
+        .welcome-title { font-family: 'Righteous', cursive; font-size: 1.8rem; background: linear-gradient(45deg, #facc15, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-        /* ADS */
-        .banner-ad { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; background: #020617; padding: 5px; border-radius: 8px; min-height: 90px; overflow: hidden; }
-
-        /* FORMS */
-        .form-control { width: 100%; padding: 14px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 10px; outline: none; }
-        .btn { padding: 12px 20px; border-radius: 10px; border: none; cursor: pointer; color: white; width: 100%; font-weight: bold; transition: 0.2s; }
+        .form-control { width: 100%; padding: 12px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; outline: none; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; color: white; width: 100%; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); }
-        .btn-success { background: var(--accent); color: #000; }
-        .btn-ads { background: linear-gradient(45deg, #ff0000, #ff8800); border: 2px solid white; animation: pulse 2s infinite; }
+        .btn-success { background: var(--accent); color: black; }
+        .btn-warning { background: var(--warning); color: black; }
         
-        /* STATUS BADGES */
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        .badge-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
-        .badge-approved { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
-        .badge-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-ads { background: linear-gradient(45deg, #ff0000, #ff8800); border: 2px solid white; animation: pulse 1.5s infinite; }
+        .btn-disabled { background: #334155; color: #94a3b8; cursor: not-allowed; border: 1px solid #475569; animation: none; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        .sidebar-social-btn { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem; margin-bottom: 8px; transition: 0.2s; font-weight: 600; }
+        .sidebar-social-btn:hover { transform: translateX(5px); opacity: 0.9; }
+        .bg-tg { background: #0088cc; } .bg-wa { background: #25D366; } .bg-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } .bg-fb { background: #1877F2; } .bg-yt { background: #FF0000; }
+        .more-web-link { display: block; background: rgba(139, 92, 246, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-bottom: 8px; transition: 0.2s; }
+
+        .qr-container { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 15px; }
+        .qr-img { width: 200px; height: 200px; object-fit: contain; }
+        .payment-info-box { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
+        .pay-email { font-size: 1.2rem; color: white; font-weight: bold; background: #0f172a; padding: 8px 15px; border-radius: 5px; display: inline-block; margin-top: 5px; border: 1px dashed var(--accent); user-select: all; }
 
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 20px; right: 20px; background: var(--card); border-left: 4px solid var(--accent); padding: 15px; border-radius: 5px; transform: translateX(150%); transition: 0.3s; z-index: 5000; }
         .toast.show { transform: translateX(0); }
 
-        /* MOBILE RESPONSIVE */
-        .menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer; }
-        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 99; display: none; }
-        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { background: #334155; padding: 10px 20px; border-radius: 20px; cursor: pointer; color: #94a3b8; flex:1; text-align:center; white-space:nowrap; }
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        .menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: white; margin-bottom: 20px; }
         @media(max-width: 768px) {
             .sidebar { position: fixed; left: -270px; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
             .sidebar.active { transform: translateX(270px); }
             .menu-btn { display: block; }
-            .mobile-overlay.active { display: block; }
         }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .badge-pending { background: #f59e0b; color: black; }
+        .badge-active { background: #10b981; color: black; }
+        .badge-completed { background: #3b82f6; color: white; }
+
+        /* Fake Sponsored Ad Card styling */
+        .sponsored-card { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger); text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- MOBILE OVERLAY -->
-    <div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
-
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <div class="brand"><i class="fas fa-cube"></i> EarnCrypto</div>
-        <div class="nav-item active" onclick="nav('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-        <div class="nav-item" onclick="nav('ptc', this)"><i class="fas fa-eye"></i> PTC Ads</div>
-        <div class="nav-item" onclick="nav('shortlinks', this)"><i class="fas fa-link"></i> Shortlinks</div>
-        <div class="nav-item" onclick="nav('tasks', this)"><i class="fas fa-tasks"></i> Custom Tasks</div>
-        <div class="nav-item" onclick="nav('history', this)"><i class="fas fa-history"></i> My Activity</div>
-        <div class="nav-item" onclick="nav('withdraw', this)"><i class="fas fa-wallet"></i> Withdraw</div>
-        <div class="nav-item" onclick="nav('help', this)"><i class="fas fa-headset"></i> Support</div>
+        <div class="nav-item active" onclick="nav('dashboard')"><i class="fas fa-home"></i> Dashboard</div>
+        <div class="nav-item" onclick="nav('videos')"><i class="fas fa-video"></i> Watch Videos <span style="font-size:0.6rem; background:var(--accent); color:black; padding:2px 5px; border-radius:3px;">HOT</span></div>
+        <div class="nav-item" onclick="nav('ptc')"><i class="fas fa-eye"></i> PTC Ads</div>
+        <div class="nav-item" onclick="nav('shortlinks')"><i class="fas fa-link"></i> Shortlinks</div>
+        <div class="nav-item" onclick="nav('tasks')"><i class="fas fa-tasks"></i> Custom Tasks</div>
+        <div class="nav-item" onclick="nav('advertise')"><i class="fas fa-bullhorn"></i> Advertise</div>
+        <div class="nav-item" onclick="nav('withdraw')"><i class="fas fa-wallet"></i> Withdraw</div>
+        <div class="nav-item" onclick="nav('history')"><i class="fas fa-history"></i> My Activity</div>
+        <div class="nav-item" onclick="nav('help')"><i class="fas fa-headset"></i> Support</div>
         
-        <div style="margin-top:auto; font-size:0.75rem; color:#64748b; padding-top:15px; border-top:1px solid #334155; text-align:center;">
-            User ID: <span id="uid-display">Loading...</span>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+            <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">🌐 More Websites</p>
+            <div id="more-websites-container"><p style="color:#64748b; font-size:0.8rem;">Loading...</p></div>
+        </div>
+
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+            <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">Social Media</p>
+            <div id="social-links-container"><p style="color:#64748b; font-size:0.8rem;">Loading links...</p></div>
+        </div>
+
+        <div style="margin-top:20px; font-size:0.8rem; color:#64748b; text-align:center;">
+            UID: <span id="uid-display">...</span>
         </div>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        <div class="header-bar">
-            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-            <div style="font-weight:bold; color:var(--accent);"> <i class="fas fa-shield-alt"></i> Secure Connection</div>
-        </div>
+        <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('active')"><i class="fas fa-bars"></i></button>
 
-        <!-- TOP BANNER AD -->
+        <!-- TOP BANNER -->
         <div class="banner-ad">
             <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
         </div>
 
         <!-- ADMIN UPDATE -->
-        <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.15); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <h4 style="color:var(--primary); margin-bottom:5px;"><i class="fas fa-bullhorn"></i> Announcement</h4>
-            <p id="update-text" style="font-size:0.9rem; color:#cbd5e1;"></p>
+        <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="color:var(--primary)"><i class="fas fa-bullhorn"></i> New Update</h4>
+            <p id="update-text" style="font-size:0.9rem; margin-top:5px;"></p>
         </div>
 
-        <!-- 1. DASHBOARD -->
         <div id="dashboard-view">
-            <div class="card balance-card">
-                <p style="color:#94a3b8; margin-bottom:5px;">Total Balance</p>
-                <h1 style="color:var(--accent); font-size:2.8rem; margin:0;"><span id="user-balance">0.00</span></h1>
-                <p style="color:var(--text); font-weight:bold;">COINS</p>
-                <div class="usd-val">≈ $<span id="usd-balance">0.0000</span> USD</div>
+            <div class="welcome-box">
+                <h1 class="welcome-title">Welcome to EarnCrypto!</h1>
+                <p style="color:#cbd5e1; line-height:1.6;">
+                    🚀 Earn <b>$5+ Quickly</b>!<br>
+                    ✨ Watch Videos, PTC Ads, Tasks & More.<br>
+                    <span style="color:var(--accent); font-weight:bold;">Start Earning Now!</span>
+                </p>
             </div>
-            
             <div class="grid">
-                <div class="card" style="text-align:center;">
-                    <h3 id="stat-ptc">0</h3>
-                    <small style="color:#94a3b8">Ads Watched</small>
+                <div class="card">
+                    <p style="color:#94a3b8">Earnings Balance</p>
+                    <h1 style="color:var(--accent); font-size:2rem; margin:0;"><span id="user-balance">0.00</span> Coins</h1>
+                    <div style="color:#94a3b8; font-weight:bold; margin-top:5px;">≈ $<span id="usd-balance" style="color:var(--accent)">0.0000</span> USD</div>
                 </div>
-                <div class="card" style="text-align:center;">
-                    <h3 id="stat-link">0</h3>
-                    <small style="color:#94a3b8">Links Visited</small>
+                <div class="card" style="border-color:var(--warning);">
+                    <p style="color:#94a3b8">Advertising Balance</p>
+                    <h1 style="color:var(--warning); font-size:2rem;"><span id="ad-balance">0.00</span> Coins</h1>
                 </div>
             </div>
         </div>
 
-        <!-- 2. PTC ADS -->
-        <div id="ptc-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-mouse-pointer"></i> PTC Ads</h2>
-            <div class="grid" id="ptc-list"></div>
-        </div>
-
-        <!-- 3. SHORTLINKS -->
-        <div id="shortlinks-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-link"></i> Shortlinks</h2>
-            <div class="grid" id="sl-list"></div>
-        </div>
-
-        <!-- 4. CUSTOM TASKS -->
-        <div id="tasks-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-tasks"></i> Custom Tasks</h2>
-            <div class="grid" id="task-list"></div>
-        </div>
-
-        <!-- 5. MY ACTIVITY (Pending/Approved) -->
-        <div id="history-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-history"></i> My Activity</h2>
-            <div class="card">
-                <h4 style="margin-bottom:15px; color:var(--primary);">Task Submission Status</h4>
-                <div id="my-submissions-list">Loading...</div>
+        <!-- WATCH VIDEOS SECTION WITH TABS -->
+        <div id="videos-view" class="hidden">
+            <h2><i class="fas fa-video"></i> Watch Videos</h2>
+            <div class="tabs">
+                <div class="tab-btn vid-tab-btn active" onclick="switchVidTab('official-vid')">Official Videos</div>
+                <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid')">Community Videos</div>
+            </div>
+            <div id="official-vid-tab">
+                <div class="card" style="background:rgba(59, 130, 246, 0.05); border-color:var(--primary);">
+                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Watch admin provided videos to earn high rewards.</p>
+                    <div class="grid" id="admin-vid-list"></div>
+                </div>
+            </div>
+            <div id="community-vid-tab" class="hidden">
+                <div class="card" style="border-color:var(--warning);">
+                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Support other users by watching their campaigns!</p>
+                    <div class="grid" id="user-vid-list"></div>
+                </div>
             </div>
         </div>
 
-        <!-- 6. WITHDRAW -->
+        <!-- EARNING SECTIONS -->
+        <div id="ptc-view" class="hidden"><h2><i class="fas fa-eye"></i> PTC Ads</h2><div class="grid" id="ptc-list"></div></div>
+        <div id="shortlinks-view" class="hidden"><h2><i class="fas fa-link"></i> Shortlinks</h2><div class="grid" id="sl-list"></div></div>
+        <div id="tasks-view" class="hidden"><h2><i class="fas fa-tasks"></i> Custom Tasks</h2><div class="grid" id="task-list"></div></div>
+
+        <!-- ADVERTISE SECTION -->
+        <div id="advertise-view" class="hidden">
+            <h2><i class="fas fa-bullhorn"></i> Advertise</h2>
+            <div class="tabs">
+                <div class="tab-btn active" onclick="switchAdTab('create-ad')">PTC Campaign</div>
+                <div class="tab-btn" onclick="switchAdTab('create-vid')">Video Campaign</div>
+                <div class="tab-btn" onclick="switchAdTab('funds')">Add Funds</div>
+                <div class="tab-btn" onclick="switchAdTab('my-ads')">My Campaigns</div>
+            </div>
+
+            <div id="create-ad-tab">
+                <div class="card">
+                    <h4>Create PTC Advertisement</h4>
+                    <label>Title</label><input type="text" id="ad-title" class="form-control" placeholder="e.g. Join my Channel">
+                    <label>Target URL</label><input type="url" id="ad-url" class="form-control" placeholder="https://...">
+                    <label>Duration & Cost</label>
+                    <select id="ad-timer" class="form-control" onchange="calcAdCost('ad-timer','ad-views','ad-total-cost')">
+                        <option value="5" data-price="30">5 Seconds (30 Coins/View)</option>
+                        <option value="15" data-price="60">15 Seconds (60 Coins/View)</option>
+                        <option value="30" data-price="120">30 Seconds (120 Coins/View)</option>
+                    </select>
+                    <label>Total Views (Min 500)</label><input type="number" id="ad-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('ad-timer','ad-views','ad-total-cost')">
+                    <div style="margin: 15px 0; padding: 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning);">
+                        Total Cost: <span id="ad-total-cost" style="color:var(--warning); font-weight:bold;">15000</span> Coins
+                    </div>
+                    <button class="btn btn-warning" onclick="createCampaign('ptc')">Create PTC Campaign</button>
+                </div>
+            </div>
+
+            <!-- CREATE VIDEO CAMPAIGN -->
+            <div id="create-vid-tab" class="hidden">
+                <div class="card">
+                    <h4>Create Video Campaign</h4>
+                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">Get real views from the community on your YouTube videos.</p>
+                    <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. My Gameplay Video">
+                    <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://youtube.com/...">
+                    <label>Duration & Cost</label>
+                    <select id="v-timer" class="form-control" onchange="calcAdCost('v-timer','v-views','v-total-cost')">
+                        <option value="15" data-price="25">15 Seconds (25 Coins/View)</option>
+                        <option value="30" data-price="40">30 Seconds (40 Coins/View)</option>
+                        <option value="60" data-price="90">1 Minute (90 Coins/View)</option>
+                    </select>
+                    <label>Total Views (Min 500)</label><input type="number" id="v-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('v-timer','v-views','v-total-cost')">
+                    <div style="margin: 15px 0; padding: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--primary);">
+                        Total Cost: <span id="v-total-cost" style="color:var(--primary); font-weight:bold;">12500</span> Coins
+                    </div>
+                    <button class="btn btn-primary" onclick="createCampaign('video')">Create Video Campaign</button>
+                </div>
+            </div>
+
+            <div id="funds-tab" class="hidden">
+                <div class="grid">
+                    <div class="card">
+                        <h4>Transfer Earnings</h4>
+                        <input type="number" id="transfer-amt" class="form-control" placeholder="Amount">
+                        <button class="btn btn-primary" onclick="transferFunds()">Transfer Now</button>
+                    </div>
+                    <div class="card" style="text-align:center;">
+                        <h4 style="color:var(--accent);">Deposit Funds</h4>
+                        <div id="payment-display-area" class="payment-info-box hidden">
+                            <h5 style="color:#3b82f6; margin-bottom:5px;"><i class="fas fa-wallet"></i> Send Payment To:</h5>
+                            <div id="admin-pay-info" class="pay-email">Loading...</div>
+                        </div>
+                        <div class="qr-container"><img src="qr.jpg" alt="Scan QR" class="qr-img" onerror="this.style.display='none'"></div>
+                        <div style="background:#020617; padding:10px; border-radius:8px; margin-bottom:15px;">
+                            <p style="color:#94a3b8; font-size:0.8rem;">Order ID (Auto):</p>
+                            <div id="sys-order-id" style="font-family:monospace; font-size:1.2rem; color:var(--accent); font-weight:bold;">...</div>
+                        </div>
+                        <input type="number" id="dep-amt" class="form-control" placeholder="Amount Paid">
+                        <input type="text" id="dep-utr" class="form-control" placeholder="Transaction ID">
+                        <div id="dep-disabled-msg" style="color:var(--danger); display:none; margin-bottom:10px;">Deposits Disabled.</div>
+                        <button id="btn-dep-submit" class="btn btn-success" onclick="depositFunds()">Submit Payment</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="my-ads-tab" class="hidden">
+                <div class="card"><div id="my-campaigns-list">Loading...</div></div>
+            </div>
+        </div>
+
         <div id="withdraw-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-wallet"></i> Withdraw Funds</h2>
+            <h2><i class="fas fa-wallet"></i> Withdraw Funds</h2>
             <div class="card">
-                <div style="background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.9rem;">
-                    <i class="fas fa-info-circle"></i> Minimum Withdrawal: <strong>$10.00 USD</strong>
-                </div>
-
-                <label>Select Method</label>
-                <select class="form-control" id="w-method">
-                    <option value="PayPal">PayPal</option>
-                    <option value="FaucetPay">FaucetPay (USDT/BTC)</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                </select>
-
-                <label>Payment Details (Email / Wallet / Bank Info)</label>
-                <textarea id="w-addr" class="form-control" rows="2" placeholder="Enter your payment details correctly..."></textarea>
-
-                <label>Amount (Coins)</label>
-                <input type="number" id="w-amt" class="form-control" placeholder="1000 Coins = $0.01">
-                
-                <div style="text-align:right; margin-bottom:10px; color:#94a3b8; font-size:0.9rem;">
-                    Equivalent: <span id="w-usd-preview" style="color:var(--accent); font-weight:bold;">$0.00</span>
-                </div>
-
-                <button class="btn btn-success" onclick="requestWithdraw()">Submit Request</button>
+                <div style="margin-bottom:10px; color:#94a3b8;">Min Withdraw: $5 USD</div>
+                <select class="form-control" id="w-method"><option value="PayPal">PayPal</option><option value="FaucetPay">FaucetPay</option><option value="Bank">Bank Transfer</option></select>
+                <input type="text" id="w-addr" class="form-control" placeholder="Payment Details...">
+                <input type="number" id="w-amt" class="form-control" placeholder="Amount (Coins)">
+                <p style="text-align:right; margin-top:5px; color:var(--accent);">Value: <span id="w-val">$0.00</span></p>
+                <button class="btn btn-success" onclick="requestWithdraw()">Submit</button>
             </div>
-            
             <h3>History</h3>
-            <div id="withdraw-list"></div>
+            <div id="withdraw-list" class="card" style="padding:10px;"></div>
         </div>
 
-        <!-- 7. HELP -->
+        <div id="history-view" class="hidden">
+            <h2><i class="fas fa-history"></i> My Activity</h2>
+            <div class="card"><h4>Custom Task Status</h4><div id="my-submissions-list"></div></div>
+        </div>
+
         <div id="help-view" class="hidden">
-            <h2 style="margin-bottom:15px;"><i class="fas fa-headset"></i> Support</h2>
+            <h2>Help & Support</h2>
             <div class="card">
                 <input type="text" id="h-subject" class="form-control" placeholder="Subject">
-                <textarea id="h-msg" class="form-control" rows="5" placeholder="Describe your problem..."></textarea>
-                <button class="btn btn-primary" onclick="sendTicket()">Send Ticket</button>
+                <textarea id="h-msg" class="form-control" rows="5" placeholder="Message..."></textarea>
+                <button class="btn btn-primary" onclick="sendTicket()">Send</button>
             </div>
             <h3>My Tickets</h3>
             <div id="ticket-list"></div>
         </div>
         
         <!-- BOTTOM ADS -->
-        <div style="margin-top:30px; text-align:center;">
-             <p style="color:#475569; font-size:0.8rem; margin-bottom:5px;">Sponsored</p>
+        <div style="margin-top:20px; text-align:center;">
+             <p style="color:#475569; font-size:0.8rem;">Sponsored</p>
              <script src="https://pl28191149.effectivegatecpm.com/69/6f/c9/696fc9362d213ad97a6e549507572c3d.js"></script>
              <div id="container-6b4bf9ba798b54640fc50410686f93d7"></div>
              <script async="async" data-cfasync="false" src="https://pl28191148.effectivegatecpm.com/6b4bf9ba798b54640fc50410686f93d7/invoke.js"></script>
         </div>
     </div>
 
-    <!-- TASK MODAL -->
-    <div id="task-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2500; display:flex; justify-content:center; align-items:center;">
-        <div class="card" style="width:90%; max-width:500px; max-height:90vh; overflow-y:auto; position:relative;">
-            <button onclick="document.getElementById('task-modal').classList.add('hidden')" style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <!-- AD-GATE MODAL -->
+    <div id="action-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2500; display:flex; justify-content:center; align-items:center;">
+        <div class="card" style="width:90%; max-width:450px; text-align:center; position:relative; overflow-y:auto; max-height:95vh;">
+            <button onclick="closeActionModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
             
-            <h3 id="tm-title" style="color:var(--primary); margin-bottom:10px;">Task Details</h3>
-            
-            <div style="background:#0f172a; padding:15px; border-radius:8px; margin-bottom:15px; border:1px dashed #334155;">
-                <strong style="color:var(--accent)">Instructions:</strong>
-                <p id="tm-inst" style="color:#cbd5e1; font-size:0.9rem; margin-top:5px; white-space: pre-wrap; line-height:1.5;"></p>
-                <br>
-                <a id="tm-link" href="#" target="_blank" class="btn btn-primary" style="display:inline-block; text-decoration:none; font-size:0.85rem; padding:8px 15px;">Open Link <i class="fas fa-external-link-alt"></i></a>
+            <h3 id="am-title" style="color:var(--primary); margin-bottom:15px;">Unlock Content</h3>
+            <div id="am-desc-container" style="background:#0f172a; padding:15px; border-radius:8px; margin-bottom:20px;">
+                <p id="am-desc" style="color:#cbd5e1; font-size:0.9rem;">You must view an ad to unlock the final step.</p>
             </div>
-
-            <label>Submit Proof</label>
-            <input type="text" id="tm-proof" class="form-control" placeholder="Enter Username / Screenshot URL...">
             
-            <button class="btn btn-ads" onclick="submitTaskReview()">
-                <i class="fas fa-play-circle"></i> Watch Ads to Send Review
-            </button>
+            <div id="am-step-1">
+                <button class="btn btn-ads" id="am-ad-btn" onclick="verifyAdGate()"><i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad</button>
+            </div>
+            
+            <div id="am-final-step" class="hidden" style="margin-top:20px;">
+                <hr style="border:0; border-top:1px dashed #334155; margin-bottom:15px;">
+                
+                <div id="am-task-inputs" class="hidden">
+                    <p style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Ad Verified! Submit your proof now.</p>
+                    <input type="text" id="am-proof" class="form-control" placeholder="Enter Username / URL Proof">
+                    <button class="btn btn-success" id="am-final-btn" onclick="executeFinalAction()"><i class="fas fa-check-circle"></i> Submit Review</button>
+                </div>
+
+                <div id="am-embed-container" class="hidden" style="margin-top:15px; width:100%; border-radius:8px; overflow:hidden;"></div>
+                <div id="am-timer-display" class="hidden" style="color:var(--accent); font-size:1.2rem; font-weight:bold; margin-top:10px;"></div>
+                
+                <button class="btn btn-success hidden" id="am-play-btn" onclick="executeFinalAction()"><i class="fas fa-play"></i> Play Video & Earn</button>
+            </div>
         </div>
     </div>
 
@@ -265,7 +341,7 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = {
+        const config = {
             apiKey: "AIzaSyArDD2xHOncY3vLg3bquG31n9cVX81IWSA",
             authDomain: "prime-faucet.firebaseapp.com",
             databaseURL: "https://prime-faucet-default-rtdb.firebaseio.com",
@@ -275,335 +351,468 @@
             appId: "1:127466716847:web:13963d545f547989d89e5a"
         };
 
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(config);
         const auth = getAuth(app);
         const db = getDatabase(app);
 
         let currentUser = null;
-        let activeTask = null;
-        // Tracking completed IDs locally for filtering
         let completedPtc = {};
         let completedLinks = {};
-        let submittedTasks = []; 
+        let completedVids = {};
+        let submittedTasks =[];
+        let currentOrderId = "";
+        window.globalCoinRate = 0.00001; 
 
-        // 1. ANONYMOUS AUTH (Unique per device/browser)
+        let actionType = ""; 
+        let actionData = {};
+        let timerInterval = null;
+
+        // DIRECT LINK URL
+        const DIRECT_LINK_URL = "https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d";
+
         signInAnonymously(auth).catch(console.error);
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById('uid-display').innerText = user.uid.substring(0,8);
-                // Run AI Self Repair & Init
                 selfHealing();
                 initApp();
+                setupPresence();
+                currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
+                document.getElementById('sys-order-id').innerText = currentOrderId;
             }
         });
 
-        // 2. AI SYSTEM: SELF HEALING (Fixes missing data fields)
         async function selfHealing() {
             const userRef = ref(db, 'users/' + currentUser.uid);
-            const snapshot = await get(userRef);
-            if (!snapshot.exists()) {
-                // New User: Create fresh profile
-                await set(userRef, { balance: 0, joined: Date.now() });
-            } else {
-                // Existing User: Check for corrupted data
-                const data = snapshot.val();
-                if (data.balance === undefined || data.balance === null || isNaN(data.balance)) {
-                    await update(userRef, { balance: 0 }); // Fix balance
+            try {
+                const snap = await get(userRef);
+                if (!snap.exists()) {
+                    await set(userRef, { balance: 0, ad_balance: 0, joined: Date.now() });
+                } else {
+                    const d = snap.val();
+                    let repairs = {};
+                    if (d.balance === undefined || isNaN(d.balance)) repairs.balance = 0;
+                    if (d.ad_balance === undefined || isNaN(d.ad_balance)) repairs.ad_balance = 0;
+                    if(Object.keys(repairs).length > 0) await update(userRef, repairs);
                 }
-            }
+            } catch(e) {} 
         }
 
-        // 3. MAIN APP LOGIC
+        function setupPresence() {
+            const userStatusRef = ref(db, '/status/' + currentUser.uid);
+            onValue(ref(db, '.info/connected'), (snap) => {
+                if (snap.val() === false) return;
+                onDisconnect(userStatusRef).set({ state: 'offline', last_changed: serverTimestamp() }).then(() => set(userStatusRef, { state: 'online', last_changed: serverTimestamp(), uid: currentUser.uid }));
+            });
+        }
+
         function initApp() {
-            // Live Balance & Stats
-            onValue(ref(db, 'users/' + currentUser.uid), (s) => {
+            const userRef = ref(db, 'users/' + currentUser.uid);
+            onValue(userRef, (s) => {
                 const data = s.val() || {};
                 const bal = data.balance || 0;
-                
                 document.getElementById('user-balance').innerText = bal.toFixed(2);
-                document.getElementById('usd-balance').innerText = (bal * 0.00001).toFixed(4); // 1000 = 0.01 -> 1 = 0.00001
+                document.getElementById('ad-balance').innerText = (data.ad_balance || 0).toFixed(2);
+                document.getElementById('usd-balance').innerText = (bal * window.globalCoinRate).toFixed(4);
 
                 completedPtc = data.completed_ptc || {};
                 completedLinks = data.completed_links || {};
+                completedVids = data.completed_vids || {};
                 
-                // Update stats
-                document.getElementById('stat-ptc').innerText = Object.keys(completedPtc).length;
-                document.getElementById('stat-link').innerText = Object.keys(completedLinks).length;
-
-                // Re-render lists to update removals
-                loadPtc();
-                loadLinks();
+                loadContent(); 
             });
 
-            // Load Custom Tasks Submissions (To hide them from available)
-            const subQuery = query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid));
-            onValue(subQuery, (s) => {
-                submittedTasks = [];
-                const listHtml = document.getElementById('my-submissions-list');
-                listHtml.innerHTML = "";
-                
-                if (s.exists()) {
-                    s.forEach(c => {
-                        const val = c.val();
-                        submittedTasks.push(val.taskId); // Store ID to filter main list
-                        
-                        let badgeClass = val.status === 'Approved' ? 'badge-approved' : val.status === 'Rejected' ? 'badge-rejected' : 'badge-pending';
-                        
-                        listHtml.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding:10px 0;">
-                            <div>
-                                <div style="font-weight:bold;">${val.taskName}</div>
-                                <div style="font-size:0.8rem; color:#64748b;">Reward: ${val.reward}</div>
-                            </div>
-                            <span class="badge ${badgeClass}">${val.status}</span>
-                        </div>`;
-                    });
-                } else {
-                    listHtml.innerHTML = "<p style='color:#64748b; text-align:center;'>No submissions yet.</p>";
+            onValue(ref(db, 'admin_settings'), (s) => {
+                const set = s.val() || {};
+                if(set.coin_rate) {
+                    window.globalCoinRate = parseFloat(set.coin_rate);
+                    const b = parseFloat(document.getElementById('user-balance').innerText);
+                    document.getElementById('usd-balance').innerText = (b * window.globalCoinRate).toFixed(4);
                 }
-                loadTasks(); // Re-render available tasks
+
+                const btn = document.getElementById('btn-dep-submit');
+                if(set.deposit_enabled) {
+                    btn.disabled = false; document.getElementById('dep-disabled-msg').style.display='none';
+                    if(set.paypal_email) {
+                        document.getElementById('payment-display-area').classList.remove('hidden');
+                        document.getElementById('admin-pay-info').innerText = set.paypal_email;
+                    }
+                } else {
+                    btn.disabled = true; document.getElementById('dep-disabled-msg').style.display='block';
+                    document.getElementById('payment-display-area').classList.add('hidden');
+                }
+
+                onValue(ref(db, 'more_websites'), (mwSnap) => {
+                    const mwDiv = document.getElementById('more-websites-container'); mwDiv.innerHTML = "";
+                    if(mwSnap.exists()) mwSnap.forEach(c => { mwDiv.innerHTML += `<a href="${c.val().url}" target="_blank" class="more-web-link">${c.val().title}</a>`; });
+                    else mwDiv.innerHTML = "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
+                });
+
+                const soc = set.social || {}; let socH = "";
+                if(soc.tg1) socH += `<a href="${soc.tg1}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 1</a>`;
+                if(soc.tg2) socH += `<a href="${soc.tg2}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 2</a>`;
+                if(soc.tg3) socH += `<a href="${soc.tg3}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 3</a>`;
+                if(soc.wa1) socH += `<a href="${soc.wa1}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 1</a>`;
+                if(soc.wa2) socH += `<a href="${soc.wa2}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 2</a>`;
+                if(soc.wa3) socH += `<a href="${soc.wa3}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 3</a>`;
+                if(soc.ig) socH += `<a href="${soc.ig}" target="_blank" class="sidebar-social-btn bg-ig"><i class="fab fa-instagram"></i> Instagram</a>`;
+                if(soc.fb) socH += `<a href="${soc.fb}" target="_blank" class="sidebar-social-btn bg-fb"><i class="fab fa-facebook"></i> Facebook</a>`;
+                if(soc.yt) socH += `<a href="${soc.yt}" target="_blank" class="sidebar-social-btn bg-yt"><i class="fab fa-youtube"></i> YouTube</a>`;
+                document.getElementById('social-links-container').innerHTML = socH || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
             });
 
-            loadWithdrawHistory();
-            loadAdminUpdates();
+            onValue(ref(db, 'admin_update'), (s) => {
+                if(s.exists() && (Date.now() - s.val().ts < 259200000)) {
+                    document.getElementById('update-msg-box').classList.remove('hidden');
+                    document.getElementById('update-text').innerText = s.val().msg;
+                }
+            });
+
+            loadHistory();
         }
 
-        // --- RENDER FUNCTIONS (With Filters) ---
+        // --- DYNAMIC AD INJECTION HELPER ---
+        function getSponsoredAdCard() {
+            return `
+            <div class="card sponsored-card" style="border-color:var(--danger); text-align:center; background:rgba(239, 68, 68, 0.05);">
+                <p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p>
+                <h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4>
+                <a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;">Click Here</a>
+            </div>`;
+        }
 
-        function loadPtc() {
+        function loadContent() {
+            // VIDEOS (ADMIN)
+            onValue(ref(db, 'admin_videos'), (s) => {
+                const aList = document.getElementById('admin-vid-list'); aList.innerHTML = "";
+                let count = 0;
+                if(s.exists()) s.forEach(c => {
+                    if(!completedVids[c.key]) {
+                        count++;
+                        const v = c.val();
+                        const aType = v.type === 'embed' ? 'video_embed' : 'video_url';
+                        aList.innerHTML += `<div class="card"><h4>${v.title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${v.timer} Sec</p><h3 style="color:var(--accent)">+${v.reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('${aType}','${c.key}','${encodeURIComponent(v.content)}',${v.timer},${v.reward})">Watch Video</button></div>`;
+                        if(count % 3 === 0) aList.innerHTML += getSponsoredAdCard();
+                    }
+                });
+            });
+
+            // VIDEOS (COMMUNITY)
+            onValue(query(ref(db, 'user_videos'), orderByChild('status'), equalTo('active')), (s) => {
+                const uList = document.getElementById('user-vid-list'); uList.innerHTML = "";
+                let count = 0;
+                if(s.exists()) s.forEach(c => {
+                    if(c.val().uid !== currentUser.uid && !completedVids[c.key]) {
+                        count++;
+                        uList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-warning" onclick="prepareAction('uservideo','${c.key}','${encodeURIComponent(c.val().link)}',${c.val().timer},${c.val().reward})">Watch & Earn</button></div>`;
+                        if(count % 3 === 0) uList.innerHTML += getSponsoredAdCard();
+                    }
+                });
+            });
+
+            // PTC
             onValue(ref(db, 'ptc_ads'), (s) => {
-                const div = document.getElementById('ptc-list'); div.innerHTML = "";
+                const pList = document.getElementById('ptc-list'); pList.innerHTML = "";
                 let count = 0;
-                s.forEach(c => {
-                    if (completedPtc[c.key]) return; // Skip if done
-                    count++;
-                    const v = c.val();
-                    div.innerHTML += `
-                    <div class="card">
-                        <h4>${v.title}</h4>
-                        <p style="color:#94a3b8"><i class="far fa-clock"></i> ${v.timer} Sec</p>
-                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
-                        <button class="btn btn-primary" onclick="doPtc('${c.key}','${v.link}',${v.timer},${v.reward})">View Ad</button>
-                    </div>`;
+                if(s.exists()) s.forEach(c => {
+                    if(!completedPtc[c.key]) {
+                        count++;
+                        pList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${c.key}','${c.val().link}',${c.val().timer},${c.val().reward}, false)">View Ad</button></div>`;
+                        if(count % 3 === 0) pList.innerHTML += getSponsoredAdCard();
+                    }
                 });
-                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Ads Available.</p>";
             });
-        }
+            onValue(query(ref(db, 'user_campaigns'), orderByChild('status'), equalTo('active')), (s) => {
+                const pList = document.getElementById('ptc-list');
+                let count = 0;
+                if(s.exists()) s.forEach(c => {
+                    if(c.val().uid !== currentUser.uid && !completedPtc[c.key]) {
+                        count++;
+                        pList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${c.key}','${c.val().link}',${c.val().timer},${c.val().reward}, true)">View Ad</button></div>`;
+                        if(count % 3 === 0) pList.innerHTML += getSponsoredAdCard();
+                    }
+                });
+            });
 
-        function loadLinks() {
+            // SHORTLINKS
             onValue(ref(db, 'shortlinks'), (s) => {
-                const div = document.getElementById('sl-list'); div.innerHTML = "";
+                const sList = document.getElementById('sl-list'); sList.innerHTML = "";
                 let count = 0;
-                s.forEach(c => {
-                    if (completedLinks[c.key]) return; // Skip if done
-                    count++;
-                    const v = c.val();
-                    div.innerHTML += `
-                    <div class="card">
-                        <h4>${v.title}</h4>
-                        <p style="color:#94a3b8"><i class="fas fa-link"></i> ${v.timer || 10} Sec</p>
-                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
-                        <button class="btn btn-primary" onclick="doLink('${c.key}','${v.link}',${v.timer||10},${v.reward})">Visit Link</button>
-                    </div>`;
+                if(s.exists()) s.forEach(c => {
+                    if(!completedLinks[c.key]) {
+                        count++;
+                        let tType = c.val().timer_type === 'min' ? 'Min' : 'Sec';
+                        let rTime = c.val().timer_type === 'min' ? c.val().timer * 60 : c.val().timer;
+                        sList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-link"></i> ${c.val().timer} ${tType}</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doLink('${c.key}','${c.val().link}',${rTime},${c.val().reward})">Visit Link</button></div>`;
+                        if(count % 3 === 0) sList.innerHTML += getSponsoredAdCard();
+                    }
                 });
-                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Shortlinks Available.</p>";
             });
-        }
 
-        function loadTasks() {
+            // TASKS
             onValue(ref(db, 'tasks'), (s) => {
-                const div = document.getElementById('task-list'); div.innerHTML = "";
+                const tList = document.getElementById('task-list'); tList.innerHTML = "";
                 let count = 0;
-                s.forEach(c => {
-                    if (submittedTasks.includes(c.key)) return; // Skip if submitted (Pending/App/Rej)
-                    count++;
-                    const v = c.val();
-                    div.innerHTML += `
-                    <div class="card">
-                        <img src="${v.thumb}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;">
-                        <h4>${v.title}</h4>
-                        <h3 style="color:var(--accent)">+${v.reward} Coins</h3>
-                        <button class="btn btn-primary" onclick="openTask('${c.key}')">Start Task</button>
-                    </div>`;
+                if(s.exists()) s.forEach(c => {
+                    if(!submittedTasks.includes(c.key)) {
+                        count++;
+                        tList.innerHTML += `<div class="card"><img src="${c.val().thumb}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;"><h4>${c.val().title}</h4><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('task','${c.key}','${encodeURIComponent(c.val().link)}','','', '${encodeURIComponent(c.val().instructions||'')}', '${encodeURIComponent(c.val().title)}')">Start Task</button></div>`;
+                        if(count % 2 === 0) tList.innerHTML += getSponsoredAdCard();
+                    }
                 });
-                if (count === 0) div.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#64748b;'>No Tasks Available.</p>";
             });
         }
 
-        // --- ACTIONS ---
-
-        // PTC: Add Coins & Remove
-        window.doPtc = async (key, link, time, reward) => {
-            window.open(link, '_blank');
-            showToast(`Wait ${time} seconds...`);
-            setTimeout(async () => {
-                const updates = {};
-                const userPath = `users/${currentUser.uid}`;
-                const snap = await get(ref(db, userPath));
-                const bal = snap.val().balance || 0;
-                
-                updates[`${userPath}/balance`] = bal + parseInt(reward);
-                updates[`${userPath}/completed_ptc/${key}`] = true; // Mark done
-                
-                await update(ref(db), updates);
-                showToast(`Success! +${reward} Coins`);
-            }, time * 1000);
-        }
-
-        // Links: Add Coins & Remove
-        window.doLink = async (key, link, time, reward) => {
-            window.open(link, '_blank');
-            showToast(`Processing Link...`);
-            setTimeout(async () => {
-                const updates = {};
-                const userPath = `users/${currentUser.uid}`;
-                const snap = await get(ref(db, userPath));
-                const bal = snap.val().balance || 0;
-                
-                updates[`${userPath}/balance`] = bal + parseInt(reward);
-                updates[`${userPath}/completed_links/${key}`] = true; // Mark done
-                
-                await update(ref(db), updates);
-                showToast(`Verified! +${reward} Coins`);
-            }, time * 1000);
-        }
-
-        // Custom Task: Submit Only (No Coins yet), Move to History
-        window.openTask = (key) => {
-            onValue(ref(db, 'tasks/' + key), (s) => {
-                activeTask = { key, ...s.val() };
-                document.getElementById('tm-title').innerText = activeTask.title;
-                document.getElementById('tm-inst').innerText = activeTask.instructions || "No instructions.";
-                document.getElementById('tm-link').href = activeTask.link;
-                document.getElementById('tm-proof').value = "";
-                document.getElementById('task-modal').classList.remove('hidden');
-            }, {onlyOnce:true});
-        }
-
-        window.submitTaskReview = () => {
-            const proof = document.getElementById('tm-proof').value;
-            if(!proof) return showToast("Enter Proof");
+        // --- AD GATEWAY LOGIC ---
+        window.prepareAction = (type, key, contentEncoded, timer, reward, instructionsEncoded="", titleEncoded="") => {
+            actionType = type;
+            const content = decodeURIComponent(contentEncoded);
+            actionData = { key, content, timer, reward, instructions: decodeURIComponent(instructionsEncoded), title: decodeURIComponent(titleEncoded) };
             
-            // DIRECT LINK
-            window.open("https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d", "_blank");
+            document.getElementById('am-step-1').classList.remove('hidden');
+            document.getElementById('am-final-step').classList.add('hidden');
+            document.getElementById('am-ad-btn').disabled = false;
+            document.getElementById('am-ad-btn').innerHTML = '<i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad';
+            document.getElementById('am-ad-btn').style.background = "linear-gradient(45deg, #ff0000, #ff8800)";
+            document.getElementById('am-task-inputs').classList.add('hidden');
+            document.getElementById('am-embed-container').classList.add('hidden');
+            document.getElementById('am-embed-container').innerHTML = ""; 
+            document.getElementById('am-timer-display').classList.add('hidden');
+            document.getElementById('am-play-btn').classList.add('hidden');
+
+            if(type === 'task') {
+                document.getElementById('am-title').innerText = "Submit Task";
+                document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task first</a>, then verify ad to submit.`;
+                document.getElementById('am-task-inputs').classList.remove('hidden');
+                document.getElementById('am-proof').value = "";
+                document.getElementById('am-final-btn').innerText = "2. Submit Review";
+            } else {
+                document.getElementById('am-title').innerText = "Unlock Video";
+                document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video.";
+                document.getElementById('am-task-inputs').classList.add('hidden');
+                document.getElementById('am-final-btn').innerText = "2. Play Video & Earn";
+            }
+
+            document.getElementById('action-modal').classList.remove('hidden');
+        }
+
+        window.verifyAdGate = () => {
+            window.open(DIRECT_LINK_URL, "_blank");
+            const btn = document.getElementById('am-ad-btn');
+            btn.disabled = true;
+            btn.innerText = "Verifying... Wait 5s";
+            btn.style.animation = "none";
             
             setTimeout(() => {
-                push(ref(db, 'submissions'), {
-                    uid: currentUser.uid,
-                    taskId: activeTask.key, // Store ID to hide from list
-                    taskName: activeTask.title,
-                    reward: activeTask.reward,
-                    proof: proof,
-                    status: 'Pending',
-                    timestamp: Date.now()
-                });
-                showToast("Sent for Review! Check 'My Activity'.");
-                document.getElementById('task-modal').classList.add('hidden');
-            }, 3000);
+                btn.innerHTML = '<i class="fas fa-check"></i> Ad Verified';
+                btn.style.background = "var(--accent)";
+                document.getElementById('am-final-step').classList.remove('hidden');
+                
+                if(actionType === 'task') {
+                    document.getElementById('am-task-inputs').classList.remove('hidden');
+                } else if(actionType === 'video_embed') {
+                    document.getElementById('am-step-1').classList.add('hidden');
+                    document.getElementById('am-desc-container').classList.add('hidden');
+                    
+                    const embedCont = document.getElementById('am-embed-container');
+                    embedCont.classList.remove('hidden');
+                    embedCont.innerHTML = actionData.content; 
+                    
+                    const tDisp = document.getElementById('am-timer-display');
+                    tDisp.classList.remove('hidden');
+                    let t = actionData.timer;
+                    tDisp.innerText = `Watch for ${t} seconds...`;
+                    
+                    timerInterval = setInterval(async () => {
+                        t--; tDisp.innerText = `Watch for ${t} seconds...`;
+                        if(t <= 0) {
+                            clearInterval(timerInterval); tDisp.innerText = "Rewarded!";
+                            await processVideoReward(actionData.key, actionData.reward, false);
+                            closeActionModal();
+                        }
+                    }, 1000);
+                } else if(actionType === 'video_url' || actionType === 'uservideo') {
+                    document.getElementById('am-play-btn').classList.remove('hidden');
+                }
+            }, 5000);
         }
 
-        // Withdraw Logic ($10 Min)
-        document.getElementById('w-amt').addEventListener('input', (e) => {
-            const val = e.target.value * 0.00001; // 1000 = 0.01
-            document.getElementById('w-usd-preview').innerText = `$${val.toFixed(2)}`;
-        });
+        window.executeFinalAction = async () => {
+            document.getElementById('action-modal').classList.add('hidden');
+            if(actionType === 'task') {
+                const proof = document.getElementById('am-proof').value;
+                if(!proof) return showToast("Proof is required!");
+                push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, proof: proof, status: 'Pending', timestamp: Date.now(), reward: actionData.reward });
+                showToast("Sent for Review!");
+            } 
+            else if(actionType === 'video_url' || actionType === 'uservideo') {
+                window.open(actionData.content, '_blank');
+                showToast(`Watching Video for ${actionData.timer} sec...`);
+                setTimeout(async () => {
+                    await processVideoReward(actionData.key, actionData.reward, actionType === 'uservideo');
+                }, actionData.timer * 1000);
+            }
+        }
 
+        async function processVideoReward(key, reward, isUserVideo) {
+            const updates = {};
+            const snap = await get(ref(db, `users/${currentUser.uid}`));
+            updates[`users/${currentUser.uid}/balance`] = (snap.val().balance || 0) + parseInt(reward);
+            updates[`users/${currentUser.uid}/completed_vids/${key}`] = true;
+
+            if(isUserVideo) {
+                const vSnap = await get(ref(db, `user_videos/${key}`));
+                if(vSnap.exists()) {
+                    let rem = vSnap.val().remaining_views - 1;
+                    updates[`user_videos/${key}/remaining_views`] = rem;
+                    if(rem <= 0) updates[`user_videos/${key}/status`] = 'completed';
+                }
+            }
+            await update(ref(db), updates);
+            showToast(`Success! +${reward} Coins`);
+        }
+
+        window.closeActionModal = () => {
+            document.getElementById('action-modal').classList.add('hidden');
+            if(timerInterval) clearInterval(timerInterval);
+            document.getElementById('am-embed-container').innerHTML = ""; 
+            document.getElementById('am-desc-container').classList.remove('hidden');
+        };
+
+        // --- OTHER ACTIONS ---
+        window.doPtc = async (key, link, time, reward, isUser) => {
+            window.open(link, '_blank'); showToast(`Wait ${time} seconds...`);
+            setTimeout(async () => {
+                const updates = {}; const snap = await get(ref(db, `users/${currentUser.uid}`));
+                updates[`users/${currentUser.uid}/balance`] = (snap.val().balance || 0) + parseInt(reward);
+                updates[`users/${currentUser.uid}/completed_ptc/${key}`] = true;
+                if(isUser) {
+                    const cSnap = await get(ref(db, `user_campaigns/${key}`));
+                    if(cSnap.exists()) {
+                        let rem = cSnap.val().remaining_views - 1;
+                        updates[`user_campaigns/${key}/remaining_views`] = rem;
+                        if(rem <= 0) updates[`user_campaigns/${key}/status`] = 'completed';
+                    }
+                }
+                await update(ref(db), updates); showToast(`Success! +${reward} Coins`);
+            }, time * 1000);
+        }
+
+        window.doLink = async (key, link, time, reward) => {
+            window.open(link, '_blank'); showToast(`Processing...`);
+            setTimeout(async () => {
+                const snap = await get(ref(db, `users/${currentUser.uid}`));
+                await update(ref(db), {[`users/${currentUser.uid}/balance`]: (snap.val().balance||0)+parseInt(reward),[`users/${currentUser.uid}/completed_links/${key}`]: true });
+                showToast(`Verified! +${reward}`);
+            }, time * 1000);
+        }
+
+        window.depositFunds = () => {
+            const amt = document.getElementById('dep-amt').value; const utr = document.getElementById('dep-utr').value;
+            if(amt < 500) return showToast("Min 500 INR"); if(!utr) return showToast("Enter Transaction ID");
+            push(ref(db, 'deposit_requests'), { uid: currentUser.uid, order_id: currentOrderId, amount_inr: amt, coins_reward: amt * 100, user_utr: utr, status: 'Pending', timestamp: Date.now() });
+            showToast("Deposit Request Sent!"); document.getElementById('dep-utr').value=""; document.getElementById('dep-amt').value="";
+            currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`; document.getElementById('sys-order-id').innerText = currentOrderId;
+        }
+
+        // --- ADVERTISE TABS ---
+        window.switchAdTab = (tab) => {['create-ad','create-vid','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden'));
+            document.getElementById(tab+'-tab').classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
+        }
+
+        window.calcAdCost = (selectId, viewsId, totalId) => { 
+            const sel = document.getElementById(selectId);
+            document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; 
+        }
+
+        window.createCampaign = async (type) => {
+            let prefix = type === 'video' ? 'v' : 'ad';
+            const title = document.getElementById(`${prefix}-title`).value;
+            const url = document.getElementById(`${prefix}-url`).value;
+            const views = parseInt(document.getElementById(`${prefix}-views`).value);
+            const sel = document.getElementById(`${prefix}-timer`);
+            const timer = parseInt(sel.value);
+            const price = parseInt(sel.options[sel.selectedIndex].dataset.price);
+            
+            const cost = views * price;
+            if(views < 500) return showToast("Min 500 Views");
+            const snap = await get(ref(db, `users/${currentUser.uid}`));
+            if((snap.val().ad_balance || 0) < cost) return showToast("Insufficient Ad Balance");
+
+            const updates = {};
+            updates[`users/${currentUser.uid}/ad_balance`] = snap.val().ad_balance - cost;
+            let targetNode = type === 'video' ? 'user_videos' : 'user_campaigns';
+            const newKey = push(ref(db, targetNode)).key;
+            updates[`${targetNode}/${newKey}`] = { uid: currentUser.uid, title: title, link: url, total_views: views, remaining_views: views, timer: timer, reward: price/2, status: 'active', timestamp: Date.now() };
+            await update(ref(db), updates); showToast("Campaign Created!");
+        }
+
+        window.transferFunds = async () => {
+            const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`));
+            if(amt > snap.val().balance) return showToast("Insufficient Balance");
+            await update(ref(db, `users/${currentUser.uid}`), { balance: snap.val().balance - amt, ad_balance: (snap.val().ad_balance||0) + amt });
+            showToast("Transferred");
+        }
+
+        function loadMyCampaigns() {
+            const mList = document.getElementById('my-campaigns-list'); mList.innerHTML = "";
+            const renderC = (c, type) => {
+                let badge = c.val().status==='active'?'badge-active':(c.val().status==='completed'?'badge-completed':'badge-pending');
+                mList.innerHTML += `<div style="border-bottom:1px solid #333; padding:10px;"><strong>[${type}] ${c.val().title}</strong> <span class="badge ${badge}">${c.val().status.toUpperCase()}</span><br><small>Views: ${c.val().remaining_views}/${c.val().total_views}</small></div>`;
+            };
+            onValue(query(ref(db, 'user_campaigns'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'PTC')); });
+            onValue(query(ref(db, 'user_videos'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'VIDEO')); });
+        }
+
+        function loadHistory() {
+            onValue(query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
+                const d = document.getElementById('withdraw-list'); d.innerHTML = "";
+                if(s.exists()) s.forEach(c => { d.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().amount} Coins</span><span style="color:${c.val().status==='Paid'?'#10b981':'#f59e0b'}">${c.val().status}</span></div>`; });
+            });
+            onValue(query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
+                const d = document.getElementById('my-submissions-list'); d.innerHTML = ""; submittedTasks =[];
+                if(s.exists()) s.forEach(c => {
+                    submittedTasks.push(c.val().taskId);
+                    let badge = c.val().status==='Approved'?'badge-active':(c.val().status==='Rejected'?'badge-rejected':'badge-pending');
+                    d.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().taskName}</span><span class="badge ${badge}">${c.val().status}</span></div>`;
+                });
+            });
+        }
+
+        document.getElementById('w-amt').addEventListener('input', (e) => document.getElementById('w-val').innerText = `$${(e.target.value * window.globalCoinRate).toFixed(2)}`);
+        
         window.requestWithdraw = () => {
-            const amt = parseFloat(document.getElementById('w-amt').value);
-            const addr = document.getElementById('w-addr').value;
-            const bal = parseFloat(document.getElementById('user-balance').innerText);
-            
-            if(!addr) return showToast("Enter Payment Details");
-            
-            const usdValue = amt * 0.00001;
-            if(usdValue < 10) return showToast(`Min Withdraw $10 (You entered $${usdValue.toFixed(2)})`);
-            
+            const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; const bal = parseFloat(document.getElementById('user-balance').innerText);
+            if(!addr) return showToast("Enter Details"); 
+            // MINIMUM $5 USD VERIFICATION
+            if(amt * window.globalCoinRate < 5) return showToast("Min $5 USD"); 
             if(amt > bal) return showToast("Insufficient Funds");
 
-            push(ref(db, 'withdrawals'), {
-                uid: currentUser.uid,
-                amount: amt,
-                usd: usdValue.toFixed(2),
-                address: addr,
-                method: document.getElementById('w-method').value,
-                status: 'Pending',
-                timestamp: Date.now()
-            });
-            update(ref(db, 'users/' + currentUser.uid), { balance: bal - amt });
-            showToast("Withdrawal Requested!");
-            document.getElementById('w-amt').value = "";
+            push(ref(db, 'withdrawals'), { uid: currentUser.uid, amount: amt, usd: (amt*window.globalCoinRate).toFixed(2), address: addr, method: document.getElementById('w-method').value, status: 'Pending', timestamp: Date.now() });
+            update(ref(db, 'users/'+currentUser.uid), { balance: bal - amt }); showToast("Sent!");
         }
 
-        function loadWithdrawHistory() {
-            const q = query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid));
-            onValue(q, (s) => {
-                const div = document.getElementById('withdraw-list'); div.innerHTML = "";
-                if(s.exists()) {
-                    s.forEach(c => {
-                        const v = c.val();
-                        let color = v.status === 'Paid' ? '#10b981' : '#f59e0b';
-                        div.innerHTML += `
-                        <div style="border-bottom:1px solid #334155; padding:12px 0; display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <div style="font-weight:bold;">${v.amount} Coins ($${v.usd})</div>
-                                <div style="font-size:0.8rem; color:#64748b;">${v.method}</div>
-                            </div>
-                            <span style="color:${color}; font-weight:bold;">${v.status}</span>
-                        </div>`;
-                    });
-                } else { div.innerHTML = "<p style='text-align:center;color:#64748b'>No history.</p>"; }
-            });
-        }
-
-        function loadAdminUpdates() {
-            onValue(ref(db, 'admin_update'), (s) => {
-                const d = s.val();
-                if(d && (Date.now() - d.ts < 259200000)) {
-                    document.getElementById('update-msg-box').classList.remove('hidden');
-                    document.getElementById('update-text').innerText = d.msg;
-                }
-            });
-        }
-
-        // Support
-        window.sendTicket = () => {
-            const sub = document.getElementById('h-subject').value;
-            const msg = document.getElementById('h-msg').value;
-            if(!msg) return showToast("Enter message");
-            push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: sub, message: msg });
-            document.getElementById('h-msg').value = "";
-            showToast("Ticket Sent");
-        }
-
-        // UI Helpers
-        window.nav = (id, el) => {
-            ['dashboard','ptc','shortlinks','tasks','withdraw','help','history'].forEach(x => document.getElementById(x+'-view').classList.add('hidden'));
-            document.getElementById(id+'-view').classList.remove('hidden');
-            
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            if(el) el.classList.add('active');
-            
-            if(window.innerWidth < 768) toggleSidebar();
-        }
-
-        window.toggleSidebar = () => {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
-        function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+        window.sendTicket = () => { const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, msg: msg }); showToast("Sent"); } }
         
-        // Expose
-        window.doPtc = window.doPtc;
-        window.doLink = window.doLink;
-        window.openTask = window.openTask;
-        window.submitTaskReview = window.submitTaskReview;
-        window.requestWithdraw = window.requestWithdraw;
-        window.sendTicket = window.sendTicket;
-        window.nav = window.nav;
-        window.toggleSidebar = window.toggleSidebar;
+        window.switchVidTab = (tab) => {
+            document.getElementById('official-vid-tab').classList.add('hidden');
+            document.getElementById('community-vid-tab').classList.add('hidden');
+            document.getElementById(tab+'-tab').classList.remove('hidden');
+            document.querySelectorAll('.vid-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        };
+
+        window.nav = (id, el) => {['dashboard','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => document.getElementById(x+'-view').classList.add('hidden')); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); if(window.innerWidth < 768) document.getElementById('sidebar').classList.remove('active'); }
+        window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+        function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+        window.doPtc = window.doPtc; window.doLink = window.doLink; window.openTask = window.openTask; window.submitTaskReview = window.submitTaskReview;
+        window.requestWithdraw = window.requestWithdraw; window.sendTicket = window.sendTicket; window.nav = window.nav; window.toggleSidebar = window.toggleSidebar;
+        window.switchAdTab = window.switchAdTab; window.calcAdCost = window.calcAdCost; window.createCampaign = window.createCampaign; window.transferFunds = window.transferFunds; window.depositFunds = window.depositFunds;
+        window.prepareAction = window.prepareAction; window.verifyAdGate = window.verifyAdGate; window.executeFinalAction = window.executeFinalAction; window.closeActionModal = window.closeActionModal; window.switchVidTab = window.switchVidTab;
     </script>
 </body>
 </html>
