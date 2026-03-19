@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EarnCrypto - User Panel</title>
     
+    <!-- FAST LOADING OPTIMIZATIONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://prime-faucet-default-rtdb.firebaseio.com">
+    <link rel="preconnect" href="https://js.onclckmn.com">
+    <link rel="preconnect" href="https://www.effectivegatecpm.com">
+    <link rel="preconnect" href="https://www.highperformanceformat.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Righteous&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -31,39 +37,33 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
 
-        .sidebar { width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 100; transition: 0.3s; overflow-y: auto; }
+        /* SIDEBAR */
+        .sidebar { width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease; overflow-y: auto; position: relative; }
         .brand { font-family: 'Righteous', cursive; color: var(--accent); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
         .nav-item { padding: 12px; margin: 5px 0; color: #94a3b8; cursor: pointer; border-radius: 8px; display: flex; gap: 10px; align-items: center; transition: 0.2s; }
         .nav-item:hover, .nav-item.active { background: rgba(139,92,246,0.15); color: var(--primary); }
 
+        /* MAIN CONTENT */
         .main-content { flex: 1; padding: 20px; overflow-y: auto; position: relative; scroll-behavior: smooth; }
         .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
 
+        /* ADS & BANNERS */
         .banner-ad { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; background: #000; padding: 5px; border-radius: 5px; min-height: 90px; overflow: hidden; }
+        .sponsored-card { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger); text-align: center; }
+
         .welcome-box { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--primary); padding: 25px; border-radius: 15px; text-align: center; margin-bottom: 25px; animation: float 3s ease-in-out infinite; }
         .welcome-title { font-family: 'Righteous', cursive; font-size: 1.8rem; background: linear-gradient(45deg, #facc15, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
+        /* FORMS & BUTTONS */
         .form-control { width: 100%; padding: 12px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; outline: none; }
         .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; color: white; width: 100%; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); }
         .btn-success { background: var(--accent); color: black; }
         .btn-warning { background: var(--warning); color: black; }
-        
         .btn-ads { background: linear-gradient(45deg, #ff0000, #ff8800); border: 2px solid white; animation: pulse 1.5s infinite; }
-        .btn-disabled { background: #334155; color: #94a3b8; cursor: not-allowed; border: 1px solid #475569; animation: none; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-        .sidebar-social-btn { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem; margin-bottom: 8px; transition: 0.2s; font-weight: 600; }
-        .sidebar-social-btn:hover { transform: translateX(5px); opacity: 0.9; }
-        .bg-tg { background: #0088cc; } .bg-wa { background: #25D366; } .bg-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } .bg-fb { background: #1877F2; } .bg-yt { background: #FF0000; }
-        .more-web-link { display: block; background: rgba(139, 92, 246, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-bottom: 8px; transition: 0.2s; }
-
-        .qr-container { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 15px; }
-        .qr-img { width: 200px; height: 200px; object-fit: contain; }
-        .payment-info-box { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
-        .pay-email { font-size: 1.2rem; color: white; font-weight: bold; background: #0f172a; padding: 8px 15px; border-radius: 5px; display: inline-block; margin-top: 5px; border: 1px dashed var(--accent); user-select: all; }
 
         .hidden { display: none !important; }
         .toast { position: fixed; bottom: 20px; right: 20px; background: var(--card); border-left: 4px solid var(--accent); padding: 15px; border-radius: 5px; transform: translateX(150%); transition: 0.3s; z-index: 5000; }
@@ -73,10 +73,19 @@
         .tab-btn { background: #334155; padding: 10px 20px; border-radius: 20px; cursor: pointer; color: #94a3b8; flex:1; text-align:center; white-space:nowrap; }
         .tab-btn.active { background: var(--primary); color: white; }
 
-        .menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: white; margin-bottom: 20px; }
+        .sidebar-social-btn { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600; }
+        .bg-tg { background: #0088cc; } .bg-wa { background: #25D366; } .bg-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); } .bg-fb { background: #1877F2; } .bg-yt { background: #FF0000; }
+        .more-web-link { display: block; background: rgba(139, 92, 246, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-bottom: 8px; }
+
+        .qr-container { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 15px; }
+        .qr-img { width: 200px; height: 200px; object-fit: contain; }
+
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 99; display: none; }
+        .menu-btn { display: none; font-size: 1.5rem; background: none; border: none; color: white; margin-bottom: 20px; cursor: pointer; }
         @media(max-width: 768px) {
             .sidebar { position: fixed; left: -270px; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
             .sidebar.active { transform: translateX(270px); }
+            .mobile-overlay.active { display: block; }
             .menu-btn { display: block; }
         }
         
@@ -84,12 +93,12 @@
         .badge-pending { background: #f59e0b; color: black; }
         .badge-active { background: #10b981; color: black; }
         .badge-completed { background: #3b82f6; color: white; }
-
-        /* Fake Sponsored Ad Card styling */
-        .sponsored-card { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger); text-align: center; }
     </style>
 </head>
 <body>
+
+    <!-- MOBILE OVERLAY -->
+    <div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
 
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
@@ -106,12 +115,11 @@
         
         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
             <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">🌐 More Websites</p>
-            <div id="more-websites-container"><p style="color:#64748b; font-size:0.8rem;">Loading...</p></div>
+            <div id="more-websites-container"></div>
         </div>
-
         <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
             <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">Social Media</p>
-            <div id="social-links-container"><p style="color:#64748b; font-size:0.8rem;">Loading links...</p></div>
+            <div id="social-links-container"></div>
         </div>
 
         <div style="margin-top:20px; font-size:0.8rem; color:#64748b; text-align:center;">
@@ -121,24 +129,24 @@
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('active')"><i class="fas fa-bars"></i></button>
+        <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
         <!-- TOP BANNER -->
         <div class="banner-ad">
             <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
         </div>
 
-        <!-- ADMIN UPDATE -->
         <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
             <h4 style="color:var(--primary)"><i class="fas fa-bullhorn"></i> New Update</h4>
             <p id="update-text" style="font-size:0.9rem; margin-top:5px;"></p>
         </div>
 
+        <!-- DASHBOARD -->
         <div id="dashboard-view">
             <div class="welcome-box">
                 <h1 class="welcome-title">Welcome to EarnCrypto!</h1>
                 <p style="color:#cbd5e1; line-height:1.6;">
-                    🚀 Earn <b>$5+ Quickly</b>!<br>
+                    🚀 Earn <b>$1+ Quickly</b>!<br>
                     ✨ Watch Videos, PTC Ads, Tasks & More.<br>
                     <span style="color:var(--accent); font-weight:bold;">Start Earning Now!</span>
                 </p>
@@ -156,7 +164,7 @@
             </div>
         </div>
 
-        <!-- WATCH VIDEOS SECTION WITH TABS -->
+        <!-- WATCH VIDEOS -->
         <div id="videos-view" class="hidden">
             <h2><i class="fas fa-video"></i> Watch Videos</h2>
             <div class="tabs">
@@ -164,25 +172,19 @@
                 <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid')">Community Videos</div>
             </div>
             <div id="official-vid-tab">
-                <div class="card" style="background:rgba(59, 130, 246, 0.05); border-color:var(--primary);">
-                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Watch admin provided videos to earn high rewards.</p>
-                    <div class="grid" id="admin-vid-list"></div>
-                </div>
+                <div class="grid" id="admin-vid-list"></div>
             </div>
             <div id="community-vid-tab" class="hidden">
-                <div class="card" style="border-color:var(--warning);">
-                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Support other users by watching their campaigns!</p>
-                    <div class="grid" id="user-vid-list"></div>
-                </div>
+                <div class="grid" id="user-vid-list"></div>
             </div>
         </div>
 
-        <!-- EARNING SECTIONS -->
+        <!-- PTC, LINKS, TASKS -->
         <div id="ptc-view" class="hidden"><h2><i class="fas fa-eye"></i> PTC Ads</h2><div class="grid" id="ptc-list"></div></div>
         <div id="shortlinks-view" class="hidden"><h2><i class="fas fa-link"></i> Shortlinks</h2><div class="grid" id="sl-list"></div></div>
         <div id="tasks-view" class="hidden"><h2><i class="fas fa-tasks"></i> Custom Tasks</h2><div class="grid" id="task-list"></div></div>
 
-        <!-- ADVERTISE SECTION -->
+        <!-- ADVERTISE -->
         <div id="advertise-view" class="hidden">
             <h2><i class="fas fa-bullhorn"></i> Advertise</h2>
             <div class="tabs">
@@ -211,13 +213,11 @@
                 </div>
             </div>
 
-            <!-- CREATE VIDEO CAMPAIGN -->
             <div id="create-vid-tab" class="hidden">
                 <div class="card">
                     <h4>Create Video Campaign</h4>
-                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">Get real views from the community on your YouTube videos.</p>
-                    <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. My Gameplay Video">
-                    <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://youtube.com/...">
+                    <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. Gameplay Video">
+                    <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://...">
                     <label>Duration & Cost</label>
                     <select id="v-timer" class="form-control" onchange="calcAdCost('v-timer','v-views','v-total-cost')">
                         <option value="15" data-price="25">15 Seconds (25 Coins/View)</option>
@@ -241,9 +241,9 @@
                     </div>
                     <div class="card" style="text-align:center;">
                         <h4 style="color:var(--accent);">Deposit Funds</h4>
-                        <div id="payment-display-area" class="payment-info-box hidden">
+                        <div id="payment-display-area" style="background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left;" class="hidden">
                             <h5 style="color:#3b82f6; margin-bottom:5px;"><i class="fas fa-wallet"></i> Send Payment To:</h5>
-                            <div id="admin-pay-info" class="pay-email">Loading...</div>
+                            <div id="admin-pay-info" style="font-size: 1.2rem; color: white; font-weight: bold; background: #0f172a; padding: 8px 15px; border-radius: 5px; display: inline-block; border: 1px dashed var(--accent); user-select: all;">Loading...</div>
                         </div>
                         <div class="qr-container"><img src="qr.jpg" alt="Scan QR" class="qr-img" onerror="this.style.display='none'"></div>
                         <div style="background:#020617; padding:10px; border-radius:8px; margin-bottom:15px;">
@@ -263,13 +263,14 @@
             </div>
         </div>
 
+        <!-- WITHDRAW -->
         <div id="withdraw-view" class="hidden">
             <h2><i class="fas fa-wallet"></i> Withdraw Funds</h2>
             <div class="card">
-                <div style="margin-bottom:10px; color:#94a3b8;">Min Withdraw: $5 USD</div>
+                <div style="margin-bottom:10px; color:#94a3b8;">Min Withdraw: $<span id="wd-limit-display">1.00</span> USD</div>
                 <select class="form-control" id="w-method"><option value="PayPal">PayPal</option><option value="FaucetPay">FaucetPay</option><option value="Bank">Bank Transfer</option></select>
                 <input type="text" id="w-addr" class="form-control" placeholder="Payment Details...">
-                <input type="number" id="w-amt" class="form-control" placeholder="Amount (Coins)">
+                <input type="number" id="w-amt" class="form-control" placeholder="Coins">
                 <p style="text-align:right; margin-top:5px; color:var(--accent);">Value: <span id="w-val">$0.00</span></p>
                 <button class="btn btn-success" onclick="requestWithdraw()">Submit</button>
             </div>
@@ -277,11 +278,13 @@
             <div id="withdraw-list" class="card" style="padding:10px;"></div>
         </div>
 
+        <!-- ACTIVITY -->
         <div id="history-view" class="hidden">
             <h2><i class="fas fa-history"></i> My Activity</h2>
             <div class="card"><h4>Custom Task Status</h4><div id="my-submissions-list"></div></div>
         </div>
 
+        <!-- HELP -->
         <div id="help-view" class="hidden">
             <h2>Help & Support</h2>
             <div class="card">
@@ -302,7 +305,7 @@
         </div>
     </div>
 
-    <!-- AD-GATE MODAL -->
+    <!-- REUSABLE AD-GATE MODAL -->
     <div id="action-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2500; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:450px; text-align:center; position:relative; overflow-y:auto; max-height:95vh;">
             <button onclick="closeActionModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
@@ -335,11 +338,11 @@
 
     <div id="toast" class="toast">Action Successful!</div>
 
-    <!-- FIREBASE LOGIC -->
+    <!-- FIREBASE LOGIC (OPTIMIZED & BUG FIXED) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const config = {
             apiKey: "AIzaSyArDD2xHOncY3vLg3bquG31n9cVX81IWSA",
@@ -361,16 +364,20 @@
         let completedVids = {};
         let submittedTasks =[];
         let currentOrderId = "";
+        
         window.globalCoinRate = 0.00001; 
+        window.globalMinWithdraw = 1.00; // Updated to $1 default
 
         let actionType = ""; 
         let actionData = {};
         let timerInterval = null;
 
-        // DIRECT LINK URL
         const DIRECT_LINK_URL = "https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d";
 
-        signInAnonymously(auth).catch(console.error);
+        // 1. SAFE AUTHENTICATION
+        setPersistence(auth, browserLocalPersistence).then(() => {
+            return signInAnonymously(auth);
+        }).catch(console.error);
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -390,14 +397,8 @@
                 const snap = await get(userRef);
                 if (!snap.exists()) {
                     await set(userRef, { balance: 0, ad_balance: 0, joined: Date.now() });
-                } else {
-                    const d = snap.val();
-                    let repairs = {};
-                    if (d.balance === undefined || isNaN(d.balance)) repairs.balance = 0;
-                    if (d.ad_balance === undefined || isNaN(d.ad_balance)) repairs.ad_balance = 0;
-                    if(Object.keys(repairs).length > 0) await update(userRef, repairs);
                 }
-            } catch(e) {} 
+            } catch(e) {}
         }
 
         function setupPresence() {
@@ -408,6 +409,7 @@
             });
         }
 
+        // 2. FAST LOAD DATA
         function initApp() {
             const userRef = ref(db, 'users/' + currentUser.uid);
             onValue(userRef, (s) => {
@@ -421,7 +423,7 @@
                 completedLinks = data.completed_links || {};
                 completedVids = data.completed_vids || {};
                 
-                loadContent(); 
+                loadAllContentFast(); // Refresh UI instantly
             });
 
             onValue(ref(db, 'admin_settings'), (s) => {
@@ -430,6 +432,10 @@
                     window.globalCoinRate = parseFloat(set.coin_rate);
                     const b = parseFloat(document.getElementById('user-balance').innerText);
                     document.getElementById('usd-balance').innerText = (b * window.globalCoinRate).toFixed(4);
+                }
+                if(set.min_withdraw) {
+                    window.globalMinWithdraw = parseFloat(set.min_withdraw);
+                    document.getElementById('wd-limit-display').innerText = window.globalMinWithdraw.toFixed(2);
                 }
 
                 const btn = document.getElementById('btn-dep-submit');
@@ -444,269 +450,211 @@
                     document.getElementById('payment-display-area').classList.add('hidden');
                 }
 
+                // Social & Sites
                 onValue(ref(db, 'more_websites'), (mwSnap) => {
-                    const mwDiv = document.getElementById('more-websites-container'); mwDiv.innerHTML = "";
-                    if(mwSnap.exists()) mwSnap.forEach(c => { mwDiv.innerHTML += `<a href="${c.val().url}" target="_blank" class="more-web-link">${c.val().title}</a>`; });
-                    else mwDiv.innerHTML = "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
+                    let h = "";
+                    if(mwSnap.exists()) mwSnap.forEach(c => { h += `<a href="${c.val().url}" target="_blank" class="more-web-link">${c.val().title}</a>`; });
+                    document.getElementById('more-websites-container').innerHTML = h || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
                 });
 
                 const soc = set.social || {}; let socH = "";
-                if(soc.tg1) socH += `<a href="${soc.tg1}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 1</a>`;
-                if(soc.tg2) socH += `<a href="${soc.tg2}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 2</a>`;
-                if(soc.tg3) socH += `<a href="${soc.tg3}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 3</a>`;
-                if(soc.wa1) socH += `<a href="${soc.wa1}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 1</a>`;
-                if(soc.wa2) socH += `<a href="${soc.wa2}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 2</a>`;
-                if(soc.wa3) socH += `<a href="${soc.wa3}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 3</a>`;
+                if(soc.tg1) socH += `<a href="${soc.tg1}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram</a>`;
+                if(soc.wa1) socH += `<a href="${soc.wa1}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
                 if(soc.ig) socH += `<a href="${soc.ig}" target="_blank" class="sidebar-social-btn bg-ig"><i class="fab fa-instagram"></i> Instagram</a>`;
                 if(soc.fb) socH += `<a href="${soc.fb}" target="_blank" class="sidebar-social-btn bg-fb"><i class="fab fa-facebook"></i> Facebook</a>`;
                 if(soc.yt) socH += `<a href="${soc.yt}" target="_blank" class="sidebar-social-btn bg-yt"><i class="fab fa-youtube"></i> YouTube</a>`;
                 document.getElementById('social-links-container').innerHTML = socH || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
             });
 
-            onValue(ref(db, 'admin_update'), (s) => {
-                if(s.exists() && (Date.now() - s.val().ts < 259200000)) {
-                    document.getElementById('update-msg-box').classList.remove('hidden');
-                    document.getElementById('update-text').innerText = s.val().msg;
-                }
+            onValue(query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
+                const d = document.getElementById('my-submissions-list'); let h = ""; submittedTasks =[];
+                if(s.exists()) s.forEach(c => {
+                    submittedTasks.push(c.val().taskId);
+                    let badge = c.val().status==='Approved'?'badge-active':(c.val().status==='Rejected'?'badge-rejected':'badge-pending');
+                    h += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().taskName}</span><span class="badge ${badge}">${c.val().status}</span></div>`;
+                });
+                d.innerHTML = h;
+                loadAllContentFast(); // Refresh Tasks after submissions loaded
             });
 
-            loadHistory();
+            onValue(query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
+                const d = document.getElementById('withdraw-list'); let h = "";
+                if(s.exists()) s.forEach(c => { h += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().amount} Coins</span><span style="color:${c.val().status==='Paid'?'#10b981':'#f59e0b'}">${c.val().status}</span></div>`; });
+                d.innerHTML = h;
+            });
         }
 
-        // --- DYNAMIC AD INJECTION HELPER ---
+        // FAST RENDERING ENGINE (Builds string first, then injects)
         function getSponsoredAdCard() {
-            return `
-            <div class="card sponsored-card" style="border-color:var(--danger); text-align:center; background:rgba(239, 68, 68, 0.05);">
-                <p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p>
-                <h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4>
-                <a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;">Click Here</a>
-            </div>`;
+            return `<div class="card sponsored-card"><p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p><h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4><a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;">Click Here</a></div>`;
         }
 
-        function loadContent() {
-            // VIDEOS (ADMIN)
+        function loadAllContentFast() {
+            // Videos Admin
             onValue(ref(db, 'admin_videos'), (s) => {
-                const aList = document.getElementById('admin-vid-list'); aList.innerHTML = "";
-                let count = 0;
+                let h = ""; let count = 0;
                 if(s.exists()) s.forEach(c => {
-                    if(!completedVids[c.key]) {
-                        count++;
-                        const v = c.val();
-                        const aType = v.type === 'embed' ? 'video_embed' : 'video_url';
-                        aList.innerHTML += `<div class="card"><h4>${v.title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${v.timer} Sec</p><h3 style="color:var(--accent)">+${v.reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('${aType}','${c.key}','${encodeURIComponent(v.content)}',${v.timer},${v.reward})">Watch Video</button></div>`;
-                        if(count % 3 === 0) aList.innerHTML += getSponsoredAdCard();
+                    if(!completedVids[c.key]) { count++; const v = c.val(); const aType = v.type === 'embed' ? 'video_embed' : 'video_url';
+                        h += `<div class="card"><h4>${v.title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${v.timer} Sec</p><h3 style="color:var(--accent)">+${v.reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('${aType}','${c.key}','${encodeURIComponent(v.content)}',${v.timer},${v.reward})">Watch Video</button></div>`;
+                        if(count % 3 === 0) h += getSponsoredAdCard();
                     }
                 });
-            });
+                document.getElementById('admin-vid-list').innerHTML = h;
+            }, {onlyOnce:true});
 
-            // VIDEOS (COMMUNITY)
+            // Videos Community
             onValue(query(ref(db, 'user_videos'), orderByChild('status'), equalTo('active')), (s) => {
-                const uList = document.getElementById('user-vid-list'); uList.innerHTML = "";
-                let count = 0;
+                let h = ""; let count = 0;
                 if(s.exists()) s.forEach(c => {
-                    if(c.val().uid !== currentUser.uid && !completedVids[c.key]) {
-                        count++;
-                        uList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-warning" onclick="prepareAction('uservideo','${c.key}','${encodeURIComponent(c.val().link)}',${c.val().timer},${c.val().reward})">Watch & Earn</button></div>`;
-                        if(count % 3 === 0) uList.innerHTML += getSponsoredAdCard();
+                    if(c.val().uid !== currentUser.uid && !completedVids[c.key]) { count++;
+                        h += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-warning" onclick="prepareAction('uservideo','${c.key}','${encodeURIComponent(c.val().link)}',${c.val().timer},${c.val().reward})">Watch & Earn</button></div>`;
+                        if(count % 3 === 0) h += getSponsoredAdCard();
                     }
                 });
-            });
+                document.getElementById('user-vid-list').innerHTML = h;
+            }, {onlyOnce:true});
 
             // PTC
             onValue(ref(db, 'ptc_ads'), (s) => {
-                const pList = document.getElementById('ptc-list'); pList.innerHTML = "";
-                let count = 0;
+                let h = ""; let count = 0;
                 if(s.exists()) s.forEach(c => {
-                    if(!completedPtc[c.key]) {
-                        count++;
-                        pList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${c.key}','${c.val().link}',${c.val().timer},${c.val().reward}, false)">View Ad</button></div>`;
-                        if(count % 3 === 0) pList.innerHTML += getSponsoredAdCard();
+                    if(!completedPtc[c.key]) { count++;
+                        h += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${c.key}','${c.val().link}',${c.val().timer},${c.val().reward}, false)">View Ad</button></div>`;
+                        if(count % 3 === 0) h += getSponsoredAdCard();
                     }
                 });
-            });
-            onValue(query(ref(db, 'user_campaigns'), orderByChild('status'), equalTo('active')), (s) => {
-                const pList = document.getElementById('ptc-list');
-                let count = 0;
-                if(s.exists()) s.forEach(c => {
-                    if(c.val().uid !== currentUser.uid && !completedPtc[c.key]) {
-                        count++;
-                        pList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${c.val().timer} Sec</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${c.key}','${c.val().link}',${c.val().timer},${c.val().reward}, true)">View Ad</button></div>`;
-                        if(count % 3 === 0) pList.innerHTML += getSponsoredAdCard();
-                    }
-                });
-            });
+                document.getElementById('ptc-list').innerHTML = h;
+            }, {onlyOnce:true});
 
-            // SHORTLINKS
+            // Links
             onValue(ref(db, 'shortlinks'), (s) => {
-                const sList = document.getElementById('sl-list'); sList.innerHTML = "";
-                let count = 0;
+                let h = ""; let count = 0;
                 if(s.exists()) s.forEach(c => {
-                    if(!completedLinks[c.key]) {
-                        count++;
-                        let tType = c.val().timer_type === 'min' ? 'Min' : 'Sec';
+                    if(!completedLinks[c.key]) { count++;
                         let rTime = c.val().timer_type === 'min' ? c.val().timer * 60 : c.val().timer;
-                        sList.innerHTML += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-link"></i> ${c.val().timer} ${tType}</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doLink('${c.key}','${c.val().link}',${rTime},${c.val().reward})">Visit Link</button></div>`;
-                        if(count % 3 === 0) sList.innerHTML += getSponsoredAdCard();
+                        h += `<div class="card"><h4>${c.val().title}</h4><p style="color:#94a3b8"><i class="fas fa-link"></i> ${c.val().timer}s</p><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="doLink('${c.key}','${c.val().link}',${rTime},${c.val().reward})">Visit Link</button></div>`;
+                        if(count % 3 === 0) h += getSponsoredAdCard();
                     }
                 });
-            });
+                document.getElementById('sl-list').innerHTML = h;
+            }, {onlyOnce:true});
 
-            // TASKS
+            // Tasks
             onValue(ref(db, 'tasks'), (s) => {
-                const tList = document.getElementById('task-list'); tList.innerHTML = "";
-                let count = 0;
+                let h = ""; let count = 0;
                 if(s.exists()) s.forEach(c => {
-                    if(!submittedTasks.includes(c.key)) {
-                        count++;
-                        tList.innerHTML += `<div class="card"><img src="${c.val().thumb}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;"><h4>${c.val().title}</h4><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('task','${c.key}','${encodeURIComponent(c.val().link)}','','', '${encodeURIComponent(c.val().instructions||'')}', '${encodeURIComponent(c.val().title)}')">Start Task</button></div>`;
-                        if(count % 2 === 0) tList.innerHTML += getSponsoredAdCard();
+                    if(!submittedTasks.includes(c.key)) { count++;
+                        h += `<div class="card"><img src="${c.val().thumb}" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;"><h4>${c.val().title}</h4><h3 style="color:var(--accent)">+${c.val().reward} Coins</h3><button class="btn btn-primary" onclick="prepareAction('task','${c.key}','${encodeURIComponent(c.val().link)}','','', '${encodeURIComponent(c.val().instructions||'')}', '${encodeURIComponent(c.val().title)}')">Start Task</button></div>`;
+                        if(count % 2 === 0) h += getSponsoredAdCard();
                     }
                 });
-            });
+                document.getElementById('task-list').innerHTML = h;
+            }, {onlyOnce:true});
         }
 
-        // --- AD GATEWAY LOGIC ---
+        // 3. ACTION GATEWAY
         window.prepareAction = (type, key, contentEncoded, timer, reward, instructionsEncoded="", titleEncoded="") => {
-            actionType = type;
-            const content = decodeURIComponent(contentEncoded);
-            actionData = { key, content, timer, reward, instructions: decodeURIComponent(instructionsEncoded), title: decodeURIComponent(titleEncoded) };
+            actionType = type; const content = decodeURIComponent(contentEncoded || '');
+            actionData = { key, content, timer, reward, instructions: decodeURIComponent(instructionsEncoded || ''), title: decodeURIComponent(titleEncoded || '') };
             
-            document.getElementById('am-step-1').classList.remove('hidden');
-            document.getElementById('am-final-step').classList.add('hidden');
-            document.getElementById('am-ad-btn').disabled = false;
-            document.getElementById('am-ad-btn').innerHTML = '<i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad';
-            document.getElementById('am-ad-btn').style.background = "linear-gradient(45deg, #ff0000, #ff8800)";
-            document.getElementById('am-task-inputs').classList.add('hidden');
-            document.getElementById('am-embed-container').classList.add('hidden');
-            document.getElementById('am-embed-container').innerHTML = ""; 
-            document.getElementById('am-timer-display').classList.add('hidden');
-            document.getElementById('am-play-btn').classList.add('hidden');
+            document.getElementById('am-step-1').classList.remove('hidden'); document.getElementById('am-final-step').classList.add('hidden');
+            document.getElementById('am-ad-btn').disabled = false; document.getElementById('am-ad-btn').innerHTML = '<i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad'; document.getElementById('am-ad-btn').style.background = "linear-gradient(45deg, #ff0000, #ff8800)";
+            document.getElementById('am-task-inputs').classList.add('hidden'); document.getElementById('am-embed-container').classList.add('hidden'); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-timer-display').classList.add('hidden'); document.getElementById('am-play-btn').classList.add('hidden');
 
             if(type === 'task') {
                 document.getElementById('am-title').innerText = "Submit Task";
-                document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task first</a>, then verify ad to submit.`;
-                document.getElementById('am-task-inputs').classList.remove('hidden');
-                document.getElementById('am-proof').value = "";
-                document.getElementById('am-final-btn').innerText = "2. Submit Review";
+                document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task first</a>`;
             } else {
-                document.getElementById('am-title').innerText = "Unlock Video";
-                document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video.";
-                document.getElementById('am-task-inputs').classList.add('hidden');
-                document.getElementById('am-final-btn').innerText = "2. Play Video & Earn";
+                document.getElementById('am-title').innerText = "Unlock Video"; document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video.";
             }
-
             document.getElementById('action-modal').classList.remove('hidden');
         }
 
         window.verifyAdGate = () => {
             window.open(DIRECT_LINK_URL, "_blank");
-            const btn = document.getElementById('am-ad-btn');
-            btn.disabled = true;
-            btn.innerText = "Verifying... Wait 5s";
-            btn.style.animation = "none";
+            const btn = document.getElementById('am-ad-btn'); btn.disabled = true; btn.innerText = "Verifying... Wait 5s"; btn.style.animation = "none";
             
             setTimeout(() => {
-                btn.innerHTML = '<i class="fas fa-check"></i> Ad Verified';
-                btn.style.background = "var(--accent)";
-                document.getElementById('am-final-step').classList.remove('hidden');
-                
-                if(actionType === 'task') {
-                    document.getElementById('am-task-inputs').classList.remove('hidden');
-                } else if(actionType === 'video_embed') {
-                    document.getElementById('am-step-1').classList.add('hidden');
-                    document.getElementById('am-desc-container').classList.add('hidden');
-                    
-                    const embedCont = document.getElementById('am-embed-container');
-                    embedCont.classList.remove('hidden');
-                    embedCont.innerHTML = actionData.content; 
-                    
-                    const tDisp = document.getElementById('am-timer-display');
-                    tDisp.classList.remove('hidden');
-                    let t = actionData.timer;
-                    tDisp.innerText = `Watch for ${t} seconds...`;
-                    
-                    timerInterval = setInterval(async () => {
-                        t--; tDisp.innerText = `Watch for ${t} seconds...`;
-                        if(t <= 0) {
-                            clearInterval(timerInterval); tDisp.innerText = "Rewarded!";
-                            await processVideoReward(actionData.key, actionData.reward, false);
-                            closeActionModal();
-                        }
-                    }, 1000);
-                } else if(actionType === 'video_url' || actionType === 'uservideo') {
-                    document.getElementById('am-play-btn').classList.remove('hidden');
-                }
+                btn.innerHTML = '<i class="fas fa-check"></i> Verified'; btn.style.background = "var(--accent)"; document.getElementById('am-final-step').classList.remove('hidden');
+                if(actionType === 'task') { document.getElementById('am-task-inputs').classList.remove('hidden'); document.getElementById('am-proof').value = ""; }
+                else if(actionType === 'video_embed') {
+                    document.getElementById('am-step-1').classList.add('hidden'); document.getElementById('am-desc-container').classList.add('hidden');
+                    const embedCont = document.getElementById('am-embed-container'); embedCont.classList.remove('hidden'); embedCont.innerHTML = actionData.content; 
+                    const tDisp = document.getElementById('am-timer-display'); tDisp.classList.remove('hidden'); let t = actionData.timer; tDisp.innerText = `Watch for ${t} seconds...`;
+                    timerInterval = setInterval(async () => { t--; tDisp.innerText = `Watch for ${t} seconds...`; if(t <= 0) { clearInterval(timerInterval); tDisp.innerText = "Rewarded!"; await processVideoReward(actionData.key, actionData.reward, false); closeActionModal(); } }, 1000);
+                } else if(actionType === 'video_url' || actionType === 'uservideo') { document.getElementById('am-play-btn').classList.remove('hidden'); }
             }, 5000);
         }
 
         window.executeFinalAction = async () => {
             document.getElementById('action-modal').classList.add('hidden');
             if(actionType === 'task') {
-                const proof = document.getElementById('am-proof').value;
-                if(!proof) return showToast("Proof is required!");
-                push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, proof: proof, status: 'Pending', timestamp: Date.now(), reward: actionData.reward });
+                const proof = document.getElementById('am-proof').value; if(!proof) return showToast("Proof is required!");
+                push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, reward: actionData.reward, proof: proof, status: 'Pending', timestamp: Date.now() });
                 showToast("Sent for Review!");
             } 
             else if(actionType === 'video_url' || actionType === 'uservideo') {
-                window.open(actionData.content, '_blank');
-                showToast(`Watching Video for ${actionData.timer} sec...`);
-                setTimeout(async () => {
-                    await processVideoReward(actionData.key, actionData.reward, actionType === 'uservideo');
-                }, actionData.timer * 1000);
+                window.open(actionData.content, '_blank'); showToast(`Watching Video for ${actionData.timer} sec...`);
+                setTimeout(async () => { await processVideoReward(actionData.key, actionData.reward, actionType === 'uservideo'); }, actionData.timer * 1000);
             }
         }
 
+        // 4. ATOMIC INCREMENT (BUG FIX FOR COINS)
         async function processVideoReward(key, reward, isUserVideo) {
             const updates = {};
-            const snap = await get(ref(db, `users/${currentUser.uid}`));
-            updates[`users/${currentUser.uid}/balance`] = (snap.val().balance || 0) + parseInt(reward);
+            updates[`users/${currentUser.uid}/balance`] = increment(parseInt(reward));
             updates[`users/${currentUser.uid}/completed_vids/${key}`] = true;
-
-            if(isUserVideo) {
-                const vSnap = await get(ref(db, `user_videos/${key}`));
-                if(vSnap.exists()) {
-                    let rem = vSnap.val().remaining_views - 1;
-                    updates[`user_videos/${key}/remaining_views`] = rem;
-                    if(rem <= 0) updates[`user_videos/${key}/status`] = 'completed';
-                }
-            }
-            await update(ref(db), updates);
-            showToast(`Success! +${reward} Coins`);
+            if(isUserVideo) updates[`user_videos/${key}/remaining_views`] = increment(-1);
+            await update(ref(db), updates); showToast(`Success! +${reward} Coins`);
         }
 
-        window.closeActionModal = () => {
-            document.getElementById('action-modal').classList.add('hidden');
-            if(timerInterval) clearInterval(timerInterval);
-            document.getElementById('am-embed-container').innerHTML = ""; 
-            document.getElementById('am-desc-container').classList.remove('hidden');
-        };
-
-        // --- OTHER ACTIONS ---
         window.doPtc = async (key, link, time, reward, isUser) => {
             window.open(link, '_blank'); showToast(`Wait ${time} seconds...`);
             setTimeout(async () => {
-                const updates = {}; const snap = await get(ref(db, `users/${currentUser.uid}`));
-                updates[`users/${currentUser.uid}/balance`] = (snap.val().balance || 0) + parseInt(reward);
+                const updates = {}; 
+                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(reward));
                 updates[`users/${currentUser.uid}/completed_ptc/${key}`] = true;
-                if(isUser) {
-                    const cSnap = await get(ref(db, `user_campaigns/${key}`));
-                    if(cSnap.exists()) {
-                        let rem = cSnap.val().remaining_views - 1;
-                        updates[`user_campaigns/${key}/remaining_views`] = rem;
-                        if(rem <= 0) updates[`user_campaigns/${key}/status`] = 'completed';
-                    }
-                }
+                if(isUser) updates[`user_campaigns/${key}/remaining_views`] = increment(-1);
                 await update(ref(db), updates); showToast(`Success! +${reward} Coins`);
             }, time * 1000);
         }
 
         window.doLink = async (key, link, time, reward) => {
-            window.open(link, '_blank'); showToast(`Processing...`);
+            window.open(link, '_blank'); showToast(`Processing Link...`);
             setTimeout(async () => {
-                const snap = await get(ref(db, `users/${currentUser.uid}`));
-                await update(ref(db), {[`users/${currentUser.uid}/balance`]: (snap.val().balance||0)+parseInt(reward),[`users/${currentUser.uid}/completed_links/${key}`]: true });
-                showToast(`Verified! +${reward}`);
+                const updates = {};
+                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(reward));
+                updates[`users/${currentUser.uid}/completed_links/${key}`] = true;
+                await update(ref(db), updates); showToast(`Verified! +${reward} Coins`);
             }, time * 1000);
+        }
+
+        window.closeActionModal = () => { document.getElementById('action-modal').classList.add('hidden'); if(timerInterval) clearInterval(timerInterval); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-desc-container').classList.remove('hidden'); };
+
+        // ADVERTISER & WITHDRAW
+        window.switchVidTab = (tab) => { document.getElementById('official-vid-tab').classList.add('hidden'); document.getElementById('community-vid-tab').classList.add('hidden'); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.vid-tab-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); };
+        window.switchAdTab = (tab) => {['create-ad','create-vid','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden')); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); if(tab === 'funds') generateOrderId(); }
+        window.calcAdCost = (selectId, viewsId, totalId) => { const sel = document.getElementById(selectId); document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; }
+
+        window.createCampaign = async (type) => {
+            let prefix = type === 'video' ? 'v' : 'ad';
+            const title = document.getElementById(`${prefix}-title`).value; const url = document.getElementById(`${prefix}-url`).value;
+            const views = parseInt(document.getElementById(`${prefix}-views`).value); const sel = document.getElementById(`${prefix}-timer`);
+            const timer = parseInt(sel.value); const price = parseInt(sel.options[sel.selectedIndex].dataset.price);
+            
+            const cost = views * price; if(views < 500) return showToast("Min 500 Views");
+            const snap = await get(ref(db, `users/${currentUser.uid}`)); if((Number(snap.val().ad_balance) || 0) < cost) return showToast("Insufficient Ad Balance");
+
+            const updates = {}; updates[`users/${currentUser.uid}/ad_balance`] = increment(-cost);
+            let targetNode = type === 'video' ? 'user_videos' : 'user_campaigns'; const newKey = push(ref(db, targetNode)).key;
+            updates[`${targetNode}/${newKey}`] = { uid: currentUser.uid, title: title, link: url, total_views: views, remaining_views: views, timer: timer, reward: price/2, status: 'active', timestamp: Date.now() };
+            await update(ref(db), updates); showToast("Campaign Created!");
+        }
+
+        window.transferFunds = async () => {
+            const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`));
+            if(amt > (Number(snap.val().balance)||0)) return showToast("Insufficient Balance");
+            await update(ref(db, `users/${currentUser.uid}`), { balance: increment(-amt), ad_balance: increment(amt) }); showToast("Transferred");
         }
 
         window.depositFunds = () => {
@@ -717,102 +665,28 @@
             currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`; document.getElementById('sys-order-id').innerText = currentOrderId;
         }
 
-        // --- ADVERTISE TABS ---
-        window.switchAdTab = (tab) => {['create-ad','create-vid','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden'));
-            document.getElementById(tab+'-tab').classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
-        }
-
-        window.calcAdCost = (selectId, viewsId, totalId) => { 
-            const sel = document.getElementById(selectId);
-            document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; 
-        }
-
-        window.createCampaign = async (type) => {
-            let prefix = type === 'video' ? 'v' : 'ad';
-            const title = document.getElementById(`${prefix}-title`).value;
-            const url = document.getElementById(`${prefix}-url`).value;
-            const views = parseInt(document.getElementById(`${prefix}-views`).value);
-            const sel = document.getElementById(`${prefix}-timer`);
-            const timer = parseInt(sel.value);
-            const price = parseInt(sel.options[sel.selectedIndex].dataset.price);
-            
-            const cost = views * price;
-            if(views < 500) return showToast("Min 500 Views");
-            const snap = await get(ref(db, `users/${currentUser.uid}`));
-            if((snap.val().ad_balance || 0) < cost) return showToast("Insufficient Ad Balance");
-
-            const updates = {};
-            updates[`users/${currentUser.uid}/ad_balance`] = snap.val().ad_balance - cost;
-            let targetNode = type === 'video' ? 'user_videos' : 'user_campaigns';
-            const newKey = push(ref(db, targetNode)).key;
-            updates[`${targetNode}/${newKey}`] = { uid: currentUser.uid, title: title, link: url, total_views: views, remaining_views: views, timer: timer, reward: price/2, status: 'active', timestamp: Date.now() };
-            await update(ref(db), updates); showToast("Campaign Created!");
-        }
-
-        window.transferFunds = async () => {
-            const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`));
-            if(amt > snap.val().balance) return showToast("Insufficient Balance");
-            await update(ref(db, `users/${currentUser.uid}`), { balance: snap.val().balance - amt, ad_balance: (snap.val().ad_balance||0) + amt });
-            showToast("Transferred");
-        }
-
-        function loadMyCampaigns() {
-            const mList = document.getElementById('my-campaigns-list'); mList.innerHTML = "";
-            const renderC = (c, type) => {
-                let badge = c.val().status==='active'?'badge-active':(c.val().status==='completed'?'badge-completed':'badge-pending');
-                mList.innerHTML += `<div style="border-bottom:1px solid #333; padding:10px;"><strong>[${type}] ${c.val().title}</strong> <span class="badge ${badge}">${c.val().status.toUpperCase()}</span><br><small>Views: ${c.val().remaining_views}/${c.val().total_views}</small></div>`;
-            };
-            onValue(query(ref(db, 'user_campaigns'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'PTC')); });
-            onValue(query(ref(db, 'user_videos'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'VIDEO')); });
-        }
-
-        function loadHistory() {
-            onValue(query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
-                const d = document.getElementById('withdraw-list'); d.innerHTML = "";
-                if(s.exists()) s.forEach(c => { d.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().amount} Coins</span><span style="color:${c.val().status==='Paid'?'#10b981':'#f59e0b'}">${c.val().status}</span></div>`; });
-            });
-            onValue(query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
-                const d = document.getElementById('my-submissions-list'); d.innerHTML = ""; submittedTasks =[];
-                if(s.exists()) s.forEach(c => {
-                    submittedTasks.push(c.val().taskId);
-                    let badge = c.val().status==='Approved'?'badge-active':(c.val().status==='Rejected'?'badge-rejected':'badge-pending');
-                    d.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().taskName}</span><span class="badge ${badge}">${c.val().status}</span></div>`;
-                });
-            });
-        }
-
+        // WITHDRAW (MINIMUM $1)
         document.getElementById('w-amt').addEventListener('input', (e) => document.getElementById('w-val').innerText = `$${(e.target.value * window.globalCoinRate).toFixed(2)}`);
         
-        window.requestWithdraw = () => {
-            const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; const bal = parseFloat(document.getElementById('user-balance').innerText);
+        window.requestWithdraw = async () => {
+            const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; 
+            const snap = await get(ref(db, `users/${currentUser.uid}`)); const bal = snap.val().balance || 0;
+            
             if(!addr) return showToast("Enter Details"); 
-            // MINIMUM $5 USD VERIFICATION
-            if(amt * window.globalCoinRate < 5) return showToast("Min $5 USD"); 
+            if(amt * window.globalCoinRate < window.globalMinWithdraw) return showToast(`Min $${window.globalMinWithdraw} USD`); 
             if(amt > bal) return showToast("Insufficient Funds");
 
+            const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(-amt); await update(ref(db), updates);
             push(ref(db, 'withdrawals'), { uid: currentUser.uid, amount: amt, usd: (amt*window.globalCoinRate).toFixed(2), address: addr, method: document.getElementById('w-method').value, status: 'Pending', timestamp: Date.now() });
-            update(ref(db, 'users/'+currentUser.uid), { balance: bal - amt }); showToast("Sent!");
+            showToast("Withdrawal Sent!"); document.getElementById('w-amt').value = '';
         }
 
-        window.sendTicket = () => { const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, msg: msg }); showToast("Sent"); } }
-        
-        window.switchVidTab = (tab) => {
-            document.getElementById('official-vid-tab').classList.add('hidden');
-            document.getElementById('community-vid-tab').classList.add('hidden');
-            document.getElementById(tab+'-tab').classList.remove('hidden');
-            document.querySelectorAll('.vid-tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        };
-
-        window.nav = (id, el) => {['dashboard','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => document.getElementById(x+'-view').classList.add('hidden')); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); if(window.innerWidth < 768) document.getElementById('sidebar').classList.remove('active'); }
+        window.sendTicket = () => { const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: document.getElementById('h-subject').value, message: msg }); document.getElementById('h-msg').value=""; showToast("Sent"); } }
+        window.nav = (id, el) => {['dashboard','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => document.getElementById(x+'-view').classList.add('hidden')); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); if(window.innerWidth < 768) toggleSidebar(); }
         window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
-        window.doPtc = window.doPtc; window.doLink = window.doLink; window.openTask = window.openTask; window.submitTaskReview = window.submitTaskReview;
-        window.requestWithdraw = window.requestWithdraw; window.sendTicket = window.sendTicket; window.nav = window.nav; window.toggleSidebar = window.toggleSidebar;
-        window.switchAdTab = window.switchAdTab; window.calcAdCost = window.calcAdCost; window.createCampaign = window.createCampaign; window.transferFunds = window.transferFunds; window.depositFunds = window.depositFunds;
-        window.prepareAction = window.prepareAction; window.verifyAdGate = window.verifyAdGate; window.executeFinalAction = window.executeFinalAction; window.closeActionModal = window.closeActionModal; window.switchVidTab = window.switchVidTab;
+        window.doPtc=window.doPtc; window.doLink=window.doLink; window.openTask=window.openTask; window.submitTaskReview=window.submitTaskReview; window.requestWithdraw=window.requestWithdraw; window.sendTicket=window.sendTicket; window.nav=window.nav; window.toggleSidebar=window.toggleSidebar; window.switchAdTab=window.switchAdTab; window.calcAdCost=window.calcAdCost; window.createCampaign=window.createCampaign; window.transferFunds=window.transferFunds; window.depositFunds=window.depositFunds; window.prepareAction=window.prepareAction; window.verifyAdGate=window.verifyAdGate; window.executeFinalAction=window.executeFinalAction; window.closeActionModal=window.closeActionModal; window.switchVidTab=window.switchVidTab;
     </script>
 </body>
 </html>
