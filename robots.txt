@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sohail7789b-sketch.github.io/earn_crypto/sitemap.xml
