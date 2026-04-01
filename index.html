@@ -32,12 +32,21 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; }
 
-        /* ADBLOCKER WARNING */
-        #adblock-warning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020617; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
-        #adblock-warning i { font-size: 5rem; color: var(--danger); margin-bottom: 20px; animation: pulse 1.5s infinite; }
+        /* 🚨 STRICT ADBLOCKER WARNING SCREEN 🚨 */
+        #adblock-warning { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(2, 6, 23, 0.98); z-index: 9999999; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center; padding: 20px; backdrop-filter: blur(10px);
+        }
+        #adblock-warning i { font-size: 5rem; color: var(--danger); margin-bottom: 20px; animation: pulse 1s infinite; }
         #adblock-warning h1 { color: white; margin-bottom: 10px; font-family: 'Righteous', cursive; font-size: 2.5rem; }
-        #adblock-warning p { color: #94a3b8; font-size: 1.1rem; max-width: 500px; line-height: 1.6; }
-        #adblock-warning button { margin-top: 20px; padding: 12px 25px; background: var(--primary); border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        #adblock-warning p { color: #cbd5e1; font-size: 1.1rem; max-width: 500px; line-height: 1.6; }
+        #adblock-warning button { margin-top: 25px; padding: 15px 30px; background: var(--primary); border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; font-size:1.1rem; transition: 0.3s; box-shadow: 0 0 15px rgba(139,92,246,0.5); }
+        #adblock-warning button:hover { background: #7c3aed; transform: scale(1.05); }
+
+        /* APP WRAPPER */
+        #app-wrapper { display: flex; width: 100%; height: 100%; }
 
         /* SIDEBAR */
         .sidebar { width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease; overflow-y: auto; position: relative; }
@@ -116,7 +125,7 @@
         .captcha-box { background: #020617; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed var(--accent); }
         .captcha-question { font-size: 1.8rem; font-weight: bold; color: white; letter-spacing: 2px; margin-bottom: 10px;}
         
-        /* Basketball Game CSS - New Upgraded Physics & Trajectory */
+        /* Basketball Game CSS */
         #game-area { position: relative; width: 100%; height: 250px; background: #0f172a; border: 2px dashed var(--primary); border-radius: 10px; overflow: hidden; touch-action: none; margin-top: 15px; }
         #drag-ball { position: absolute; font-size: 2.5rem; cursor: grab; user-select: none; z-index: 10; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; }
         #drag-ball:active { cursor: grabbing; }
@@ -125,12 +134,12 @@
 </head>
 <body>
 
-    <!-- ADBLOCK WARNING -->
+    <!-- 🚨 STRICT ADBLOCK WARNING 🚨 -->
     <div id="adblock-warning" class="hidden">
-        <i class="fas fa-exclamation-triangle"></i>
-        <h1>Adblock Detected!</h1>
-        <p>Please disable your Adblocker to continue using EarnCrypto and earning money. We rely on ads to pay you.</p>
-        <button onclick="location.reload()">I have disabled it, Reload Page</button>
+        <i class="fas fa-ban"></i>
+        <h1>Adblocker Detected!</h1>
+        <p>Please disable your Adblocker, AdGuard, or Brave Shields to continue using EarnCrypto.<br><b>We rely on ads to pay you real money!</b></p>
+        <button onclick="window.location.reload(true)">I have disabled it, Reload Page</button>
     </div>
 
     <!-- FAKE PAYOUT POPUP -->
@@ -139,223 +148,226 @@
         <div><strong id="po-name">User</strong> withdrew <span id="po-amt" style="color:var(--accent); font-weight:bold;">$1.00</span> via <span id="po-method" style="color:#94a3b8">PayPal</span></div>
     </div>
 
-    <div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <!-- APP WRAPPER -->
+    <div id="app-wrapper">
+        <div class="mobile-overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <div class="brand"><i class="fas fa-cube"></i> EarnCrypto</div>
-        <div class="nav-item active" onclick="nav('dashboard')"><i class="fas fa-home"></i> Dashboard</div>
-        <div class="nav-item" onclick="nav('videos')"><i class="fas fa-video"></i> Watch Videos <span style="font-size:0.6rem; background:var(--accent); color:black; padding:2px 5px; border-radius:3px;">HOT</span></div>
-        <div class="nav-item" onclick="nav('ptc')"><i class="fas fa-eye"></i> PTC Ads</div>
-        <div class="nav-item" onclick="nav('shortlinks')"><i class="fas fa-link"></i> Shortlinks</div>
-        <div class="nav-item" onclick="nav('tasks')"><i class="fas fa-tasks"></i> Custom Tasks</div>
-        <div class="nav-item" onclick="nav('advertise')"><i class="fas fa-bullhorn"></i> Advertise</div>
-        <div class="nav-item" onclick="nav('withdraw')"><i class="fas fa-wallet"></i> Withdraw</div>
-        <div class="nav-item" onclick="nav('history')"><i class="fas fa-history"></i> My Activity</div>
-        <div class="nav-item" onclick="nav('help')"><i class="fas fa-headset"></i> Support</div>
-        
-        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
-            <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">🌐 More Websites</p>
-            <div id="more-websites-container"><p style="color:#64748b; font-size:0.8rem;">Loading...</p></div>
-        </div>
-
-        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
-            <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; font-weight:bold;">Social Media</p>
-            <div id="social-links-container" class="social-container"><p style="color:#64748b; font-size:0.8rem;">Loading links...</p></div>
-        </div>
-
-        <div style="margin-top:20px; font-size:0.8rem; color:#64748b; text-align:center;">
-            UID: <span id="uid-display">...</span>
-        </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-
-        <div class="banner-ad">
-            <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
-        </div>
-
-        <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color:var(--primary)"><i class="fas fa-bullhorn"></i> New Update</h4>
-            <p id="update-text" style="font-size:0.9rem; margin-top:5px;"></p>
-        </div>
-
-        <div id="dashboard-view">
-            <div class="welcome-box">
-                <h1 class="welcome-title">Welcome to EarnCrypto!</h1>
-                <p style="color:#cbd5e1; line-height:1.6; font-size:1.1rem;">
-                    🚀 Earn <b>$100+ Monthly</b> easily!<br>
-                    ✨ Watch Videos, PTC Ads, Tasks & More.<br>
-                    <span style="color:var(--accent); font-weight:bold;">What are you waiting for? Start Earning Now!</span>
-                </p>
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
+            <div class="brand"><i class="fas fa-cube"></i> EarnCrypto</div>
+            <div class="nav-item active" onclick="nav('dashboard')"><i class="fas fa-home"></i> Dashboard</div>
+            <div class="nav-item" onclick="nav('videos')"><i class="fas fa-video"></i> Watch Videos <span style="font-size:0.6rem; background:var(--accent); color:black; padding:2px 5px; border-radius:3px;">HOT</span></div>
+            <div class="nav-item" onclick="nav('ptc')"><i class="fas fa-eye"></i> PTC Ads</div>
+            <div class="nav-item" onclick="nav('shortlinks')"><i class="fas fa-link"></i> Shortlinks</div>
+            <div class="nav-item" onclick="nav('tasks')"><i class="fas fa-tasks"></i> Custom Tasks</div>
+            <div class="nav-item" onclick="nav('advertise')"><i class="fas fa-bullhorn"></i> Advertise</div>
+            <div class="nav-item" onclick="nav('withdraw')"><i class="fas fa-wallet"></i> Withdraw</div>
+            <div class="nav-item" onclick="nav('history')"><i class="fas fa-history"></i> My Activity</div>
+            <div class="nav-item" onclick="nav('help')"><i class="fas fa-headset"></i> Support</div>
+            
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+                <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">🌐 More Websites</p>
+                <div id="more-websites-container"><p style="color:#64748b; font-size:0.8rem;">Loading...</p></div>
             </div>
-            <div class="grid">
-                <div class="card">
-                    <p style="color:#94a3b8">Earnings Balance</p>
-                    <h1 style="color:var(--accent); font-size:2.5rem; margin:0;"><span id="user-balance">0.00</span></h1>
-                    <div style="color:#94a3b8; font-weight:bold; margin-top:5px;">≈ $<span id="usd-balance" style="color:var(--accent)">0.0000</span> USD</div>
+
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+                <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; font-weight:bold;">Social Media</p>
+                <div id="social-links-container" class="social-container"><p style="color:#64748b; font-size:0.8rem;">Loading links...</p></div>
+            </div>
+
+            <div style="margin-top:20px; font-size:0.8rem; color:#64748b; text-align:center;">
+                UID: <span id="uid-display">...</span>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+            <div class="banner-ad">
+                <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
+            </div>
+
+            <div id="update-msg-box" class="hidden" style="background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color:var(--primary)"><i class="fas fa-bullhorn"></i> New Update</h4>
+                <p id="update-text" style="font-size:0.9rem; margin-top:5px;"></p>
+            </div>
+
+            <div id="dashboard-view">
+                <div class="welcome-box">
+                    <h1 class="welcome-title">Welcome to EarnCrypto!</h1>
+                    <p style="color:#cbd5e1; line-height:1.6; font-size:1.1rem;">
+                        🚀 Earn <b>$100+ Monthly</b> easily!<br>
+                        ✨ Watch Videos, PTC Ads, Tasks & More.<br>
+                        <span style="color:var(--accent); font-weight:bold;">What are you waiting for? Start Earning Now!</span>
+                    </p>
                 </div>
-                <div class="card" style="border-color:var(--warning);">
-                    <p style="color:#94a3b8">Advertising Balance</p>
-                    <h1 style="color:var(--warning); font-size:2.5rem; margin:0;"><span id="ad-balance">0.00</span></h1>
-                </div>
-            </div>
-        </div>
-
-        <!-- WATCH VIDEOS -->
-        <div id="videos-view" class="hidden">
-            <h2><i class="fas fa-video"></i> Watch Videos</h2>
-            <div class="tabs">
-                <div class="tab-btn vid-tab-btn active" onclick="switchVidTab('official-vid')">Official Videos</div>
-                <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid')">Community Videos</div>
-            </div>
-            <div id="official-vid-tab">
-                <div class="card" style="background:rgba(59, 130, 246, 0.05); border-color:var(--primary);">
-                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Watch admin provided videos to earn high rewards.</p>
-                    <div class="grid" id="admin-vid-list"><p style="color:#64748b;">Loading...</p></div>
-                </div>
-            </div>
-            <div id="community-vid-tab" class="hidden">
-                <div class="card" style="border-color:var(--warning);">
-                    <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Support other users by watching their campaigns!</p>
-                    <div class="grid" id="user-vid-list"><p style="color:#64748b;">Loading...</p></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- EARNING SECTIONS -->
-        <div id="ptc-view" class="hidden"><h2><i class="fas fa-eye"></i> PTC Ads</h2><div class="grid" id="ptc-list"><p style="color:#64748b;">Loading...</p></div></div>
-        <div id="shortlinks-view" class="hidden"><h2><i class="fas fa-link"></i> Shortlinks</h2><div class="grid" id="sl-list"><p style="color:#64748b;">Loading...</p></div></div>
-        <div id="tasks-view" class="hidden"><h2><i class="fas fa-tasks"></i> Custom Tasks</h2><div class="grid" id="task-list"><p style="color:#64748b;">Loading...</p></div></div>
-
-        <!-- ADVERTISE SECTION -->
-        <div id="advertise-view" class="hidden">
-            <h2><i class="fas fa-bullhorn"></i> Advertise</h2>
-            <div class="tabs">
-                <div class="tab-btn active" onclick="switchAdTab('create-ad')">PTC Campaign</div>
-                <div class="tab-btn" onclick="switchAdTab('create-vid')">Video Campaign</div>
-                <div class="tab-btn" onclick="switchAdTab('funds')">Add Funds</div>
-                <div class="tab-btn" onclick="switchAdTab('my-ads')">My Campaigns</div>
-            </div>
-
-            <div id="create-ad-tab">
-                <div class="card">
-                    <h4>Create PTC Advertisement</h4>
-                    <label>Title</label><input type="text" id="ad-title" class="form-control" placeholder="e.g. Join my Channel">
-                    <label>Target URL</label><input type="url" id="ad-url" class="form-control" placeholder="https://...">
-                    <label>Duration & Cost</label>
-                    <select id="ad-timer" class="form-control" onchange="calcAdCost('ad-timer','ad-views','ad-total-cost')">
-                        <option value="5" data-price="30">5 Seconds (30 Coins/View)</option>
-                        <option value="15" data-price="60">15 Seconds (60 Coins/View)</option>
-                        <option value="30" data-price="120">30 Seconds (120 Coins/View)</option>
-                    </select>
-                    <label>Total Views (Min 500)</label><input type="number" id="ad-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('ad-timer','ad-views','ad-total-cost')">
-                    <div style="margin: 15px 0; padding: 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning);">
-                        Total Cost: <span id="ad-total-cost" style="color:var(--warning); font-weight:bold;">15000</span> Coins
-                    </div>
-                    <button class="btn btn-warning" onclick="createCampaign('ptc')">Create PTC Campaign</button>
-                </div>
-            </div>
-
-            <div id="create-vid-tab" class="hidden">
-                <div class="card">
-                    <h4>Create Video Campaign</h4>
-                    <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. My Gameplay Video">
-                    <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://youtube.com/...">
-                    <label>Duration & Cost</label>
-                    <select id="v-timer" class="form-control" onchange="calcAdCost('v-timer','v-views','v-total-cost')">
-                        <option value="15" data-price="25">15 Seconds (25 Coins/View)</option>
-                        <option value="30" data-price="40">30 Seconds (40 Coins/View)</option>
-                        <option value="60" data-price="90">1 Minute (90 Coins/View)</option>
-                    </select>
-                    <label>Total Views (Min 500)</label><input type="number" id="v-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('v-timer','v-views','v-total-cost')">
-                    <div style="margin: 15px 0; padding: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--primary);">
-                        Total Cost: <span id="v-total-cost" style="color:var(--primary); font-weight:bold;">12500</span> Coins
-                    </div>
-                    <button class="btn btn-primary" onclick="createCampaign('video')">Create Video Campaign</button>
-                </div>
-            </div>
-
-            <div id="funds-tab" class="hidden">
                 <div class="grid">
                     <div class="card">
-                        <h4>Transfer Earnings</h4>
-                        <input type="number" id="transfer-amt" class="form-control" placeholder="Amount">
-                        <button class="btn btn-primary" onclick="transferFunds()">Transfer Now</button>
+                        <p style="color:#94a3b8">Earnings Balance</p>
+                        <h1 style="color:var(--accent); font-size:2.5rem; margin:0;"><span id="user-balance">0.00</span></h1>
+                        <div style="color:#94a3b8; font-weight:bold; margin-top:5px;">≈ $<span id="usd-balance" style="color:var(--accent)">0.0000</span> USD</div>
                     </div>
-                    <div class="card" style="text-align:center;">
-                        <h4 style="color:var(--accent);">Deposit Funds</h4>
-                        <div id="payment-display-area" class="payment-info-box hidden">
-                            <h5 style="color:#3b82f6; margin-bottom:5px;"><i class="fas fa-wallet"></i> Send Payment To:</h5>
-                            <div id="admin-pay-info" class="pay-email">Loading...</div>
-                        </div>
-                        <div class="qr-container"><img src="qr.jpg" alt="Scan QR" class="qr-img" onerror="this.style.display='none'"></div>
-                        <div style="background:#020617; padding:10px; border-radius:8px; margin-bottom:15px;">
-                            <p style="color:#94a3b8; font-size:0.8rem;">Order ID (Auto):</p>
-                            <div id="sys-order-id" style="font-family:monospace; font-size:1.2rem; color:var(--accent); font-weight:bold;">...</div>
-                        </div>
-                        <input type="number" id="dep-amt" class="form-control" placeholder="Amount Paid">
-                        <input type="text" id="dep-utr" class="form-control" placeholder="Transaction ID">
-                        <div id="dep-disabled-msg" style="color:var(--danger); display:none; margin-bottom:10px;">Deposits Disabled.</div>
-                        <button id="btn-dep-submit" class="btn btn-success" onclick="depositFunds()">Submit Payment</button>
+                    <div class="card" style="border-color:var(--warning);">
+                        <p style="color:#94a3b8">Advertising Balance</p>
+                        <h1 style="color:var(--warning); font-size:2.5rem; margin:0;"><span id="ad-balance">0.00</span></h1>
                     </div>
                 </div>
             </div>
-            <div id="my-ads-tab" class="hidden"><div class="card"><div id="my-campaigns-list">Loading...</div></div></div>
-        </div>
 
-        <div id="withdraw-view" class="hidden">
-            <h2><i class="fas fa-wallet"></i> Withdraw Funds</h2>
-            <div class="card">
-                <div style="margin-bottom:10px; color:#94a3b8;">Min Withdraw: $<span id="wd-limit-display">1.00</span> USD</div>
-                <select class="form-control" id="w-method"><option value="PayPal">PayPal</option><option value="FaucetPay">FaucetPay</option><option value="Bank">Bank Transfer</option></select>
-                <input type="text" id="w-addr" class="form-control" placeholder="Payment Details...">
-                <input type="number" id="w-amt" class="form-control" placeholder="Coins">
-                <p style="text-align:right; margin-top:5px; color:var(--accent);">Value: <span id="w-val">$0.00</span></p>
-                <button class="btn btn-success" onclick="requestWithdraw()">Submit</button>
+            <!-- WATCH VIDEOS -->
+            <div id="videos-view" class="hidden">
+                <h2><i class="fas fa-video"></i> Watch Videos</h2>
+                <div class="tabs">
+                    <div class="tab-btn vid-tab-btn active" onclick="switchVidTab('official-vid')">Official Videos</div>
+                    <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid')">Community Videos</div>
+                </div>
+                <div id="official-vid-tab">
+                    <div class="card" style="background:rgba(59, 130, 246, 0.05); border-color:var(--primary);">
+                        <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Watch admin provided videos to earn high rewards.</p>
+                        <div class="grid" id="admin-vid-list"><p style="color:#64748b;">Loading...</p></div>
+                    </div>
+                </div>
+                <div id="community-vid-tab" class="hidden">
+                    <div class="card" style="border-color:var(--warning);">
+                        <p style="font-size:0.85rem; color:#cbd5e1; margin-bottom:15px;">Support other users by watching their campaigns!</p>
+                        <div class="grid" id="user-vid-list"><p style="color:#64748b;">Loading...</p></div>
+                    </div>
+                </div>
             </div>
-            <h3>History</h3>
-            <div id="withdraw-list" class="card" style="padding:10px;"></div>
-        </div>
 
-        <div id="history-view" class="hidden">
-            <h2><i class="fas fa-history"></i> My Activity</h2>
-            <div class="card"><h4>Custom Task Status</h4><div id="my-submissions-list"></div></div>
-        </div>
+            <!-- EARNING SECTIONS -->
+            <div id="ptc-view" class="hidden"><h2><i class="fas fa-eye"></i> PTC Ads</h2><div class="grid" id="ptc-list"><p style="color:#64748b;">Loading...</p></div></div>
+            <div id="shortlinks-view" class="hidden"><h2><i class="fas fa-link"></i> Shortlinks</h2><div class="grid" id="sl-list"><p style="color:#64748b;">Loading...</p></div></div>
+            <div id="tasks-view" class="hidden"><h2><i class="fas fa-tasks"></i> Custom Tasks</h2><div class="grid" id="task-list"><p style="color:#64748b;">Loading...</p></div></div>
 
-        <div id="help-view" class="hidden">
-            <h2>Help & Support</h2>
-            <div class="card">
-                <input type="text" id="h-subject" class="form-control" placeholder="Subject">
-                <textarea id="h-msg" class="form-control" rows="5" placeholder="Message..."></textarea>
-                <button class="btn btn-primary" onclick="sendTicket()">Send</button>
+            <!-- ADVERTISE SECTION -->
+            <div id="advertise-view" class="hidden">
+                <h2><i class="fas fa-bullhorn"></i> Advertise</h2>
+                <div class="tabs">
+                    <div class="tab-btn active" onclick="switchAdTab('create-ad')">PTC Campaign</div>
+                    <div class="tab-btn" onclick="switchAdTab('create-vid')">Video Campaign</div>
+                    <div class="tab-btn" onclick="switchAdTab('funds')">Add Funds</div>
+                    <div class="tab-btn" onclick="switchAdTab('my-ads')">My Campaigns</div>
+                </div>
+
+                <div id="create-ad-tab">
+                    <div class="card">
+                        <h4>Create PTC Advertisement</h4>
+                        <label>Title</label><input type="text" id="ad-title" class="form-control" placeholder="e.g. Join my Channel">
+                        <label>Target URL</label><input type="url" id="ad-url" class="form-control" placeholder="https://...">
+                        <label>Duration & Cost</label>
+                        <select id="ad-timer" class="form-control" onchange="calcAdCost('ad-timer','ad-views','ad-total-cost')">
+                            <option value="5" data-price="30">5 Seconds (30 Coins/View)</option>
+                            <option value="15" data-price="60">15 Seconds (60 Coins/View)</option>
+                            <option value="30" data-price="120">30 Seconds (120 Coins/View)</option>
+                        </select>
+                        <label>Total Views (Min 500)</label><input type="number" id="ad-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('ad-timer','ad-views','ad-total-cost')">
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning);">
+                            Total Cost: <span id="ad-total-cost" style="color:var(--warning); font-weight:bold;">15000</span> Coins
+                        </div>
+                        <button class="btn btn-warning" onclick="createCampaign('ptc')">Create PTC Campaign</button>
+                    </div>
+                </div>
+
+                <div id="create-vid-tab" class="hidden">
+                    <div class="card">
+                        <h4>Create Video Campaign</h4>
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">Get real views from the community on your YouTube videos.</p>
+                        <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. My Gameplay Video">
+                        <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://youtube.com/...">
+                        <label>Duration & Cost</label>
+                        <select id="v-timer" class="form-control" onchange="calcAdCost('v-timer','v-views','v-total-cost')">
+                            <option value="15" data-price="25">15 Seconds (25 Coins/View)</option>
+                            <option value="30" data-price="40">30 Seconds (40 Coins/View)</option>
+                            <option value="60" data-price="90">1 Minute (90 Coins/View)</option>
+                        </select>
+                        <label>Total Views (Min 500)</label><input type="number" id="v-views" class="form-control" placeholder="500" value="500" oninput="calcAdCost('v-timer','v-views','v-total-cost')">
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--primary);">
+                            Total Cost: <span id="v-total-cost" style="color:var(--primary); font-weight:bold;">12500</span> Coins
+                        </div>
+                        <button class="btn btn-primary" onclick="createCampaign('video')">Create Video Campaign</button>
+                    </div>
+                </div>
+
+                <div id="funds-tab" class="hidden">
+                    <div class="grid">
+                        <div class="card">
+                            <h4>Transfer Earnings</h4>
+                            <input type="number" id="transfer-amt" class="form-control" placeholder="Amount">
+                            <button class="btn btn-primary" onclick="transferFunds()">Transfer Now</button>
+                        </div>
+                        <div class="card" style="text-align:center;">
+                            <h4 style="color:var(--accent);">Deposit Funds</h4>
+                            <div id="payment-display-area" class="payment-info-box hidden">
+                                <h5 style="color:#3b82f6; margin-bottom:5px;"><i class="fas fa-wallet"></i> Send Payment To:</h5>
+                                <div id="admin-pay-info" class="pay-email">Loading...</div>
+                            </div>
+                            <div class="qr-container"><img src="qr.jpg" alt="Scan QR" class="qr-img" onerror="this.style.display='none'"></div>
+                            <div style="background:#020617; padding:10px; border-radius:8px; margin-bottom:15px;">
+                                <p style="color:#94a3b8; font-size:0.8rem;">Order ID (Auto):</p>
+                                <div id="sys-order-id" style="font-family:monospace; font-size:1.2rem; color:var(--accent); font-weight:bold;">...</div>
+                            </div>
+                            <input type="number" id="dep-amt" class="form-control" placeholder="Amount Paid">
+                            <input type="text" id="dep-utr" class="form-control" placeholder="Transaction ID">
+                            <div id="dep-disabled-msg" style="color:var(--danger); display:none; margin-bottom:10px;">Deposits Disabled.</div>
+                            <button id="btn-dep-submit" class="btn btn-success" onclick="depositFunds()">Submit Payment</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="my-ads-tab" class="hidden"><div class="card"><div id="my-campaigns-list">Loading...</div></div></div>
             </div>
-            <h3>My Tickets</h3>
-            <div id="ticket-list"></div>
-        </div>
-        
-        <!-- BOTTOM ADS -->
-        <div style="margin-top:20px; text-align:center;">
-             <p style="color:#475569; font-size:0.8rem;">Sponsored</p>
-             <script src="https://pl28191149.effectivegatecpm.com/69/6f/c9/696fc9362d213ad97a6e549507572c3d.js"></script>
-             <div id="container-6b4bf9ba798b54640fc50410686f93d7"></div>
-             <script async="async" data-cfasync="false" src="https://pl28191148.effectivegatecpm.com/6b4bf9ba798b54640fc50410686f93d7/invoke.js"></script>
-        </div>
-    </div>
 
-    <!-- STRICT PTC CAPTCHA MODAL (MATH & BASKETBALL GAME) -->
+            <div id="withdraw-view" class="hidden">
+                <h2><i class="fas fa-wallet"></i> Withdraw Funds</h2>
+                <div class="card">
+                    <div style="margin-bottom:10px; color:#94a3b8;">Min Withdraw: $<span id="wd-limit-display">1.00</span> USD</div>
+                    <select class="form-control" id="w-method"><option value="PayPal">PayPal</option><option value="FaucetPay">FaucetPay</option><option value="Bank">Bank Transfer</option></select>
+                    <input type="text" id="w-addr" class="form-control" placeholder="Payment Details...">
+                    <input type="number" id="w-amt" class="form-control" placeholder="Coins">
+                    <p style="text-align:right; margin-top:5px; color:var(--accent);">Value: <span id="w-val">$0.00</span></p>
+                    <button class="btn btn-success" onclick="requestWithdraw()">Submit</button>
+                </div>
+                <h3>History</h3>
+                <div id="withdraw-list" class="card" style="padding:10px;"></div>
+            </div>
+
+            <div id="history-view" class="hidden">
+                <h2><i class="fas fa-history"></i> My Activity</h2>
+                <div class="card"><h4>Custom Task Status</h4><div id="my-submissions-list"></div></div>
+            </div>
+
+            <div id="help-view" class="hidden">
+                <h2>Help & Support</h2>
+                <div class="card">
+                    <input type="text" id="h-subject" class="form-control" placeholder="Subject">
+                    <textarea id="h-msg" class="form-control" rows="5" placeholder="Message..."></textarea>
+                    <button class="btn btn-primary" onclick="sendTicket()">Send</button>
+                </div>
+                <h3>My Tickets</h3>
+                <div id="ticket-list"></div>
+            </div>
+            
+            <!-- BOTTOM ADS -->
+            <div style="margin-top:20px; text-align:center;">
+                 <p style="color:#475569; font-size:0.8rem;">Sponsored</p>
+                 <script src="https://pl28191149.effectivegatecpm.com/69/6f/c9/696fc9362d213ad97a6e549507572c3d.js"></script>
+                 <div id="container-6b4bf9ba798b54640fc50410686f93d7"></div>
+                 <script async="async" data-cfasync="false" src="https://pl28191148.effectivegatecpm.com/6b4bf9ba798b54640fc50410686f93d7/invoke.js"></script>
+            </div>
+        </div>
+    </div> <!-- END APP WRAPPER -->
+
+    <!-- STRICT PTC CAPTCHA MODAL (MATH & BASKETBALL) -->
     <div id="ptc-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2600; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:400px; text-align:center; position:relative;">
             <h3 style="color:var(--primary); margin-bottom:10px;">Viewing Advertisement</h3>
-            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Please do not close this page.</p>
+            <p id="ptc-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Please do not close this page.</p>
             
             <h1 id="ptc-timer-text" style="color:var(--accent); font-size:3.5rem; margin-bottom:20px;">10</h1>
             
             <!-- CAPTCHA AREA -->
             <div id="ptc-captcha-area" class="hidden">
-                
                 <!-- MATHS CAPTCHA -->
                 <div id="math-captcha-container" class="hidden captcha-box">
                     <p style="color:var(--warning); font-size:0.85rem; margin-bottom:10px;">Solve puzzle to claim reward!</p>
@@ -364,7 +376,7 @@
                     <button class="btn btn-success" onclick="verifyPtcMath()" style="margin-top:10px; font-size:1.1rem;">Claim Reward</button>
                 </div>
 
-                <!-- BASKETBALL GAME CAPTCHA (IMPROVED PHYSICS) -->
+                <!-- BASKETBALL GAME CAPTCHA -->
                 <div id="game-captcha-container" class="hidden">
                     <p style="color:var(--warning); font-size:0.85rem; margin-bottom:10px;">Pull ball <b>BACK</b> and release to throw into the basket!</p>
                     <div id="game-area">
@@ -372,8 +384,20 @@
                         <div id="drop-basket">🗑️</div>
                     </div>
                 </div>
-
             </div>
+        </div>
+    </div>
+
+    <!-- STRICT SHORTLINK MODAL -->
+    <div id="sl-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2600; display:flex; justify-content:center; align-items:center;">
+        <div class="card" style="width:90%; max-width:400px; text-align:center; position:relative;">
+            <h3 style="color:var(--primary); margin-bottom:10px;">Verifying Shortlink</h3>
+            <p id="sl-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Complete the shortlink in the new tab.<br>Do not close this window.</p>
+            <h1 id="sl-timer-text" style="color:var(--accent); font-size:3.5rem; margin-bottom:20px;">10</h1>
+            <div id="sl-claim-area" class="hidden">
+                <button class="btn btn-success" onclick="successSlReward()" style="font-size:1.1rem;">Claim Reward</button>
+            </div>
+            <button class="btn" style="background:#334155; margin-top:15px;" onclick="cancelSl()">Cancel Task</button>
         </div>
     </div>
 
@@ -381,28 +405,22 @@
     <div id="action-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2500; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:450px; text-align:center; position:relative; overflow-y:auto; max-height:95vh;">
             <button onclick="closeActionModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
-            
             <h3 id="am-title" style="color:var(--primary); margin-bottom:15px;">Unlock Content</h3>
             <div id="am-desc-container" style="background:#0f172a; padding:15px; border-radius:8px; margin-bottom:20px;">
                 <p id="am-desc" style="color:#cbd5e1; font-size:0.9rem;">You must view an ad to unlock the final step.</p>
             </div>
-            
             <div id="am-step-1">
                 <button class="btn btn-ads" id="am-ad-btn" onclick="verifyAdGate()"><i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad</button>
             </div>
-            
             <div id="am-final-step" class="hidden" style="margin-top:20px;">
                 <hr style="border:0; border-top:1px dashed #334155; margin-bottom:15px;">
-                
                 <div id="am-task-inputs" class="hidden">
                     <p style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Ad Verified! Submit your proof now.</p>
                     <input type="text" id="am-proof" class="form-control" placeholder="Enter Username / URL Proof">
                     <button class="btn btn-success" id="am-final-btn" onclick="executeFinalAction()"><i class="fas fa-check-circle"></i> Submit Review</button>
                 </div>
-
                 <div id="am-embed-container" class="hidden" style="margin-top:15px; width:100%; border-radius:8px; overflow:hidden;"></div>
                 <div id="am-timer-display" class="hidden" style="color:var(--accent); font-size:1.2rem; font-weight:bold; margin-top:10px;"></div>
-                
                 <button class="btn btn-success hidden" id="am-play-btn" onclick="executeFinalAction()"><i class="fas fa-play"></i> Play Video & Earn</button>
             </div>
         </div>
@@ -410,30 +428,74 @@
 
     <div id="toast" class="toast">Action Successful!</div>
 
-    <!-- ADBLOCK DETECTION SCRIPT -->
+    <!-- 🚨 ADVANCED ADBLOCK DETECTION (NETWORK + DOM) 🚨 -->
     <script>
-        function detectAdBlock() {
-            let fakeAd = document.createElement('div');
-            fakeAd.className = 'textads banner-ads banner_ads ad-unit ad-zone ad-space adsbox';
-            fakeAd.style.height = '1px'; fakeAd.style.width = '1px'; fakeAd.style.position = 'absolute'; fakeAd.style.left = '-9999px';
-            document.body.appendChild(fakeAd);
-            setTimeout(() => {
-                if (fakeAd.offsetHeight === 0 || window.getComputedStyle(fakeAd).display === 'none') {
-                    document.getElementById('adblock-warning').classList.remove('hidden');
+        (function() {
+            window.isAdblockActive = false;
+
+            async function advancedAdblockCheck() {
+                let blocked = false;
+                const bait = document.createElement('div');
+                bait.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad textAd igs_ad_ads ad-placeholder ad-badge adsbox ad-placement doubleclick adx adsbygoogle';
+                bait.style.width = '1px'; bait.style.height = '1px'; bait.style.position = 'absolute'; bait.style.left = '-10000px';
+                document.body.appendChild(bait);
+
+                if (bait.offsetHeight === 0 || bait.clientHeight === 0 || window.getComputedStyle(bait).display === 'none') {
+                    blocked = true;
                 }
-                fakeAd.remove();
-            }, 500);
-        }
-        window.addEventListener('load', detectAdBlock);
+                bait.remove();
+
+                if (!blocked) {
+                    try {
+                        await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
+                    } catch (e) {
+                        blocked = true;
+                    }
+                }
+
+                if (blocked) {
+                    window.isAdblockActive = true;
+                    triggerLockdown();
+                } else {
+                    window.isAdblockActive = false;
+                }
+            }
+
+            function triggerLockdown() {
+                document.getElementById('adblock-warning').classList.remove('hidden');
+                const appWrap = document.getElementById('app-wrapper');
+                if (appWrap) appWrap.remove(); // 🚨 DESTROY UI SO INSPECT ELEMENT CANT BYPASS 🚨
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                advancedAdblockCheck();
+                setInterval(advancedAdblockCheck, 2000);
+            });
+
+            // Global Lock Function for Buttons (Called before any task starts)
+            window.checkAdgateBeforeTask = () => {
+                const bait = document.createElement('div');
+                bait.className = 'adsbox doubleclick ad-placement';
+                document.body.appendChild(bait);
+                const blocked = (bait.offsetHeight === 0 || window.getComputedStyle(bait).display === 'none');
+                bait.remove();
+
+                if (window.isAdblockActive || blocked) {
+                    triggerLockdown();
+                    alert("❌ Action Blocked! Please Turn OFF your AdBlocker or Brave Shields.");
+                    return false;
+                }
+                return true;
+            };
+        })();
     </script>
 
-    <!-- FIREBASE LOGIC -->
+    <!-- FIREBASE LOGIC (STATE DRIVEN FOR ULTRA FAST LOADING) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // FIREBASE CONFIG
         const config = {
             apiKey: "AIzaSyArDD2xHOncY3vLg3bquG31n9cVX81IWSA",
             authDomain: "prime-faucet.firebaseapp.com",
@@ -459,8 +521,13 @@
         window.globalMinWithdraw = 1;
 
         let actionType = ""; let actionData = {}; let timerInterval = null;
-        let ptcAttemptCounter = 0; // Tracks when to show the Game Captcha
+        let ptcAttemptCounter = 0; 
         const DIRECT_LINK_URL = "https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d";
+        
+        // Timer tracking globally for Strict Checking
+        window.activeAdWindow = null;
+        window.strictTimerTime = 0;
+        window.strictTimerInterval = null;
 
         // FAST LOGIN
         signInAnonymously(auth).catch(console.error);
@@ -560,7 +627,7 @@
                 document.getElementById('more-websites-container').innerHTML = mwHtml || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
             });
 
-            // 4. LOAD GLOBAL TASKS ONCE
+            // 4. LOAD GLOBAL TASKS ONCE (Fast Loading)
             onValue(ref(db, 'ptc_ads'), s => { state.data.ptc = s.val() || {}; renderPtcUI(); });
             onValue(query(ref(db, 'user_campaigns'), orderByChild('status'), equalTo('active')), s => { state.data.userPtc = s.val() || {}; renderPtcUI(); loadMyCampaigns(); });
             onValue(ref(db, 'shortlinks'), s => { state.data.links = s.val() || {}; renderLinksUI(); });
@@ -572,13 +639,12 @@
         }
 
         // --- FAST UI RENDERING ---
-        function getSponsoredAdCard() { return `<div class="card sponsored-card"><p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p><h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4><a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;">Click Here</a></div>`; }
+        function getSponsoredAdCard() { return `<div class="card" style="border-color:var(--danger); text-align:center; background:rgba(239, 68, 68, 0.05);"><p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p><h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4><a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;" onclick="return window.checkAdgateBeforeTask();">Click Here</a></div>`; }
 
         function renderAllUI() { renderPtcUI(); renderLinksUI(); renderTasksUI(); renderVidsUI(); }
 
         function renderPtcUI() {
             let html =[]; let count = 0;
-            // Admin PTC
             for(let k in state.data.ptc) {
                 if(!state.completedPtc[k]) {
                     count++; const v = state.data.ptc[k];
@@ -586,7 +652,6 @@
                     if(count % 3 === 0) html.push(getSponsoredAdCard());
                 }
             }
-            // User PTC
             for(let k in state.data.userPtc) {
                 const v = state.data.userPtc[k];
                 if(v.uid !== currentUser.uid && !state.completedPtc[k]) {
@@ -646,34 +711,104 @@
             document.getElementById('user-vid-list').innerHTML = uHtml.length ? uHtml.join('') : "<p style='color:#64748b;'>No community videos.</p>";
         }
 
-        // ================== STRICT PTC CAPTCHA LOGIC ==================
-        window.activePtcData = null; window.ptcCaptchaAns = 0;
 
+        // ================== STRICT TAB-VISIBILITY TIMER LOGIC ==================
+        
+        function startStrictTimer(type) {
+            clearInterval(window.strictTimerInterval);
+            
+            let textElem = type === 'ptc' ? document.getElementById('ptc-timer-text') : document.getElementById('sl-timer-text');
+            let statusElem = type === 'ptc' ? document.getElementById('ptc-status-msg') : document.getElementById('sl-status-msg');
+            
+            window.strictTimerInterval = setInterval(() => {
+                // Check 1: Adblocker during timer
+                if (window.isAdblockActive) {
+                    clearInterval(window.strictTimerInterval);
+                    if(window.activeAdWindow) { try { window.activeAdWindow.close(); } catch(e){} }
+                    if(type === 'ptc') document.getElementById('ptc-modal').classList.add('hidden');
+                    if(type === 'shortlink') document.getElementById('sl-modal').classList.add('hidden');
+                    alert("Adblocker Detected! Task Cancelled.");
+                    return;
+                }
+
+                // Check 2: Did they close the ad window too early?
+                if (window.activeAdWindow && window.activeAdWindow.closed && window.strictTimerTime > 0) {
+                    clearInterval(window.strictTimerInterval);
+                    statusElem.innerHTML = "<b style='color:var(--danger)'>❌ You closed the ad too early! Task Failed.</b>";
+                    setTimeout(() => {
+                        if(type === 'ptc') document.getElementById('ptc-modal').classList.add('hidden');
+                        if(type === 'shortlink') document.getElementById('sl-modal').classList.add('hidden');
+                    }, 3000);
+                    return;
+                }
+
+                // Check 3: Tab Focus Verification
+                if (!document.hidden) {
+                    statusElem.innerHTML = "<b style='color:var(--warning)'>⚠️ Timer Paused! Go back to the Ad tab.</b>";
+                    return; // Pause timer
+                } else {
+                    statusElem.innerHTML = "<b style='color:var(--accent)'>⏳ Viewing Ad... Please wait.</b>";
+                }
+
+                // Tick Timer
+                window.strictTimerTime--;
+                textElem.innerText = window.strictTimerTime;
+
+                // Timer Complete
+                if (window.strictTimerTime <= 0) {
+                    clearInterval(window.strictTimerInterval);
+                    
+                    // Auto Redirect Back (Close Ad Tab)
+                    if(window.activeAdWindow && !window.activeAdWindow.closed) {
+                        try { window.activeAdWindow.close(); } catch(e){}
+                    }
+
+                    statusElem.innerHTML = "<b style='color:var(--accent)'>✅ Done! Claim your reward.</b>";
+
+                    if(type === 'ptc') {
+                        window.showPtcCaptcha(window.activePtcData.key, window.activePtcData.reward, window.activePtcData.isUser);
+                    } else if (type === 'shortlink') {
+                        textElem.classList.add('hidden');
+                        document.getElementById('sl-claim-area').classList.remove('hidden');
+                    }
+                }
+            }, 1000);
+        }
+
+        // --- PTC LOGIC ---
         window.doPtc = (key, linkEnc, time, reward, isUser) => {
-            const link = decodeURIComponent(linkEnc); window.open(link, '_blank'); 
-            document.getElementById('ptc-modal').classList.remove('hidden'); document.getElementById('ptc-captcha-area').classList.add('hidden'); document.getElementById('ptc-timer-text').classList.remove('hidden');
-            let t = time; document.getElementById('ptc-timer-text').innerText = t;
-            let ptcIntv = setInterval(() => { t--; document.getElementById('ptc-timer-text').innerText = t; if(t <= 0) { clearInterval(ptcIntv); showPtcCaptcha(key, reward, isUser); } }, 1000);
+            if(!window.checkAdgateBeforeTask()) return;
+
+            const link = decodeURIComponent(linkEnc); 
+            document.getElementById('ptc-modal').classList.remove('hidden'); 
+            document.getElementById('ptc-captcha-area').classList.add('hidden'); 
+            document.getElementById('ptc-timer-text').classList.remove('hidden');
+            
+            window.strictTimerTime = parseInt(time); 
+            document.getElementById('ptc-timer-text').innerText = window.strictTimerTime;
+            document.getElementById('ptc-status-msg').innerText = "Opening Ad...";
+            
+            window.activePtcData = {key, reward, isUser};
+            window.activeAdWindow = window.open(link, '_blank'); 
+            
+            startStrictTimer('ptc');
         };
 
         window.showPtcCaptcha = (key, reward, isUser) => {
             ptcAttemptCounter++;
             document.getElementById('ptc-timer-text').classList.add('hidden'); 
             document.getElementById('ptc-captcha-area').classList.remove('hidden');
-            window.activePtcData = {key, reward, isUser};
 
-            // GAME CAPTCHA (Every 3rd Time)
             if(ptcAttemptCounter > 0 && ptcAttemptCounter % 3 === 0) {
                 document.getElementById('math-captcha-container').classList.add('hidden');
                 document.getElementById('game-captcha-container').classList.remove('hidden');
                 initBasketballGame();
             } else {
-                // MATHS CAPTCHA
                 document.getElementById('game-captcha-container').classList.add('hidden');
                 document.getElementById('math-captcha-container').classList.remove('hidden');
                 const ops =['+', '-', '*']; const op = ops[Math.floor(Math.random() * ops.length)];
                 let n1 = Math.floor(Math.random() * 10) + 1; let n2 = Math.floor(Math.random() * 10) + 1;
-                if(op === '-' && n1 < n2)[n1, n2] = [n2, n1];
+                if(op === '-' && n1 < n2)[n1, n2] =[n2, n1];
                 window.ptcCaptchaAns = eval(`${n1} ${op} ${n2}`);
                 document.getElementById('ptc-captcha-q').innerText = `${n1} ${op} ${n2} = ?`; 
                 document.getElementById('ptc-captcha-ans').value = '';
@@ -681,50 +816,28 @@
         };
 
         window.verifyPtcMath = () => {
+            if(!window.checkAdgateBeforeTask()) return; 
             let ans = parseInt(document.getElementById('ptc-captcha-ans').value);
             if(ans === window.ptcCaptchaAns) { successPtcReward(); } 
             else { alert("Incorrect! Try again."); window.showPtcCaptcha(window.activePtcData.key, window.activePtcData.reward, window.activePtcData.isUser); }
         };
 
-        // --- BASKETBALL GAME PHYSICS (TRAJECTORY + STRICT COLLISION) ---
         window.initBasketballGame = function() {
-            const ball = document.getElementById('drag-ball');
-            const basket = document.getElementById('drop-basket');
-            const container = document.getElementById('game-area');
-            
+            const ball = document.getElementById('drag-ball'); const basket = document.getElementById('drop-basket'); const container = document.getElementById('game-area');
             let canvas = document.getElementById('aim-canvas');
-            if(!canvas) {
-                canvas = document.createElement('canvas');
-                canvas.id = 'aim-canvas';
-                canvas.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5;';
-                container.insertBefore(canvas, container.firstChild);
-            }
-            canvas.width = container.clientWidth; canvas.height = container.clientHeight;
-            const ctx = canvas.getContext('2d');
+            if(!canvas) { canvas = document.createElement('canvas'); canvas.id = 'aim-canvas'; canvas.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5;'; container.insertBefore(canvas, container.firstChild); }
+            canvas.width = container.clientWidth; canvas.height = container.clientHeight; const ctx = canvas.getContext('2d');
 
-            let isDragging = false, isThrown = false;
-            let startX, startY, vx = 0, vy = 0;
-            const ballSize = 40;
-            let x = 20, y = container.clientHeight - ballSize - 10;
-            const gravity = 0.5, bounce = -0.5, friction = 0.95;
-            let animId;
+            let isDragging = false, isThrown = false; let startX, startY, vx = 0, vy = 0;
+            const ballSize = 40; let x = 20, y = container.clientHeight - ballSize - 10;
+            const gravity = 0.5, bounce = -0.5, friction = 0.95; let animId;
 
-            function resetBall() {
-                isThrown = false; vx = 0; vy = 0;
-                x = 20; y = container.clientHeight - ballSize - 10;
-                ball.style.left = x + 'px'; ball.style.top = y + 'px';
-                ball.style.transform = 'scale(1)';
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
+            function resetBall() { isThrown = false; vx = 0; vy = 0; x = 20; y = container.clientHeight - ballSize - 10; ball.style.left = x + 'px'; ball.style.top = y + 'px'; ball.style.transform = 'scale(1)'; ctx.clearRect(0, 0, canvas.width, canvas.height); }
             resetBall();
 
             const getPos = (e) => ({ x: e.touches ? e.touches[0].clientX : e.clientX, y: e.touches ? e.touches[0].clientY : e.clientY });
 
-            const startDrag = (e) => {
-                if(isThrown) return;
-                isDragging = true; let pos = getPos(e); startX = pos.x; startY = pos.y;
-                cancelAnimationFrame(animId); ball.style.transform = 'scale(1.1)';
-            };
+            const startDrag = (e) => { if(isThrown) return; isDragging = true; let pos = getPos(e); startX = pos.x; startY = pos.y; cancelAnimationFrame(animId); ball.style.transform = 'scale(1.1)'; };
 
             const doDrag = (e) => {
                 if (!isDragging) return; e.preventDefault();
@@ -733,41 +846,28 @@
                 if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
                 ball.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
                 
-                // Draw Trajectory Line
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let simX = x + ballSize/2, simY = y + ballSize/2;
-                let simVx = -dx * 0.18, simVy = -dy * 0.18;
+                let simX = x + ballSize/2, simY = y + ballSize/2; let simVx = -dx * 0.18, simVy = -dy * 0.18;
                 ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 2;
                 ctx.moveTo(simX, simY);
-                for(let i=0; i<30; i++) {
-                    simVy += gravity; simX += simVx; simY += simVy;
-                    ctx.lineTo(simX, simY);
-                    if(simY > canvas.height) break;
-                }
+                for(let i=0; i<30; i++) { simVy += gravity; simX += simVx; simY += simVy; ctx.lineTo(simX, simY); if(simY > canvas.height) break; }
                 ctx.stroke();
             };
 
             const stopDrag = (e) => {
-                if (!isDragging) return;
-                isDragging = false; ball.style.transform = 'scale(1)';
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let pos = getPos(e.type.includes('touch') ? e.changedTouches[0] : e);
-                let dx = pos.x - startX; let dy = pos.y - startY;
-                const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
+                if (!isDragging) return; isDragging = false; ball.style.transform = 'scale(1)'; ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let pos = getPos(e.type.includes('touch') ? e.changedTouches[0] : e); let dx = pos.x - startX; let dy = pos.y - startY;
+                const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy); if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
                 ball.style.transform = 'translate(0px, 0px)'; 
                 if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { resetBall(); return; }
                 
-                vx = -dx * 0.18; vy = -dy * 0.18; 
-                isThrown = true; gameLoop();
+                vx = -dx * 0.18; vy = -dy * 0.18; isThrown = true; gameLoop();
             };
 
             let lastBallY = y;
             function gameLoop() {
-                if (!isThrown) return;
-                lastBallY = y; vy += gravity; x += vx; y += vy;
-                let cH = container.clientHeight, cW = container.clientWidth;
-                let bRect = basket.getBoundingClientRect(), cRect = container.getBoundingClientRect();
+                if (!isThrown) return; lastBallY = y; vy += gravity; x += vx; y += vy;
+                let cH = container.clientHeight, cW = container.clientWidth; let bRect = basket.getBoundingClientRect(), cRect = container.getBoundingClientRect();
 
                 if (y + ballSize >= cH) { y = cH - ballSize; vy *= bounce; vx *= friction; }
                 if (y <= 0) { y = 0; vy *= bounce; }
@@ -776,28 +876,21 @@
                 
                 ball.style.left = x + 'px'; ball.style.top = y + 'px';
 
-                // Strict Basket Collision Check
                 let ballCX = x + ballSize/2, ballCY = y + ballSize/2, prevBallCY = lastBallY + ballSize/2;
                 let bL = bRect.left - cRect.left, bR = bRect.right - cRect.left, bT = bRect.top - cRect.top;
 
                 if (vy > 0 && ballCX > bL - 5 && ballCX < bR + 5) {
-                    if (prevBallCY <= bT + 10 && ballCY >= bT - 10) {
-                        isThrown = false; successPtcReward(); return; // SUCCESS
-                    }
+                    if (prevBallCY <= bT + 10 && ballCY >= bT - 10) { isThrown = false; successPtcReward(); return; }
                 }
 
-                if (Math.abs(vx) < 0.5 && Math.abs(vy) < 0.5 && y + ballSize >= cH - 2) {
-                    isThrown = false; setTimeout(resetBall, 800); return; // FAILED, Retry
-                }
+                if (Math.abs(vx) < 0.5 && Math.abs(vy) < 0.5 && y + ballSize >= cH - 2) { isThrown = false; setTimeout(resetBall, 800); return; }
                 animId = requestAnimationFrame(gameLoop);
             }
-
-            ball.onmousedown = startDrag; ball.ontouchstart = startDrag;
-            window.onmouseup = stopDrag; window.ontouchend = stopDrag;
-            window.onmousemove = doDrag; window.ontouchmove = doDrag;
+            ball.onmousedown = startDrag; ball.ontouchstart = startDrag; window.onmouseup = stopDrag; window.ontouchend = stopDrag; window.onmousemove = doDrag; window.ontouchmove = doDrag;
         }
 
         async function successPtcReward() {
+            if(!window.checkAdgateBeforeTask()) return; 
             document.getElementById('ptc-modal').classList.add('hidden'); 
             try {
                 const updates = {}; 
@@ -810,8 +903,47 @@
             } catch(e) { showToast("Network Error!"); }
         }
 
+        // --- SHORTLINKS LOGIC ---
+        window.doLink = (key, linkEnc, time, reward) => {
+            if(!window.checkAdgateBeforeTask()) return;
+            const link = decodeURIComponent(linkEnc); 
+            
+            document.getElementById('sl-modal').classList.remove('hidden');
+            document.getElementById('sl-claim-area').classList.add('hidden');
+            document.getElementById('sl-timer-text').classList.remove('hidden');
+            
+            window.strictTimerTime = parseInt(time);
+            document.getElementById('sl-timer-text').innerText = window.strictTimerTime;
+            document.getElementById('sl-status-msg').innerText = "Opening Link...";
+            
+            window.activeSlData = {key, reward};
+            window.activeAdWindow = window.open(link, '_blank');
+            
+            startStrictTimer('shortlink');
+        };
+
+        window.cancelSl = () => { 
+            clearInterval(window.strictTimerInterval); 
+            document.getElementById('sl-modal').classList.add('hidden'); 
+            showToast("Shortlink Cancelled."); 
+        };
+
+        window.successSlReward = async () => {
+            if(!window.checkAdgateBeforeTask()) return;
+            document.getElementById('sl-modal').classList.add('hidden');
+            try {
+                const updates = {};
+                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(window.activeSlData.reward));
+                updates[`users/${currentUser.uid}/completed_links/${window.activeSlData.key}`] = true;
+                await update(ref(db), updates);
+                showToast(`Success! +${window.activeSlData.reward} Coins`);
+            } catch(e) { showToast("Network Error!"); }
+        };
+
         // ================== GENERAL AD GATEWAY (Videos/Tasks) ==================
         window.prepareAction = (type, key, contentEncoded, timer, reward, instructionsEncoded="", titleEncoded="") => {
+            if(!window.checkAdgateBeforeTask()) return;
+
             actionType = type; const content = decodeURIComponent(contentEncoded || "");
             actionData = { key, content, timer, reward, instructions: decodeURIComponent(instructionsEncoded || ""), title: decodeURIComponent(titleEncoded || "") };
             
@@ -820,15 +952,20 @@
             document.getElementById('am-task-inputs').classList.add('hidden'); document.getElementById('am-embed-container').classList.add('hidden'); document.getElementById('am-embed-container').innerHTML = ""; 
             document.getElementById('am-timer-display').classList.add('hidden'); document.getElementById('am-play-btn').classList.add('hidden');
 
-            if(type === 'task') { document.getElementById('am-title').innerText = "Submit Task"; document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task first</a>, then verify ad to submit.`; } 
+            if(type === 'task') { document.getElementById('am-title').innerText = "Submit Task"; document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task</a>`; } 
             else { document.getElementById('am-title').innerText = "Unlock Video"; document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video."; }
             document.getElementById('action-modal').classList.remove('hidden');
         }
 
         window.verifyAdGate = () => {
+            if(!window.checkAdgateBeforeTask()) return;
+
             window.open(DIRECT_LINK_URL, "_blank"); const btn = document.getElementById('am-ad-btn'); btn.disabled = true; btn.innerText = "Verifying... Wait 5s"; btn.style.animation = "none";
             setTimeout(() => {
+                if(window.isAdblockActive) { closeActionModal(); alert("Adblocker Detected! Reward Cancelled."); return; }
+
                 btn.innerHTML = '<i class="fas fa-check"></i> Ad Verified'; btn.style.background = "var(--accent)"; document.getElementById('am-final-step').classList.remove('hidden');
+                
                 if(actionType === 'task') { document.getElementById('am-task-inputs').classList.remove('hidden'); document.getElementById('am-proof').value = ""; } 
                 else if(actionType === 'video_embed') {
                     document.getElementById('am-step-1').classList.add('hidden'); document.getElementById('am-desc-container').classList.add('hidden');
@@ -836,17 +973,22 @@
                     const tDisp = document.getElementById('am-timer-display'); tDisp.classList.remove('hidden');
                     let t = actionData.timer; tDisp.innerText = `Watch for ${t} seconds...`;
                     
-                    timerInterval = setInterval(async () => { t--; tDisp.innerText = `Watch for ${t} seconds...`; if(t <= 0) { clearInterval(timerInterval); tDisp.innerText = "Rewarded!"; await processVideoReward(actionData.key, actionData.reward, false); closeActionModal(); } }, 1000);
+                    timerInterval = setInterval(async () => { 
+                        if(window.isAdblockActive) { clearInterval(timerInterval); closeActionModal(); alert("Adblocker Detected! Reward Cancelled."); return; }
+                        t--; tDisp.innerText = `Watch for ${t} seconds...`; if(t <= 0) { clearInterval(timerInterval); tDisp.innerText = "Rewarded!"; await processVideoReward(actionData.key, actionData.reward, false); closeActionModal(); } 
+                    }, 1000);
                 } else if(actionType === 'video_url' || actionType === 'uservideo') { document.getElementById('am-play-btn').classList.remove('hidden'); }
             }, 5000);
         }
 
         window.executeFinalAction = async () => {
+            if(!window.checkAdgateBeforeTask()) return; 
             document.getElementById('action-modal').classList.add('hidden');
             if(actionType === 'task') {
                 const proof = document.getElementById('am-proof').value; if(!proof) return showToast("Proof is required!");
                 push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, reward: actionData.reward, proof: proof, status: 'Pending', timestamp: Date.now() }); showToast("Sent for Review!");
-            } else if(actionType === 'video_url' || actionType === 'uservideo') {
+            } 
+            else if(actionType === 'video_url' || actionType === 'uservideo') {
                 window.open(actionData.content, '_blank'); closeActionModal(); showToast(`Watching Video for ${actionData.timer} sec...`);
                 setTimeout(async () => { await processVideoReward(actionData.key, actionData.reward, actionType === 'uservideo'); }, actionData.timer * 1000);
             }
@@ -863,17 +1005,12 @@
         }
         window.closeActionModal = () => { document.getElementById('action-modal').classList.add('hidden'); if(timerInterval) clearInterval(timerInterval); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-desc-container').classList.remove('hidden'); };
 
-        // --- SHORTLINKS ---
-        window.doLink = async (key, linkEnc, time, reward) => {
-            const link = decodeURIComponent(linkEnc); window.open(link, '_blank'); showToast(`Processing Link...`);
-            setTimeout(async () => { const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(parseInt(reward)); updates[`users/${currentUser.uid}/completed_links/${key}`] = true; await update(ref(db), updates); showToast(`Verified! +${reward} Coins`); }, time * 1000);
-        }
-
         // --- ADVERTISER SECTION ---
         window.switchAdTab = (tab) => {['create-ad','create-vid','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden')); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); }
         window.calcAdCost = (selectId, viewsId, totalId) => { const sel = document.getElementById(selectId); document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; }
 
         window.createCampaign = async (type) => {
+            if(!window.checkAdgateBeforeTask()) return;
             let prefix = type === 'video' ? 'v' : 'ad';
             const title = document.getElementById(`${prefix}-title`).value; const url = document.getElementById(`${prefix}-url`).value;
             const views = parseInt(document.getElementById(`${prefix}-views`).value); const sel = document.getElementById(`${prefix}-timer`);
@@ -889,17 +1026,19 @@
         }
 
         window.transferFunds = async () => {
+            if(!window.checkAdgateBeforeTask()) return;
             const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`));
             if(amt > (snap.val().balance || 0)) return showToast("Insufficient Balance");
             await update(ref(db, `users/${currentUser.uid}`), { balance: increment(-amt), ad_balance: increment(amt) }); showToast("Transferred");
         }
 
         window.depositFunds = () => {
+            if(!window.checkAdgateBeforeTask()) return;
             const amt = document.getElementById('dep-amt').value; const utr = document.getElementById('dep-utr').value;
             if(amt < 500) return showToast("Min 500 INR"); if(!utr) return showToast("Enter Transaction ID");
             push(ref(db, 'deposit_requests'), { uid: currentUser.uid, order_id: currentOrderId, amount_inr: amt, coins_reward: amt * 100, user_utr: utr, status: 'Pending', timestamp: Date.now() });
             showToast("Deposit Request Sent!"); document.getElementById('dep-utr').value=""; document.getElementById('dep-amt').value="";
-            currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`; document.getElementById('sys-order-id').innerText = currentOrderId;
+            currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
         }
 
         function loadMyCampaigns() {
@@ -920,6 +1059,7 @@
         document.getElementById('w-amt').addEventListener('input', (e) => { document.getElementById('w-val').innerText = `$${(e.target.value * window.globalCoinRate).toFixed(2)}`; });
         
         window.requestWithdraw = async () => {
+            if(!window.checkAdgateBeforeTask()) return;
             const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; 
             const snap = await get(ref(db, `users/${currentUser.uid}`)); const bal = snap.val().balance || 0;
             
@@ -932,29 +1072,31 @@
             showToast("Withdrawal Sent!"); document.getElementById('w-amt').value = '';
         }
 
-        // FAKE PAYOUT POPUP TRIGGER
-        const fNames =["Alex99", "Rahul***", "Priya_S", "CryptoKing", "John Doe", "Ali_786", "Sara.M", "VikasK"];
-        const fAmts =[1, 2.5, 5, 10, 15, 20, 50, 1.5, 3];
-        function triggerFakePayout() {
-            const popup = document.getElementById('fake-payout-popup');
-            document.getElementById('po-name').innerText = fNames[Math.floor(Math.random() * fNames.length)];
-            document.getElementById('po-amt').innerText = `$${fAmts[Math.floor(Math.random() * fAmts.length)]}`;
-            popup.classList.add('show');
-            setTimeout(() => popup.classList.remove('show'), 4000); 
-            setTimeout(triggerFakePayout, Math.floor(Math.random() * 15000) + 10000); 
-        }
-        setTimeout(triggerFakePayout, 5000);
-
-        // EXPOSE TO WINDOW
-        window.sendTicket = () => { const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: document.getElementById('h-subject').value, message: msg }); document.getElementById('h-msg').value=""; showToast("Sent"); } }
+        window.sendTicket = () => { if(!window.checkAdgateBeforeTask()) return; const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: document.getElementById('h-subject').value, message: msg }); document.getElementById('h-msg').value=""; showToast("Sent"); } }
+        
+        window.switchVidTab = (tab) => { document.getElementById('official-vid-tab').classList.add('hidden'); document.getElementById('community-vid-tab').classList.add('hidden'); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.vid-tab-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); };
         window.nav = (id, el) => {['dashboard','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => document.getElementById(x+'-view').classList.add('hidden')); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); } }
         window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
+        // FAKE PAYOUT POPUP TRIGGER
+        const fNames =["Alex99", "Rahul***", "Priya_S", "CryptoKing", "John Doe", "Ali_786", "Sara.M", "VikasK"];
+        const fMethods = ["PayPal", "FaucetPay", "Bank Transfer"];
+        function triggerFakePayout() {
+            const popup = document.getElementById('fake-payout-popup');
+            document.getElementById('po-name').innerText = fNames[Math.floor(Math.random() * fNames.length)];
+            document.getElementById('po-amt').innerText = `$${(Math.random() * (15 - 1) + 1).toFixed(2)}`;
+            document.getElementById('po-method').innerText = fMethods[Math.floor(Math.random() * fMethods.length)];
+            popup.classList.add('show'); setTimeout(() => popup.classList.remove('show'), 4000); setTimeout(triggerFakePayout, Math.floor(Math.random() * 15000) + 10000); 
+        }
+        setTimeout(triggerFakePayout, 5000); 
+
+        // EXPOSE TO WINDOW
         window.doPtc=window.doPtc; window.doLink=window.doLink; window.openTask=window.openTask; window.submitTaskReview=window.submitTaskReview;
-        window.requestWithdraw=window.requestWithdraw; window.nav=window.nav; window.toggleSidebar=window.toggleSidebar;
+        window.requestWithdraw=window.requestWithdraw; window.sendTicket=window.sendTicket; window.nav=window.nav; window.toggleSidebar=window.toggleSidebar;
         window.prepareAction=window.prepareAction; window.verifyAdGate=window.verifyAdGate; window.executeFinalAction=window.executeFinalAction; window.closeActionModal=window.closeActionModal; window.switchVidTab=window.switchVidTab; window.verifyPtcMath=window.verifyPtcMath; window.showPtcCaptcha=window.showPtcCaptcha; window.initBasketballGame=window.initBasketballGame;
         window.switchAdTab=window.switchAdTab; window.calcAdCost=window.calcAdCost; window.createCampaign=window.createCampaign; window.transferFunds=window.transferFunds; window.depositFunds=window.depositFunds;
+        window.cancelSl=window.cancelSl; window.successSlReward=window.successSlReward; window.checkAdgateBeforeTask=window.checkAdgateBeforeTask;
     </script>
 </body>
 </html>
