@@ -46,7 +46,7 @@
         #adblock-warning button:hover { background: #7c3aed; transform: scale(1.05); }
 
         /* APP WRAPPER */
-        #app-wrapper { display: flex; width: 100%; height: 100%; }
+        #app-wrapper { display: flex; width: 100%; height: 100%; transition: opacity 0.3s; }
 
         /* SIDEBAR */
         .sidebar { width: 260px; background: var(--card); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease; overflow-y: auto; position: relative; }
@@ -65,6 +65,11 @@
         .welcome-title { font-family: 'Righteous', cursive; font-size: 1.8rem; background: linear-gradient(45deg, #facc15, #f87171); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
+        /* LIFETIME WARNING BOX */
+        .warning-box { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; }
+        .warning-box h4 { color: var(--danger); margin-bottom: 5px; font-size: 1.1rem; }
+        .warning-box p { color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; }
+
         .form-control { width: 100%; padding: 12px; margin: 10px 0; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; outline: none; }
         .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; color: white; width: 100%; font-weight: bold; transition: 0.2s; }
         .btn-primary { background: var(--primary); }
@@ -82,11 +87,6 @@
         
         .more-web-link { display: block; background: rgba(139, 92, 246, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-bottom: 8px; transition: 0.2s; font-size: 0.85rem;}
         .more-web-link:hover { background: var(--primary); color: white; }
-
-        .qr-container { background: white; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 15px; }
-        .qr-img { width: 200px; height: 200px; object-fit: contain; }
-        .payment-info-box { background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; }
-        .pay-email { font-size: 1.2rem; color: white; font-weight: bold; background: #0f172a; padding: 8px 15px; border-radius: 5px; display: inline-block; margin-top: 5px; border: 1px dashed var(--accent); user-select: all; }
 
         .hidden { display: none !important; }
         
@@ -115,10 +115,11 @@
             .fake-payout.show { bottom: 20px; transform: translateX(-50%); }
         }
         
-        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight:bold; }
         .badge-pending { background: #f59e0b; color: black; }
         .badge-active { background: #10b981; color: black; }
         .badge-completed { background: #3b82f6; color: white; }
+        .badge-danger { background: #ef4444; color: white; }
         .sponsored-card { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger); text-align: center; }
 
         /* CAPTCHA STYLES (MATH & BASKETBALL GAME) */
@@ -155,15 +156,16 @@
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <div class="brand"><i class="fas fa-cube"></i> EarnCrypto</div>
-            <div class="nav-item active" onclick="nav('dashboard')"><i class="fas fa-home"></i> Dashboard</div>
-            <div class="nav-item" onclick="nav('videos')"><i class="fas fa-video"></i> Watch Videos <span style="font-size:0.6rem; background:var(--accent); color:black; padding:2px 5px; border-radius:3px;">HOT</span></div>
-            <div class="nav-item" onclick="nav('ptc')"><i class="fas fa-eye"></i> PTC Ads</div>
-            <div class="nav-item" onclick="nav('shortlinks')"><i class="fas fa-link"></i> Shortlinks</div>
-            <div class="nav-item" onclick="nav('tasks')"><i class="fas fa-tasks"></i> Custom Tasks</div>
-            <div class="nav-item" onclick="nav('advertise')"><i class="fas fa-bullhorn"></i> Advertise</div>
-            <div class="nav-item" onclick="nav('withdraw')"><i class="fas fa-wallet"></i> Withdraw</div>
-            <div class="nav-item" onclick="nav('history')"><i class="fas fa-history"></i> My Activity</div>
-            <div class="nav-item" onclick="nav('help')"><i class="fas fa-headset"></i> Support</div>
+            <div class="nav-item active" onclick="nav('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
+            <div class="nav-item" onclick="nav('social-tasks', this)"><i class="fas fa-thumbs-up"></i> Social Tasks <span style="font-size:0.6rem; background:var(--primary); color:white; padding:2px 5px; border-radius:3px;">NEW</span></div>
+            <div class="nav-item" onclick="nav('videos', this)"><i class="fas fa-video"></i> Watch Videos <span style="font-size:0.6rem; background:var(--accent); color:black; padding:2px 5px; border-radius:3px;">HOT</span></div>
+            <div class="nav-item" onclick="nav('ptc', this)"><i class="fas fa-eye"></i> PTC Ads</div>
+            <div class="nav-item" onclick="nav('shortlinks', this)"><i class="fas fa-link"></i> Shortlinks</div>
+            <div class="nav-item" onclick="nav('tasks', this)"><i class="fas fa-tasks"></i> Custom Tasks</div>
+            <div class="nav-item" onclick="nav('advertise', this)"><i class="fas fa-bullhorn"></i> Advertise</div>
+            <div class="nav-item" onclick="nav('withdraw', this)"><i class="fas fa-wallet"></i> Withdraw</div>
+            <div class="nav-item" onclick="nav('history', this)"><i class="fas fa-history"></i> My Activity</div>
+            <div class="nav-item" onclick="nav('help', this)"><i class="fas fa-headset"></i> Support</div>
             
             <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
                 <p style="color:#64748b; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px; font-weight:bold;">🌐 More Websites</p>
@@ -184,6 +186,12 @@
         <div class="main-content">
             <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
+            <!-- LIFETIME WARNING NOTE -->
+            <div class="warning-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> LIFETIME WARNING</h4>
+                <p>Do <b>NOT</b> delete or clear your browser data, cache, or history. Your account is securely linked to this browser. If you clear your data, your account and all your earnings will be <b>permanently reset to 0</b>!</p>
+            </div>
+
             <div class="banner-ad">
                 <script type="text/javascript" src="https://www.highperformanceformat.com/b4457942a63e691b166fad379a531c3d/invoke.js"></script>
             </div>
@@ -198,7 +206,7 @@
                     <h1 class="welcome-title">Welcome to EarnCrypto!</h1>
                     <p style="color:#cbd5e1; line-height:1.6; font-size:1.1rem;">
                         🚀 Earn <b>$100+ Monthly</b> easily!<br>
-                        ✨ Watch Videos, PTC Ads, Tasks & More.<br>
+                        ✨ Watch Videos, PTC Ads, Social Tasks & More.<br>
                         <span style="color:var(--accent); font-weight:bold;">What are you waiting for? Start Earning Now!</span>
                     </p>
                 </div>
@@ -215,12 +223,27 @@
                 </div>
             </div>
 
+            <!-- SOCIAL TASKS -->
+            <div id="social-tasks-view" class="hidden">
+                <h2><i class="fas fa-thumbs-up"></i> Social Tasks</h2>
+                <div class="tabs">
+                    <div class="tab-btn active" onclick="switchSocialTab('ig')"><i class="fab fa-instagram"></i> Instagram</div>
+                    <div class="tab-btn" onclick="switchSocialTab('fb')"><i class="fab fa-facebook"></i> Facebook</div>
+                    <div class="tab-btn" onclick="switchSocialTab('yt')"><i class="fab fa-youtube"></i> YouTube</div>
+                    <div class="tab-btn" onclick="switchSocialTab('tg')"><i class="fab fa-telegram"></i> Telegram</div>
+                </div>
+                <div id="social-ig-list" class="grid social-list"><p style="color:#64748b;">Loading tasks...</p></div>
+                <div id="social-fb-list" class="grid social-list hidden"><p style="color:#64748b;">Loading tasks...</p></div>
+                <div id="social-yt-list" class="grid social-list hidden"><p style="color:#64748b;">Loading tasks...</p></div>
+                <div id="social-tg-list" class="grid social-list hidden"><p style="color:#64748b;">Loading tasks...</p></div>
+            </div>
+
             <!-- WATCH VIDEOS -->
             <div id="videos-view" class="hidden">
                 <h2><i class="fas fa-video"></i> Watch Videos</h2>
                 <div class="tabs">
-                    <div class="tab-btn vid-tab-btn active" onclick="switchVidTab('official-vid')">Official Videos</div>
-                    <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid')">Community Videos</div>
+                    <div class="tab-btn vid-tab-btn active" onclick="switchVidTab('official-vid-tab')">Official Videos</div>
+                    <div class="tab-btn vid-tab-btn" onclick="switchVidTab('community-vid-tab')">Community Videos</div>
                 </div>
                 <div id="official-vid-tab">
                     <div class="card" style="background:rgba(59, 130, 246, 0.05); border-color:var(--primary);">
@@ -247,6 +270,7 @@
                 <div class="tabs">
                     <div class="tab-btn active" onclick="switchAdTab('create-ad')">PTC Campaign</div>
                     <div class="tab-btn" onclick="switchAdTab('create-vid')">Video Campaign</div>
+                    <div class="tab-btn" onclick="switchAdTab('create-social')">Social Campaign</div>
                     <div class="tab-btn" onclick="switchAdTab('funds')">Add Funds</div>
                     <div class="tab-btn" onclick="switchAdTab('my-ads')">My Campaigns</div>
                 </div>
@@ -266,14 +290,13 @@
                         <div style="margin: 15px 0; padding: 10px; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning);">
                             Total Cost: <span id="ad-total-cost" style="color:var(--warning); font-weight:bold;">15000</span> Coins
                         </div>
-                        <button class="btn btn-warning" onclick="createCampaign('ptc')">Create PTC Campaign</button>
+                        <button class="btn btn-warning" onclick="createCampaign('ptc')">Send PTC for Review</button>
                     </div>
                 </div>
 
                 <div id="create-vid-tab" class="hidden">
                     <div class="card">
                         <h4>Create Video Campaign</h4>
-                        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">Get real views from the community on your YouTube videos.</p>
                         <label>Video Title</label><input type="text" id="v-title" class="form-control" placeholder="e.g. My Gameplay Video">
                         <label>YouTube Link</label><input type="url" id="v-url" class="form-control" placeholder="https://youtube.com/...">
                         <label>Duration & Cost</label>
@@ -286,7 +309,33 @@
                         <div style="margin: 15px 0; padding: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--primary);">
                             Total Cost: <span id="v-total-cost" style="color:var(--primary); font-weight:bold;">12500</span> Coins
                         </div>
-                        <button class="btn btn-primary" onclick="createCampaign('video')">Create Video Campaign</button>
+                        <button class="btn btn-primary" onclick="createCampaign('video')">Send Video for Review</button>
+                    </div>
+                </div>
+
+                <div id="create-social-tab" class="hidden">
+                    <div class="card">
+                        <h4>Create Social Campaign</h4>
+                        <label>Platform & Task</label>
+                        <select id="soc-type" class="form-control" onchange="updateSocPricing()">
+                            <option value="ig_follow">Instagram Follow (Min 50 | 400/Follow)</option>
+                            <option value="ig_like">Instagram Post Like (Min 20 | 500/Like)</option>
+                            <option value="ig_reel">Instagram Reel Views (Min 100 | 400/View)</option>
+                            <option value="fb_follow">Facebook Follow (Min 50 | 400/Follow)</option>
+                            <option value="fb_like">Facebook Post Like (Min 20 | 500/Like)</option>
+                            <option value="fb_video">Facebook Video Views (Min 100 | 400/View)</option>
+                            <option value="yt_sub">YouTube Subscribe (Min 100 | 400/Sub)</option>
+                            <option value="yt_view">YouTube Video Views (Min 100 | 600/View)</option>
+                            <option value="tg_sub">Telegram Subscribe (Min 100 | 500/Sub)</option>
+                        </select>
+                        <label>Target URL (Post/Channel/Profile Link)</label>
+                        <input type="url" id="soc-url" class="form-control" placeholder="https://...">
+                        <label>Total Quantity</label>
+                        <input type="number" id="soc-qty" class="form-control" value="50" oninput="updateSocPricing()">
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(16, 185, 129, 0.1); border-left: 3px solid var(--accent);">
+                            Total Cost: <span id="soc-total-cost" style="color:var(--accent); font-weight:bold;">20000</span> Coins
+                        </div>
+                        <button class="btn btn-success" onclick="createCampaign('social')">Send Social Task for Review</button>
                     </div>
                 </div>
 
@@ -299,25 +348,21 @@
                         </div>
                         <div class="card" style="text-align:center;">
                             <h4 style="color:var(--accent);">Deposit Funds</h4>
-                            <div id="payment-display-area" class="payment-info-box hidden">
-                                <h5 style="color:#3b82f6; margin-bottom:5px;"><i class="fas fa-wallet"></i> Send Payment To:</h5>
-                                <div id="admin-pay-info" class="pay-email">Loading...</div>
-                            </div>
-                            <div class="qr-container"><img src="qr.jpg" alt="Scan QR" class="qr-img" onerror="this.style.display='none'"></div>
-                            <div style="background:#020617; padding:10px; border-radius:8px; margin-bottom:15px;">
-                                <p style="color:#94a3b8; font-size:0.8rem;">Order ID (Auto):</p>
-                                <div id="sys-order-id" style="font-family:monospace; font-size:1.2rem; color:var(--accent); font-weight:bold;">...</div>
-                            </div>
                             <input type="number" id="dep-amt" class="form-control" placeholder="Amount Paid">
                             <input type="text" id="dep-utr" class="form-control" placeholder="Transaction ID">
-                            <div id="dep-disabled-msg" style="color:var(--danger); display:none; margin-bottom:10px;">Deposits Disabled.</div>
                             <button id="btn-dep-submit" class="btn btn-success" onclick="depositFunds()">Submit Payment</button>
                         </div>
                     </div>
                 </div>
-                <div id="my-ads-tab" class="hidden"><div class="card"><div id="my-campaigns-list">Loading...</div></div></div>
+                <div id="my-ads-tab" class="hidden">
+                    <div class="card">
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:15px;">Track your pending, active, and completed campaigns here.</p>
+                        <div id="my-campaigns-list">Loading campaigns...</div>
+                    </div>
+                </div>
             </div>
 
+            <!-- WITHDRAWALS -->
             <div id="withdraw-view" class="hidden">
                 <h2><i class="fas fa-wallet"></i> Withdraw Funds</h2>
                 <div class="card">
@@ -334,7 +379,7 @@
 
             <div id="history-view" class="hidden">
                 <h2><i class="fas fa-history"></i> My Activity</h2>
-                <div class="card"><h4>Custom Task Status</h4><div id="my-submissions-list"></div></div>
+                <div class="card"><h4>Task & Social Submissions Status</h4><div id="my-submissions-list"></div></div>
             </div>
 
             <div id="help-view" class="hidden">
@@ -358,69 +403,69 @@
         </div>
     </div> <!-- END APP WRAPPER -->
 
-    <!-- STRICT PTC CAPTCHA MODAL (MATH & BASKETBALL) -->
+    <!-- STRICT PTC CAPTCHA MODAL (MATH & BASKETBALL GAME) -->
     <div id="ptc-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2600; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:400px; text-align:center; position:relative;">
             <h3 style="color:var(--primary); margin-bottom:10px;">Viewing Advertisement</h3>
-            <p id="ptc-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Please do not close this page.</p>
+            <p id="ptc-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Please do not close the ad tab.</p>
             
             <h1 id="ptc-timer-text" style="color:var(--accent); font-size:3.5rem; margin-bottom:20px;">10</h1>
             
             <!-- CAPTCHA AREA -->
             <div id="ptc-captcha-area" class="hidden">
-                <!-- MATHS CAPTCHA -->
                 <div id="math-captcha-container" class="hidden captcha-box">
                     <p style="color:var(--warning); font-size:0.85rem; margin-bottom:10px;">Solve puzzle to claim reward!</p>
                     <div id="ptc-captcha-q" class="captcha-question">5 + 4 = ?</div>
                     <input type="number" id="ptc-captcha-ans" class="form-control" placeholder="Answer..." style="text-align:center; font-size:1.2rem; font-weight:bold;">
                     <button class="btn btn-success" onclick="verifyPtcMath()" style="margin-top:10px; font-size:1.1rem;">Claim Reward</button>
                 </div>
-
-                <!-- BASKETBALL GAME CAPTCHA -->
                 <div id="game-captcha-container" class="hidden">
                     <p style="color:var(--warning); font-size:0.85rem; margin-bottom:10px;">Pull ball <b>BACK</b> and release to throw into the basket!</p>
-                    <div id="game-area">
-                        <div id="drag-ball">🏀</div>
-                        <div id="drop-basket">🗑️</div>
-                    </div>
+                    <div id="game-area"><div id="drag-ball">🏀</div><div id="drop-basket">🗑️</div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- STRICT SHORTLINK MODAL -->
-    <div id="sl-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2600; display:flex; justify-content:center; align-items:center;">
+    <!-- STRICT TASK/VIDEO MODAL -->
+    <div id="strict-task-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2600; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:400px; text-align:center; position:relative;">
-            <h3 style="color:var(--primary); margin-bottom:10px;">Verifying Shortlink</h3>
-            <p id="sl-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Complete the shortlink in the new tab.<br>Do not close this window.</p>
-            <h1 id="sl-timer-text" style="color:var(--accent); font-size:3.5rem; margin-bottom:20px;">10</h1>
-            <div id="sl-claim-area" class="hidden">
-                <button class="btn btn-success" onclick="successSlReward()" style="font-size:1.1rem;">Claim Reward</button>
+            <h3 id="stm-title" style="color:var(--primary); margin-bottom:10px;">Verifying Task</h3>
+            <p id="stm-status-msg" style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Please do not close the opened tab.</p>
+            <h1 id="stm-timer-text" style="color:var(--accent); font-size:3.5rem; margin-bottom:20px;">10</h1>
+            <div id="stm-claim-area" class="hidden">
+                <button class="btn btn-success" onclick="successStrictReward()" style="font-size:1.1rem;">Claim Reward</button>
             </div>
-            <button class="btn" style="background:#334155; margin-top:15px;" onclick="cancelSl()">Cancel Task</button>
+            <button class="btn" style="background:#334155; margin-top:15px;" onclick="cancelStrictTask()">Cancel Task</button>
         </div>
     </div>
 
-    <!-- REUSABLE AD-GATE MODAL (For Videos & Tasks) -->
+    <!-- REUSABLE AD-GATE MODAL (For Embedded Videos & Custom Tasks) -->
     <div id="action-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2500; display:flex; justify-content:center; align-items:center;">
         <div class="card" style="width:90%; max-width:450px; text-align:center; position:relative; overflow-y:auto; max-height:95vh;">
             <button onclick="closeActionModal()" style="position:absolute; top:10px; right:15px; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+            
             <h3 id="am-title" style="color:var(--primary); margin-bottom:15px;">Unlock Content</h3>
             <div id="am-desc-container" style="background:#0f172a; padding:15px; border-radius:8px; margin-bottom:20px;">
                 <p id="am-desc" style="color:#cbd5e1; font-size:0.9rem;">You must view an ad to unlock the final step.</p>
             </div>
+            
             <div id="am-step-1">
                 <button class="btn btn-ads" id="am-ad-btn" onclick="verifyAdGate()"><i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad</button>
             </div>
+            
             <div id="am-final-step" class="hidden" style="margin-top:20px;">
                 <hr style="border:0; border-top:1px dashed #334155; margin-bottom:15px;">
+                
                 <div id="am-task-inputs" class="hidden">
-                    <p style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Ad Verified! Submit your proof now.</p>
-                    <input type="text" id="am-proof" class="form-control" placeholder="Enter Username / URL Proof">
+                    <p style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Ad Verified! Complete the task and submit your proof.</p>
+                    <input type="text" id="am-proof" class="form-control" placeholder="Enter Username / Profile URL Proof">
                     <button class="btn btn-success" id="am-final-btn" onclick="executeFinalAction()"><i class="fas fa-check-circle"></i> Submit Review</button>
                 </div>
+
                 <div id="am-embed-container" class="hidden" style="margin-top:15px; width:100%; border-radius:8px; overflow:hidden;"></div>
                 <div id="am-timer-display" class="hidden" style="color:var(--accent); font-size:1.2rem; font-weight:bold; margin-top:10px;"></div>
+                
                 <button class="btn btn-success hidden" id="am-play-btn" onclick="executeFinalAction()"><i class="fas fa-play"></i> Play Video & Earn</button>
             </div>
         </div>
@@ -440,63 +485,43 @@
                 bait.style.width = '1px'; bait.style.height = '1px'; bait.style.position = 'absolute'; bait.style.left = '-10000px';
                 document.body.appendChild(bait);
 
-                if (bait.offsetHeight === 0 || bait.clientHeight === 0 || window.getComputedStyle(bait).display === 'none') {
-                    blocked = true;
-                }
+                if (bait.offsetHeight === 0 || bait.clientHeight === 0 || window.getComputedStyle(bait).display === 'none') { blocked = true; }
                 bait.remove();
 
                 if (!blocked) {
-                    try {
-                        await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' });
-                    } catch (e) {
-                        blocked = true;
-                    }
+                    try { await fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', { method: 'HEAD', mode: 'no-cors', cache: 'no-store' }); } catch (e) { blocked = true; }
                 }
 
                 if (blocked) {
-                    window.isAdblockActive = true;
-                    triggerLockdown();
-                } else {
-                    window.isAdblockActive = false;
-                }
+                    window.isAdblockActive = true; triggerLockdown();
+                } else { window.isAdblockActive = false; }
             }
 
             function triggerLockdown() {
                 document.getElementById('adblock-warning').classList.remove('hidden');
                 const appWrap = document.getElementById('app-wrapper');
-                if (appWrap) appWrap.remove(); // 🚨 DESTROY UI SO INSPECT ELEMENT CANT BYPASS 🚨
+                if (appWrap) appWrap.remove(); 
             }
 
-            window.addEventListener('DOMContentLoaded', () => {
-                advancedAdblockCheck();
-                setInterval(advancedAdblockCheck, 2000);
-            });
+            window.addEventListener('DOMContentLoaded', () => { advancedAdblockCheck(); setInterval(advancedAdblockCheck, 2000); });
 
-            // Global Lock Function for Buttons (Called before any task starts)
             window.checkAdgateBeforeTask = () => {
                 const bait = document.createElement('div');
-                bait.className = 'adsbox doubleclick ad-placement';
-                document.body.appendChild(bait);
-                const blocked = (bait.offsetHeight === 0 || window.getComputedStyle(bait).display === 'none');
-                bait.remove();
-
-                if (window.isAdblockActive || blocked) {
-                    triggerLockdown();
-                    alert("❌ Action Blocked! Please Turn OFF your AdBlocker or Brave Shields.");
-                    return false;
-                }
+                bait.className = 'adsbox doubleclick ad-placement'; document.body.appendChild(bait);
+                const blocked = (bait.offsetHeight === 0 || window.getComputedStyle(bait).display === 'none'); bait.remove();
+                if (window.isAdblockActive || blocked) { triggerLockdown(); alert("❌ Action Blocked! Please Turn OFF your AdBlocker or Brave Shields."); return false; }
                 return true;
             };
         })();
     </script>
 
-    <!-- FIREBASE LOGIC (STATE DRIVEN FOR ULTRA FAST LOADING) -->
+    <!-- FIREBASE LOGIC (FAST LOADING + ANONYMOUS AUTH) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, push, onValue, update, get, onDisconnect, serverTimestamp, query, orderByChild, equalTo, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const config = {
+        const firebaseConfig = {
             apiKey: "AIzaSyArDD2xHOncY3vLg3bquG31n9cVX81IWSA",
             authDomain: "prime-faucet.firebaseapp.com",
             databaseURL: "https://prime-faucet-default-rtdb.firebaseio.com",
@@ -506,39 +531,39 @@
             appId: "1:127466716847:web:13963d545f547989d89e5a"
         };
 
-        const app = initializeApp(config);
+        const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
 
         // --- GLOBAL APP STATE ---
         let currentUser = null;
         let state = {
-            completedPtc: {}, completedLinks: {}, completedVids: {}, submittedTasks:[],
-            data: { ptc: {}, userPtc: {}, links: {}, tasks: {}, adminVids: {}, userVids: {} }
+            completedPtc: {}, completedLinks: {}, completedVids: {}, completedSocialTasks: {}, submittedTasks:[],
+            data: { ptc: {}, userPtc: {}, links: {}, tasks: {}, adminVids: {}, userVids: {}, socialTasks: {} }
         };
         let currentOrderId = "";
         window.globalCoinRate = 0.00001; 
         window.globalMinWithdraw = 1;
 
-        let actionType = ""; let actionData = {}; let timerInterval = null;
+        let actionType = ""; let actionData = {};
         let ptcAttemptCounter = 0; 
         const DIRECT_LINK_URL = "https://www.effectivegatecpm.com/ggbww70z?key=928a34111771129f0b7316670bf21a9d";
         
-        // Timer tracking globally for Strict Checking
-        window.activeAdWindow = null;
-        window.strictTimerTime = 0;
-        window.strictTimerInterval = null;
+        // STRICT TIMER GLOBALS
+        window.activeAdWindow = null; window.strictTimerTime = 0; window.strictTimerInterval = null; window.activeStrictData = null;
 
-        // FAST LOGIN
+        // SOCIAL PRICING STRUCTURE
+        const socPricing = {
+            ig_follow: { min: 50, rate: 400 }, ig_like: { min: 20, rate: 500 }, ig_reel: { min: 100, rate: 400 }, fb_follow: { min: 50, rate: 400 }, fb_like: { min: 20, rate: 500 }, fb_video: { min: 100, rate: 400 }, yt_sub: { min: 100, rate: 400 }, yt_view: { min: 100, rate: 600 }, tg_sub: { min: 100, rate: 500 }
+        };
+
         signInAnonymously(auth).catch(console.error);
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById('uid-display').innerText = user.uid.substring(0,8);
-                selfHealing();
-                setupPresence();
-                initApp();
+                selfHealing(); setupPresence(); initApp();
                 currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
             }
         });
@@ -566,8 +591,9 @@
             });
         }
 
+        // FETCHING DATA FASTLY 
         function initApp() {
-            // 1. WATCH USER DATA
+            // 1. Fetch User Data
             onValue(ref(db, 'users/' + currentUser.uid), (s) => {
                 const data = s.val() || {};
                 const bal = Number(data.balance) || 0;
@@ -578,46 +604,34 @@
                 state.completedPtc = data.completed_ptc || {};
                 state.completedLinks = data.completed_links || {};
                 state.completedVids = data.completed_vids || {};
+                state.completedSocialTasks = data.completed_social || {};
                 
                 renderAllUI();
             });
 
-            // 2. WATCH SUBMISSIONS
+            // 2. Fetch User Submitted Tasks
             onValue(query(ref(db, 'submissions'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
-                state.submittedTasks =[];
-                let html =[];
+                state.submittedTasks =[]; let html =[];
                 if(s.exists()) {
                     s.forEach(c => {
                         state.submittedTasks.push(c.val().taskId);
-                        let badge = c.val().status==='Approved'?'badge-active':(c.val().status==='Rejected'?'badge-rejected':'badge-pending');
+                        let badge = c.val().status==='Approved'?'badge-active':(c.val().status==='Rejected'?'badge-danger':'badge-pending');
                         html.push(`<div style="padding:10px; border-bottom:1px solid #334155; display:flex; justify-content:space-between;"><span>${c.val().taskName}</span><span class="badge ${badge}">${c.val().status}</span></div>`);
                     });
                 }
                 document.getElementById('my-submissions-list').innerHTML = html.length ? html.join('') : "<p style='color:#64748b; text-align:center;'>No activity.</p>";
-                renderTasksUI();
+                renderTasksUI(); renderSocialUI();
             });
 
-            // 3. WATCH SETTINGS & SOCIAL LINKS
+            // 3. Settings & UI Elements
             onValue(ref(db, 'admin_settings'), (s) => {
                 const set = s.val() || {};
                 if(set.coin_rate) { window.globalCoinRate = parseFloat(set.coin_rate); const b = parseFloat(document.getElementById('user-balance').innerText); document.getElementById('usd-balance').innerText = (b * window.globalCoinRate).toFixed(4); }
                 if(set.min_withdraw) { window.globalMinWithdraw = parseFloat(set.min_withdraw); document.getElementById('wd-limit-display').innerText = window.globalMinWithdraw.toFixed(2); }
 
-                const btn = document.getElementById('btn-dep-submit');
-                if(set.deposit_enabled) {
-                    btn.disabled = false; document.getElementById('dep-disabled-msg').style.display='none';
-                    if(set.paypal_email) { document.getElementById('payment-display-area').classList.remove('hidden'); document.getElementById('admin-pay-info').innerText = set.paypal_email; }
-                } else { btn.disabled = true; document.getElementById('dep-disabled-msg').style.display='block'; document.getElementById('payment-display-area').classList.add('hidden'); }
-
                 const soc = set.social || {}; let socH = "";
                 if(soc.tg1) socH += `<a href="${soc.tg1}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 1</a>`;
-                if(soc.tg2) socH += `<a href="${soc.tg2}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 2</a>`;
-                if(soc.tg3) socH += `<a href="${soc.tg3}" target="_blank" class="sidebar-social-btn bg-tg"><i class="fab fa-telegram"></i> Telegram 3</a>`;
                 if(soc.wa1) socH += `<a href="${soc.wa1}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 1</a>`;
-                if(soc.wa2) socH += `<a href="${soc.wa2}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 2</a>`;
-                if(soc.wa3) socH += `<a href="${soc.wa3}" target="_blank" class="sidebar-social-btn bg-wa"><i class="fab fa-whatsapp"></i> WhatsApp 3</a>`;
-                if(soc.ig) socH += `<a href="${soc.ig}" target="_blank" class="sidebar-social-btn bg-ig"><i class="fab fa-instagram"></i> Instagram</a>`;
-                if(soc.fb) socH += `<a href="${soc.fb}" target="_blank" class="sidebar-social-btn bg-fb"><i class="fab fa-facebook"></i> Facebook</a>`;
                 if(soc.yt) socH += `<a href="${soc.yt}" target="_blank" class="sidebar-social-btn bg-yt"><i class="fab fa-youtube"></i> YouTube</a>`;
                 document.getElementById('social-links-container').innerHTML = socH || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
             });
@@ -627,22 +641,52 @@
                 document.getElementById('more-websites-container').innerHTML = mwHtml || "<p style='color:#64748b; font-size:0.8rem;'>No links.</p>";
             });
 
-            // 4. LOAD GLOBAL TASKS ONCE (Fast Loading)
+            // 4. Fetch All Earning Contents (Tasks, PTC, Vids, Social) instantly mapping to State
             onValue(ref(db, 'ptc_ads'), s => { state.data.ptc = s.val() || {}; renderPtcUI(); });
-            onValue(query(ref(db, 'user_campaigns'), orderByChild('status'), equalTo('active')), s => { state.data.userPtc = s.val() || {}; renderPtcUI(); loadMyCampaigns(); });
+            onValue(query(ref(db, 'user_campaigns'), orderByChild('status'), equalTo('active')), s => { state.data.userPtc = s.val() || {}; renderPtcUI(); });
             onValue(ref(db, 'shortlinks'), s => { state.data.links = s.val() || {}; renderLinksUI(); });
             onValue(ref(db, 'tasks'), s => { state.data.tasks = s.val() || {}; renderTasksUI(); });
             onValue(ref(db, 'admin_videos'), s => { state.data.adminVids = s.val() || {}; renderVidsUI(); });
-            onValue(query(ref(db, 'user_videos'), orderByChild('status'), equalTo('active')), s => { state.data.userVids = s.val() || {}; renderVidsUI(); loadMyCampaigns(); });
+            onValue(query(ref(db, 'user_videos'), orderByChild('status'), equalTo('active')), s => { state.data.userVids = s.val() || {}; renderVidsUI(); });
+            
+            // This pulls ALL active social campaigns (both Admin uploaded and User uploaded)
+            onValue(query(ref(db, 'user_social_campaigns'), orderByChild('status'), equalTo('active')), s => {
+                state.data.socialTasks = s.val() || {}; renderSocialUI();
+            });
 
-            loadHistory();
+            loadMyCampaigns();
         }
 
-        // --- FAST UI RENDERING ---
-        function getSponsoredAdCard() { return `<div class="card" style="border-color:var(--danger); text-align:center; background:rgba(239, 68, 68, 0.05);"><p style="color:#94a3b8; font-size:0.75rem; margin-bottom:5px;">SPONSORED</p><h4 style="color:var(--danger); margin-bottom:10px;">Claim Bonus Reward</h4><a href="${DIRECT_LINK_URL}" target="_blank" class="btn btn-ads" style="text-decoration:none; padding:10px; display:inline-block;" onclick="return window.checkAdgateBeforeTask();">Click Here</a></div>`; }
+        function getSponsoredAdCard() { return `<div style="grid-column:1/-1; width:100%; margin:10px 0;"><div style="font-size:10px; color:#64748b; text-align:right;">Advertisement</div><a href="${DIRECT_LINK_URL}" target="_blank" onclick="return window.checkAdgateBeforeTask();" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; min-height:100px; background:linear-gradient(90deg, #ff416c, #ff4b2b); border-radius:4px; text-decoration:none; box-shadow:0 4px 10px rgba(255,75,43,0.3);"><span style="color:white; font-family:'Righteous', cursive; font-size:1.6rem; text-shadow:2px 2px 4px rgba(0,0,0,0.5);">🔥 MEGA BONUS UNLOCKED!</span><span style="color:#ffe4e6; font-size:0.9rem; font-weight:600; margin-top:5px;">Click Here To Claim Now ➔</span></a></div>`; }
 
-        function renderAllUI() { renderPtcUI(); renderLinksUI(); renderTasksUI(); renderVidsUI(); }
+        function renderAllUI() { renderPtcUI(); renderLinksUI(); renderTasksUI(); renderVidsUI(); renderSocialUI(); }
 
+        // --- RENDER SOCIAL TASKS ---
+        function renderSocialUI() {
+            let ig=[], fb=[], yt=[], tg=[];
+            let count = 0;
+            for(let k in state.data.socialTasks) {
+                const v = state.data.socialTasks[k];
+                // Hide if user created it, or completed it, or already submitted for review, or views over.
+                if(v.uid !== currentUser.uid && !state.completedSocialTasks[k] && !state.submittedTasks.includes(k) && v.remaining_views > 0) {
+                    count++;
+                    let tName = v.title || v.type.replace('_', ' ').toUpperCase();
+                    let icon = v.type.startsWith('ig') ? 'fa-instagram' : (v.type.startsWith('fb') ? 'fa-facebook' : (v.type.startsWith('yt') ? 'fa-youtube' : 'fa-telegram'));
+                    let card = `<div class="card"><h4><i class="fab ${icon}"></i> ${tName}</h4><p style="color:#94a3b8">Reward: ${v.reward} Coins</p><button class="btn btn-primary" onclick="prepareAction('social_task','${k}','${encodeURIComponent(v.link)}','',${v.reward},'Follow the instructions','${tName}')">Start Task</button></div>`;
+                    
+                    if(v.type.startsWith('ig')) ig.push(card); 
+                    else if(v.type.startsWith('fb')) fb.push(card); 
+                    else if(v.type.startsWith('yt')) yt.push(card); 
+                    else if(v.type.startsWith('tg')) tg.push(card);
+                }
+            }
+            document.getElementById('social-ig-list').innerHTML = ig.length ? ig.join('') : "<p style='color:#64748b; grid-column:1/-1;'>No tasks available.</p>";
+            document.getElementById('social-fb-list').innerHTML = fb.length ? fb.join('') : "<p style='color:#64748b; grid-column:1/-1;'>No tasks available.</p>";
+            document.getElementById('social-yt-list').innerHTML = yt.length ? yt.join('') : "<p style='color:#64748b; grid-column:1/-1;'>No tasks available.</p>";
+            document.getElementById('social-tg-list').innerHTML = tg.length ? tg.join('') : "<p style='color:#64748b; grid-column:1/-1;'>No tasks available.</p>";
+        }
+
+        // --- RENDER PTC ---
         function renderPtcUI() {
             let html =[]; let count = 0;
             for(let k in state.data.ptc) {
@@ -654,7 +698,7 @@
             }
             for(let k in state.data.userPtc) {
                 const v = state.data.userPtc[k];
-                if(v.uid !== currentUser.uid && !state.completedPtc[k]) {
+                if(v.uid !== currentUser.uid && !state.completedPtc[k] && v.remaining_views > 0) {
                     count++;
                     html.push(`<div class="card"><h4>${v.title}</h4><p style="color:#94a3b8"><i class="far fa-clock"></i> ${v.timer} Sec</p><h3 style="color:var(--accent)">+${v.reward} Coins</h3><button class="btn btn-primary" onclick="doPtc('${k}','${encodeURIComponent(v.link)}',${v.timer},${v.reward}, true)">View Ad</button></div>`);
                     if(count % 3 === 0) html.push(getSponsoredAdCard());
@@ -663,6 +707,7 @@
             document.getElementById('ptc-list').innerHTML = html.length ? html.join('') : "<p style='grid-column:1/-1;text-align:center; color:#64748b;'>No PTC Ads.</p>";
         }
 
+        // --- RENDER LINKS ---
         function renderLinksUI() {
             let html =[]; let count = 0;
             for(let k in state.data.links) {
@@ -676,6 +721,7 @@
             document.getElementById('sl-list').innerHTML = html.length ? html.join('') : "<p style='grid-column:1/-1;text-align:center; color:#64748b;'>No Shortlinks.</p>";
         }
 
+        // --- RENDER TASKS ---
         function renderTasksUI() {
             let html =[]; let count = 0;
             for(let k in state.data.tasks) {
@@ -688,6 +734,7 @@
             document.getElementById('task-list').innerHTML = html.length ? html.join('') : "<p style='grid-column:1/-1;text-align:center; color:#64748b;'>No Tasks.</p>";
         }
 
+        // --- RENDER VIDEOS ---
         function renderVidsUI() {
             let aHtml =[]; let aCount = 0;
             for(let k in state.data.adminVids) {
@@ -702,7 +749,7 @@
             let uHtml =[]; let uCount = 0;
             for(let k in state.data.userVids) {
                 const v = state.data.userVids[k];
-                if(v.uid !== currentUser.uid && !state.completedVids[k]) {
+                if(v.uid !== currentUser.uid && !state.completedVids[k] && v.remaining_views > 0) {
                     uCount++;
                     uHtml.push(`<div class="card"><h4>${v.title}</h4><p style="color:#94a3b8"><i class="fas fa-play"></i> ${v.timer} Sec</p><h3 style="color:var(--accent)">+${v.reward} Coins</h3><button class="btn btn-warning" onclick="prepareAction('uservideo','${k}','${encodeURIComponent(v.link)}',${v.timer},${v.reward})">Watch & Earn</button></div>`);
                     if(uCount % 3 === 0) uHtml.push(getSponsoredAdCard());
@@ -711,392 +758,196 @@
             document.getElementById('user-vid-list').innerHTML = uHtml.length ? uHtml.join('') : "<p style='color:#64748b;'>No community videos.</p>";
         }
 
+        // ================== STRICT TAB VISIBILITY TRACKER ==================
+        window.startStrictTimer = (type, time, key, reward, isUser) => {
+            clearInterval(window.strictTimerInterval); window.strictTimerTime = parseInt(time);
+            let textElem, statusElem, modalId;
+            if(type === 'ptc') { textElem = document.getElementById('ptc-timer-text'); statusElem = document.getElementById('ptc-status-msg'); modalId = 'ptc-modal'; }
+            else { textElem = document.getElementById('stm-timer-text'); statusElem = document.getElementById('stm-status-msg'); modalId = 'strict-task-modal'; }
+            
+            document.getElementById(modalId).classList.remove('hidden'); textElem.classList.remove('hidden'); textElem.innerText = window.strictTimerTime;
+            statusElem.innerHTML = "<b style='color:var(--accent)'>⏳ Viewing... Please wait.</b>";
+            if(type !== 'ptc') document.getElementById('stm-claim-area').classList.add('hidden');
 
-        // ================== STRICT TAB-VISIBILITY TIMER LOGIC ==================
-        
-        function startStrictTimer(type) {
-            clearInterval(window.strictTimerInterval);
-            
-            let textElem = type === 'ptc' ? document.getElementById('ptc-timer-text') : document.getElementById('sl-timer-text');
-            let statusElem = type === 'ptc' ? document.getElementById('ptc-status-msg') : document.getElementById('sl-status-msg');
-            
             window.strictTimerInterval = setInterval(() => {
-                // Check 1: Adblocker during timer
-                if (window.isAdblockActive) {
-                    clearInterval(window.strictTimerInterval);
-                    if(window.activeAdWindow) { try { window.activeAdWindow.close(); } catch(e){} }
-                    if(type === 'ptc') document.getElementById('ptc-modal').classList.add('hidden');
-                    if(type === 'shortlink') document.getElementById('sl-modal').classList.add('hidden');
-                    alert("Adblocker Detected! Task Cancelled.");
-                    return;
-                }
+                if(window.isAdblockActive) { clearInterval(window.strictTimerInterval); if(window.activeAdWindow && !window.activeAdWindow.closed) window.activeAdWindow.close(); document.getElementById(modalId).classList.add('hidden'); alert("Adblocker Detected! Task Cancelled."); return; }
+                if (window.activeAdWindow && window.activeAdWindow.closed && window.strictTimerTime > 0) { clearInterval(window.strictTimerInterval); statusElem.innerHTML = "<b style='color:var(--danger)'>❌ You closed the tab too early! Task Failed.</b>"; setTimeout(() => document.getElementById(modalId).classList.add('hidden'), 3000); return; }
+                if (document.hidden) { statusElem.innerHTML = "<b style='color:var(--warning)'>⚠️ Timer Paused! Go back to the ad tab.</b>"; return; } 
+                else { statusElem.innerHTML = "<b style='color:var(--accent)'>⏳ Viewing... Please wait.</b>"; }
 
-                // Check 2: Did they close the ad window too early?
-                if (window.activeAdWindow && window.activeAdWindow.closed && window.strictTimerTime > 0) {
-                    clearInterval(window.strictTimerInterval);
-                    statusElem.innerHTML = "<b style='color:var(--danger)'>❌ You closed the ad too early! Task Failed.</b>";
-                    setTimeout(() => {
-                        if(type === 'ptc') document.getElementById('ptc-modal').classList.add('hidden');
-                        if(type === 'shortlink') document.getElementById('sl-modal').classList.add('hidden');
-                    }, 3000);
-                    return;
-                }
+                window.strictTimerTime--; textElem.innerText = window.strictTimerTime;
 
-                // Check 3: Tab Focus Verification
-                if (!document.hidden) {
-                    statusElem.innerHTML = "<b style='color:var(--warning)'>⚠️ Timer Paused! Go back to the Ad tab.</b>";
-                    return; // Pause timer
-                } else {
-                    statusElem.innerHTML = "<b style='color:var(--accent)'>⏳ Viewing Ad... Please wait.</b>";
-                }
-
-                // Tick Timer
-                window.strictTimerTime--;
-                textElem.innerText = window.strictTimerTime;
-
-                // Timer Complete
-                if (window.strictTimerTime <= 0) {
-                    clearInterval(window.strictTimerInterval);
-                    
-                    // Auto Redirect Back (Close Ad Tab)
-                    if(window.activeAdWindow && !window.activeAdWindow.closed) {
-                        try { window.activeAdWindow.close(); } catch(e){}
-                    }
-
+                if(window.strictTimerTime <= 0) {
+                    clearInterval(window.strictTimerInterval); if(window.activeAdWindow && !window.activeAdWindow.closed) { try { window.activeAdWindow.close(); } catch(e){} }
                     statusElem.innerHTML = "<b style='color:var(--accent)'>✅ Done! Claim your reward.</b>";
-
-                    if(type === 'ptc') {
-                        window.showPtcCaptcha(window.activePtcData.key, window.activePtcData.reward, window.activePtcData.isUser);
-                    } else if (type === 'shortlink') {
-                        textElem.classList.add('hidden');
-                        document.getElementById('sl-claim-area').classList.remove('hidden');
-                    }
+                    if(type === 'ptc') { window.showPtcCaptcha(key, reward, isUser); } else { textElem.classList.add('hidden'); document.getElementById('stm-claim-area').classList.remove('hidden'); window.activeStrictData = { type, key, reward, isUser }; }
                 }
             }, 1000);
-        }
+        };
 
         // --- PTC LOGIC ---
         window.doPtc = (key, linkEnc, time, reward, isUser) => {
-            if(!window.checkAdgateBeforeTask()) return;
-
-            const link = decodeURIComponent(linkEnc); 
-            document.getElementById('ptc-modal').classList.remove('hidden'); 
-            document.getElementById('ptc-captcha-area').classList.add('hidden'); 
-            document.getElementById('ptc-timer-text').classList.remove('hidden');
-            
-            window.strictTimerTime = parseInt(time); 
-            document.getElementById('ptc-timer-text').innerText = window.strictTimerTime;
-            document.getElementById('ptc-status-msg').innerText = "Opening Ad...";
-            
-            window.activePtcData = {key, reward, isUser};
-            window.activeAdWindow = window.open(link, '_blank'); 
-            
-            startStrictTimer('ptc');
+            if(!window.checkAdgateBeforeTask()) return; const link = decodeURIComponent(linkEnc); document.getElementById('ptc-captcha-area').classList.add('hidden');
+            window.activeAdWindow = window.open(link, '_blank'); window.startStrictTimer('ptc', time, key, reward, isUser);
         };
 
         window.showPtcCaptcha = (key, reward, isUser) => {
-            ptcAttemptCounter++;
-            document.getElementById('ptc-timer-text').classList.add('hidden'); 
-            document.getElementById('ptc-captcha-area').classList.remove('hidden');
-
-            if(ptcAttemptCounter > 0 && ptcAttemptCounter % 3 === 0) {
-                document.getElementById('math-captcha-container').classList.add('hidden');
-                document.getElementById('game-captcha-container').classList.remove('hidden');
-                initBasketballGame();
-            } else {
-                document.getElementById('game-captcha-container').classList.add('hidden');
-                document.getElementById('math-captcha-container').classList.remove('hidden');
-                const ops =['+', '-', '*']; const op = ops[Math.floor(Math.random() * ops.length)];
-                let n1 = Math.floor(Math.random() * 10) + 1; let n2 = Math.floor(Math.random() * 10) + 1;
-                if(op === '-' && n1 < n2)[n1, n2] =[n2, n1];
-                window.ptcCaptchaAns = eval(`${n1} ${op} ${n2}`);
-                document.getElementById('ptc-captcha-q').innerText = `${n1} ${op} ${n2} = ?`; 
-                document.getElementById('ptc-captcha-ans').value = '';
-            }
+            ptcAttemptCounter++; document.getElementById('ptc-timer-text').classList.add('hidden'); document.getElementById('ptc-captcha-area').classList.remove('hidden'); window.activePtcData = {key, reward, isUser};
+            if(ptcAttemptCounter > 0 && ptcAttemptCounter % 3 === 0) { document.getElementById('math-captcha-container').classList.add('hidden'); document.getElementById('game-captcha-container').classList.remove('hidden'); initBasketballGame(); } 
+            else { document.getElementById('game-captcha-container').classList.add('hidden'); document.getElementById('math-captcha-container').classList.remove('hidden'); const ops =['+', '-', '*']; const op = ops[Math.floor(Math.random() * ops.length)]; let n1 = Math.floor(Math.random() * 10) + 1; let n2 = Math.floor(Math.random() * 10) + 1; if(op === '-' && n1 < n2)[n1, n2] =[n2, n1]; window.ptcCaptchaAns = eval(`${n1} ${op} ${n2}`); document.getElementById('ptc-captcha-q').innerText = `${n1} ${op} ${n2} = ?`; document.getElementById('ptc-captcha-ans').value = ''; }
         };
 
-        window.verifyPtcMath = () => {
-            if(!window.checkAdgateBeforeTask()) return; 
-            let ans = parseInt(document.getElementById('ptc-captcha-ans').value);
-            if(ans === window.ptcCaptchaAns) { successPtcReward(); } 
-            else { alert("Incorrect! Try again."); window.showPtcCaptcha(window.activePtcData.key, window.activePtcData.reward, window.activePtcData.isUser); }
-        };
+        window.verifyPtcMath = () => { if(!window.checkAdgateBeforeTask()) return; let ans = parseInt(document.getElementById('ptc-captcha-ans').value); if(ans === window.ptcCaptchaAns) { successPtcReward(); } else { alert("Incorrect! Try again."); window.showPtcCaptcha(window.activePtcData.key, window.activePtcData.reward, window.activePtcData.isUser); } };
 
         window.initBasketballGame = function() {
             const ball = document.getElementById('drag-ball'); const basket = document.getElementById('drop-basket'); const container = document.getElementById('game-area');
             let canvas = document.getElementById('aim-canvas');
             if(!canvas) { canvas = document.createElement('canvas'); canvas.id = 'aim-canvas'; canvas.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:5;'; container.insertBefore(canvas, container.firstChild); }
             canvas.width = container.clientWidth; canvas.height = container.clientHeight; const ctx = canvas.getContext('2d');
-
-            let isDragging = false, isThrown = false; let startX, startY, vx = 0, vy = 0;
-            const ballSize = 40; let x = 20, y = container.clientHeight - ballSize - 10;
-            const gravity = 0.5, bounce = -0.5, friction = 0.95; let animId;
-
+            let isDragging = false, isThrown = false; let startX, startY, vx = 0, vy = 0; const ballSize = 40; let x = 20, y = container.clientHeight - ballSize - 10; const gravity = 0.5, bounce = -0.5, friction = 0.95; let animId;
             function resetBall() { isThrown = false; vx = 0; vy = 0; x = 20; y = container.clientHeight - ballSize - 10; ball.style.left = x + 'px'; ball.style.top = y + 'px'; ball.style.transform = 'scale(1)'; ctx.clearRect(0, 0, canvas.width, canvas.height); }
             resetBall();
-
             const getPos = (e) => ({ x: e.touches ? e.touches[0].clientX : e.clientX, y: e.touches ? e.touches[0].clientY : e.clientY });
-
             const startDrag = (e) => { if(isThrown) return; isDragging = true; let pos = getPos(e); startX = pos.x; startY = pos.y; cancelAnimationFrame(animId); ball.style.transform = 'scale(1.1)'; };
-
             const doDrag = (e) => {
-                if (!isDragging) return; e.preventDefault();
-                let pos = getPos(e); let dx = pos.x - startX; let dy = pos.y - startY;
-                const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
-                ball.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let simX = x + ballSize/2, simY = y + ballSize/2; let simVx = -dx * 0.18, simVy = -dy * 0.18;
-                ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 2;
-                ctx.moveTo(simX, simY);
-                for(let i=0; i<30; i++) { simVy += gravity; simX += simVx; simY += simVy; ctx.lineTo(simX, simY); if(simY > canvas.height) break; }
-                ctx.stroke();
+                if (!isDragging) return; e.preventDefault(); let pos = getPos(e); let dx = pos.x - startX; let dy = pos.y - startY; const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; } ball.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
+                ctx.clearRect(0, 0, canvas.width, canvas.height); let simX = x + ballSize/2, simY = y + ballSize/2; let simVx = -dx * 0.18, simVy = -dy * 0.18;
+                ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 2; ctx.moveTo(simX, simY);
+                for(let i=0; i<30; i++) { simVy += gravity; simX += simVx; simY += simVy; ctx.lineTo(simX, simY); if(simY > canvas.height) break; } ctx.stroke();
             };
-
             const stopDrag = (e) => {
                 if (!isDragging) return; isDragging = false; ball.style.transform = 'scale(1)'; ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let pos = getPos(e.type.includes('touch') ? e.changedTouches[0] : e); let dx = pos.x - startX; let dy = pos.y - startY;
-                const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy); if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
-                ball.style.transform = 'translate(0px, 0px)'; 
-                if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { resetBall(); return; }
-                
+                let pos = getPos(e.type.includes('touch') ? e.changedTouches[0] : e); let dx = pos.x - startX; let dy = pos.y - startY; const maxDrag = 80; let dist = Math.sqrt(dx*dx + dy*dy); if(dist > maxDrag) { dx = (dx/dist)*maxDrag; dy = (dy/dist)*maxDrag; }
+                ball.style.transform = 'translate(0px, 0px)'; if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { resetBall(); return; }
                 vx = -dx * 0.18; vy = -dy * 0.18; isThrown = true; gameLoop();
             };
-
             let lastBallY = y;
             function gameLoop() {
                 if (!isThrown) return; lastBallY = y; vy += gravity; x += vx; y += vy;
                 let cH = container.clientHeight, cW = container.clientWidth; let bRect = basket.getBoundingClientRect(), cRect = container.getBoundingClientRect();
-
-                if (y + ballSize >= cH) { y = cH - ballSize; vy *= bounce; vx *= friction; }
-                if (y <= 0) { y = 0; vy *= bounce; }
-                if (x <= 0) { x = 0; vx *= bounce; }
-                if (x + ballSize >= cW) { x = cW - ballSize; vx *= bounce; }
-                
+                if (y + ballSize >= cH) { y = cH - ballSize; vy *= bounce; vx *= friction; } if (y <= 0) { y = 0; vy *= bounce; } if (x <= 0) { x = 0; vx *= bounce; } if (x + ballSize >= cW) { x = cW - ballSize; vx *= bounce; }
                 ball.style.left = x + 'px'; ball.style.top = y + 'px';
-
-                let ballCX = x + ballSize/2, ballCY = y + ballSize/2, prevBallCY = lastBallY + ballSize/2;
-                let bL = bRect.left - cRect.left, bR = bRect.right - cRect.left, bT = bRect.top - cRect.top;
-
-                if (vy > 0 && ballCX > bL - 5 && ballCX < bR + 5) {
-                    if (prevBallCY <= bT + 10 && ballCY >= bT - 10) { isThrown = false; successPtcReward(); return; }
-                }
-
-                if (Math.abs(vx) < 0.5 && Math.abs(vy) < 0.5 && y + ballSize >= cH - 2) { isThrown = false; setTimeout(resetBall, 800); return; }
-                animId = requestAnimationFrame(gameLoop);
+                let ballCX = x + ballSize/2, ballCY = y + ballSize/2, prevBallCY = lastBallY + ballSize/2; let bL = bRect.left - cRect.left, bR = bRect.right - cRect.left, bT = bRect.top - cRect.top;
+                if (vy > 0 && ballCX > bL - 5 && ballCX < bR + 5) { if (prevBallCY <= bT + 10 && ballCY >= bT - 10) { isThrown = false; successPtcReward(); return; } }
+                if (Math.abs(vx) < 0.5 && Math.abs(vy) < 0.5 && y + ballSize >= cH - 2) { isThrown = false; setTimeout(resetBall, 800); return; } animId = requestAnimationFrame(gameLoop);
             }
             ball.onmousedown = startDrag; ball.ontouchstart = startDrag; window.onmouseup = stopDrag; window.ontouchend = stopDrag; window.onmousemove = doDrag; window.ontouchmove = doDrag;
         }
 
         async function successPtcReward() {
-            if(!window.checkAdgateBeforeTask()) return; 
-            document.getElementById('ptc-modal').classList.add('hidden'); 
-            try {
-                const updates = {}; 
-                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(window.activePtcData.reward));
-                updates[`users/${currentUser.uid}/completed_ptc/${window.activePtcData.key}`] = true;
+            if(!window.checkAdgateBeforeTask()) return; document.getElementById('ptc-modal').classList.add('hidden'); 
+            try { const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(parseInt(window.activePtcData.reward)); updates[`users/${currentUser.uid}/completed_ptc/${window.activePtcData.key}`] = true;
                 if(window.activePtcData.isUser) updates[`user_campaigns/${window.activePtcData.key}/remaining_views`] = increment(-1);
-                
-                await update(ref(db), updates); 
-                showToast(`Success! +${window.activePtcData.reward} Coins`);
+                await update(ref(db), updates); showToast(`Success! +${window.activePtcData.reward} Coins`);
             } catch(e) { showToast("Network Error!"); }
         }
 
-        // --- SHORTLINKS LOGIC ---
-        window.doLink = (key, linkEnc, time, reward) => {
-            if(!window.checkAdgateBeforeTask()) return;
-            const link = decodeURIComponent(linkEnc); 
-            
-            document.getElementById('sl-modal').classList.remove('hidden');
-            document.getElementById('sl-claim-area').classList.add('hidden');
-            document.getElementById('sl-timer-text').classList.remove('hidden');
-            
-            window.strictTimerTime = parseInt(time);
-            document.getElementById('sl-timer-text').innerText = window.strictTimerTime;
-            document.getElementById('sl-status-msg').innerText = "Opening Link...";
-            
-            window.activeSlData = {key, reward};
-            window.activeAdWindow = window.open(link, '_blank');
-            
-            startStrictTimer('shortlink');
-        };
+        // --- SHORTLINKS ---
+        window.doLink = (key, linkEnc, time, reward) => { if(!window.checkAdgateBeforeTask()) return; const link = decodeURIComponent(linkEnc); window.activeAdWindow = window.open(link, '_blank'); window.startStrictTimer('shortlink', time, key, reward, false); };
 
-        window.cancelSl = () => { 
-            clearInterval(window.strictTimerInterval); 
-            document.getElementById('sl-modal').classList.add('hidden'); 
-            showToast("Shortlink Cancelled."); 
-        };
+        window.cancelStrictTask = () => { clearInterval(window.strictTimerInterval); document.getElementById('strict-task-modal').classList.add('hidden'); if(window.activeAdWindow && !window.activeAdWindow.closed) window.activeAdWindow.close(); showToast("Task Cancelled."); };
 
-        window.successSlReward = async () => {
-            if(!window.checkAdgateBeforeTask()) return;
-            document.getElementById('sl-modal').classList.add('hidden');
-            try {
-                const updates = {};
-                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(window.activeSlData.reward));
-                updates[`users/${currentUser.uid}/completed_links/${window.activeSlData.key}`] = true;
-                await update(ref(db), updates);
-                showToast(`Success! +${window.activeSlData.reward} Coins`);
+        window.successStrictReward = async () => {
+            if(!window.checkAdgateBeforeTask()) return; document.getElementById('strict-task-modal').classList.add('hidden'); let data = window.activeStrictData;
+            try { const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(parseInt(data.reward));
+                if(data.type === 'shortlink') { updates[`users/${currentUser.uid}/completed_links/${data.key}`] = true; } 
+                else if(data.type === 'video_url' || data.type === 'uservideo') { updates[`users/${currentUser.uid}/completed_vids/${data.key}`] = true; if(data.type === 'uservideo') updates[`user_videos/${data.key}/remaining_views`] = increment(-1); }
+                await update(ref(db), updates); showToast(`Success! +${data.reward} Coins`);
             } catch(e) { showToast("Network Error!"); }
         };
 
-        // ================== GENERAL AD GATEWAY (Videos/Tasks) ==================
+        // --- GENERAL AD GATEWAY ---
         window.prepareAction = (type, key, contentEncoded, timer, reward, instructionsEncoded="", titleEncoded="") => {
-            if(!window.checkAdgateBeforeTask()) return;
-
-            actionType = type; const content = decodeURIComponent(contentEncoded || "");
+            if(!window.checkAdgateBeforeTask()) return; actionType = type; const content = decodeURIComponent(contentEncoded || "");
             actionData = { key, content, timer, reward, instructions: decodeURIComponent(instructionsEncoded || ""), title: decodeURIComponent(titleEncoded || "") };
-            
-            document.getElementById('am-step-1').classList.remove('hidden'); document.getElementById('am-final-step').classList.add('hidden');
-            document.getElementById('am-ad-btn').disabled = false; document.getElementById('am-ad-btn').innerHTML = '<i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad'; document.getElementById('am-ad-btn').style.background = "linear-gradient(45deg, #ff0000, #ff8800)";
-            document.getElementById('am-task-inputs').classList.add('hidden'); document.getElementById('am-embed-container').classList.add('hidden'); document.getElementById('am-embed-container').innerHTML = ""; 
-            document.getElementById('am-timer-display').classList.add('hidden'); document.getElementById('am-play-btn').classList.add('hidden');
-
-            if(type === 'task') { document.getElementById('am-title').innerText = "Submit Task"; document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline;">Click Here to Complete Task</a>`; } 
-            else { document.getElementById('am-title').innerText = "Unlock Video"; document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video."; }
+            document.getElementById('am-step-1').classList.remove('hidden'); document.getElementById('am-final-step').classList.add('hidden'); document.getElementById('am-ad-btn').disabled = false; document.getElementById('am-ad-btn').innerHTML = '<i class="fas fa-mouse-pointer"></i> 1. Click to Watch Ad'; document.getElementById('am-ad-btn').style.background = "linear-gradient(45deg, #ff0000, #ff8800)"; document.getElementById('am-task-inputs').classList.add('hidden'); document.getElementById('am-embed-container').classList.add('hidden'); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-timer-display').classList.add('hidden'); document.getElementById('am-play-btn').classList.add('hidden');
+            if(type === 'task' || type === 'social_task') { document.getElementById('am-title').innerText = "Submit Task"; document.getElementById('am-desc').innerHTML = `<strong>Instructions:</strong><br>${actionData.instructions || 'Follow the link to interact.'}<br><br><a href="${actionData.content}" target="_blank" style="color:var(--primary);text-decoration:underline; font-weight:bold;">Click Here to Complete Task</a>, then verify ad to submit your proof.`; } else { document.getElementById('am-title').innerText = "Unlock Video"; document.getElementById('am-desc').innerText = "You must view our sponsor ad before watching this video."; }
             document.getElementById('action-modal').classList.remove('hidden');
         }
 
         window.verifyAdGate = () => {
-            if(!window.checkAdgateBeforeTask()) return;
-
-            window.open(DIRECT_LINK_URL, "_blank"); const btn = document.getElementById('am-ad-btn'); btn.disabled = true; btn.innerText = "Verifying... Wait 5s"; btn.style.animation = "none";
+            if(!window.checkAdgateBeforeTask()) return; window.open(DIRECT_LINK_URL, "_blank"); const btn = document.getElementById('am-ad-btn'); btn.disabled = true; btn.innerText = "Verifying... Wait 5s"; btn.style.animation = "none";
             setTimeout(() => {
-                if(window.isAdblockActive) { closeActionModal(); alert("Adblocker Detected! Reward Cancelled."); return; }
-
+                if(window.isAdblockActive) { closeActionModal(); alert("Adblocker Detected! Task Cancelled."); return; }
                 btn.innerHTML = '<i class="fas fa-check"></i> Ad Verified'; btn.style.background = "var(--accent)"; document.getElementById('am-final-step').classList.remove('hidden');
-                
-                if(actionType === 'task') { document.getElementById('am-task-inputs').classList.remove('hidden'); document.getElementById('am-proof').value = ""; } 
+                if(actionType === 'task' || actionType === 'social_task') { document.getElementById('am-task-inputs').classList.remove('hidden'); document.getElementById('am-proof').value = ""; } 
                 else if(actionType === 'video_embed') {
                     document.getElementById('am-step-1').classList.add('hidden'); document.getElementById('am-desc-container').classList.add('hidden');
-                    const embedCont = document.getElementById('am-embed-container'); embedCont.classList.remove('hidden'); embedCont.innerHTML = actionData.content; 
-                    const tDisp = document.getElementById('am-timer-display'); tDisp.classList.remove('hidden');
-                    let t = actionData.timer; tDisp.innerText = `Watch for ${t} seconds...`;
-                    
-                    timerInterval = setInterval(async () => { 
-                        if(window.isAdblockActive) { clearInterval(timerInterval); closeActionModal(); alert("Adblocker Detected! Reward Cancelled."); return; }
-                        t--; tDisp.innerText = `Watch for ${t} seconds...`; if(t <= 0) { clearInterval(timerInterval); tDisp.innerText = "Rewarded!"; await processVideoReward(actionData.key, actionData.reward, false); closeActionModal(); } 
+                    const embedCont = document.getElementById('am-embed-container'); embedCont.classList.remove('hidden'); embedCont.innerHTML = actionData.content; const tDisp = document.getElementById('am-timer-display'); tDisp.classList.remove('hidden'); let t = actionData.timer; tDisp.innerText = `Watch for ${t} seconds...`;
+                    window.timerInterval = setInterval(async () => { 
+                        if(window.isAdblockActive) { clearInterval(window.timerInterval); closeActionModal(); alert("Adblocker Detected! Reward Cancelled."); return; }
+                        if(document.hidden) { tDisp.innerText = "⚠️ Paused! Return to tab."; return; } t--; tDisp.innerText = `Watch for ${t} seconds...`; 
+                        if(t <= 0) { clearInterval(window.timerInterval); tDisp.innerText = "Rewarded!"; const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(parseInt(actionData.reward)); updates[`users/${currentUser.uid}/completed_vids/${actionData.key}`] = true; await update(ref(db), updates); showToast(`Success! +${actionData.reward} Coins`); closeActionModal(); } 
                     }, 1000);
                 } else if(actionType === 'video_url' || actionType === 'uservideo') { document.getElementById('am-play-btn').classList.remove('hidden'); }
             }, 5000);
         }
 
         window.executeFinalAction = async () => {
-            if(!window.checkAdgateBeforeTask()) return; 
-            document.getElementById('action-modal').classList.add('hidden');
-            if(actionType === 'task') {
+            if(!window.checkAdgateBeforeTask()) return; document.getElementById('action-modal').classList.add('hidden');
+            if(actionType === 'task' || actionType === 'social_task') {
                 const proof = document.getElementById('am-proof').value; if(!proof) return showToast("Proof is required!");
-                push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, reward: actionData.reward, proof: proof, status: 'Pending', timestamp: Date.now() }); showToast("Sent for Review!");
-            } 
-            else if(actionType === 'video_url' || actionType === 'uservideo') {
-                window.open(actionData.content, '_blank'); closeActionModal(); showToast(`Watching Video for ${actionData.timer} sec...`);
-                setTimeout(async () => { await processVideoReward(actionData.key, actionData.reward, actionType === 'uservideo'); }, actionData.timer * 1000);
-            }
+                push(ref(db, 'submissions'), { uid: currentUser.uid, taskId: actionData.key, taskName: actionData.title, reward: actionData.reward, proof: proof, status: 'Pending', timestamp: Date.now(), type: actionType }); 
+                if(actionType === 'social_task') { const updates = {}; updates[`users/${currentUser.uid}/completed_social/${actionData.key}`] = true; updates[`user_social_campaigns/${actionData.key}/remaining_views`] = increment(-1); await update(ref(db), updates); } showToast("Sent for Review!");
+            } else if(actionType === 'video_url' || actionType === 'uservideo') { window.activeAdWindow = window.open(actionData.content, '_blank'); window.startStrictTimer(actionType, actionData.timer, actionData.key, actionData.reward, actionType === 'uservideo'); }
         }
 
-        async function processVideoReward(key, reward, isUserVideo) {
-            try {
-                const updates = {};
-                updates[`users/${currentUser.uid}/balance`] = increment(parseInt(reward));
-                updates[`users/${currentUser.uid}/completed_vids/${key}`] = true;
-                if(isUserVideo) updates[`user_videos/${key}/remaining_views`] = increment(-1);
-                await update(ref(db), updates); showToast(`Success! +${reward} Coins`);
-            } catch(e) {}
-        }
-        window.closeActionModal = () => { document.getElementById('action-modal').classList.add('hidden'); if(timerInterval) clearInterval(timerInterval); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-desc-container').classList.remove('hidden'); };
+        window.closeActionModal = () => { document.getElementById('action-modal').classList.add('hidden'); if(window.timerInterval) clearInterval(window.timerInterval); document.getElementById('am-embed-container').innerHTML = ""; document.getElementById('am-desc-container').classList.remove('hidden'); };
 
         // --- ADVERTISER SECTION ---
-        window.switchAdTab = (tab) => {['create-ad','create-vid','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden')); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); }
-        window.calcAdCost = (selectId, viewsId, totalId) => { const sel = document.getElementById(selectId); document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; }
+        window.switchAdTab = (tab) => {['create-ad','create-vid','create-social','funds','my-ads'].forEach(id => document.getElementById(id+'-tab').classList.add('hidden')); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('#advertise-view .tab-btn').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); };
+        window.updateSocPricing = () => { const type = document.getElementById('soc-type').value; const config = socPricing[type]; let qty = parseInt(document.getElementById('soc-qty').value) || 0; let cost = qty * config.rate; document.getElementById('soc-total-cost').innerText = cost; };
+        window.calcAdCost = (selectId, viewsId, totalId) => { const sel = document.getElementById(selectId); document.getElementById(totalId).innerText = document.getElementById(viewsId).value * sel.options[sel.selectedIndex].dataset.price; };
 
         window.createCampaign = async (type) => {
             if(!window.checkAdgateBeforeTask()) return;
-            let prefix = type === 'video' ? 'v' : 'ad';
-            const title = document.getElementById(`${prefix}-title`).value; const url = document.getElementById(`${prefix}-url`).value;
-            const views = parseInt(document.getElementById(`${prefix}-views`).value); const sel = document.getElementById(`${prefix}-timer`);
-            const timer = parseInt(sel.value); const price = parseInt(sel.options[sel.selectedIndex].dataset.price);
-            
-            const cost = views * price; if(views < 500) return showToast("Min 500 Views");
+            if (type === 'social') {
+                const sType = document.getElementById('soc-type').value; const url = document.getElementById('soc-url').value; let qty = parseInt(document.getElementById('soc-qty').value); const conf = socPricing[sType];
+                if (!url) return showToast("Enter Target URL!"); if (qty < conf.min) return showToast(`Minimum quantity is ${conf.min}`);
+                if ((sType === 'ig_like' || sType === 'fb_like') && (url.toLowerCase().includes('reel') || url.toLowerCase().includes('video'))) { return showToast('Reel/Video URLs are not allowed for Likes!'); }
+                const cost = qty * conf.rate; const snap = await get(ref(db, `users/${currentUser.uid}`)); if((snap.val().ad_balance || 0) < cost) return showToast("Insufficient Ad Balance");
+                const updates = {}; updates[`users/${currentUser.uid}/ad_balance`] = increment(-cost); const newKey = push(ref(db, 'user_social_campaigns')).key; updates[`user_social_campaigns/${newKey}`] = { uid: currentUser.uid, type: sType, link: url, total_views: qty, remaining_views: qty, reward: conf.rate / 2, status: 'Pending', timestamp: Date.now() }; await update(ref(db), updates); showToast("Campaign Sent for Review!"); return;
+            }
+            let prefix = type === 'video' ? 'v' : 'ad'; const title = document.getElementById(`${prefix}-title`).value; const url = document.getElementById(`${prefix}-url`).value; const views = parseInt(document.getElementById(`${prefix}-views`).value); const sel = document.getElementById(`${prefix}-timer`); const timer = parseInt(sel.value); const price = parseInt(sel.options[sel.selectedIndex].dataset.price);
+            const cost = views * price; if(views < 500) return showToast("Min 500 Views"); if (!title || !url) return showToast("Fill all fields");
             const snap = await get(ref(db, `users/${currentUser.uid}`)); if((snap.val().ad_balance || 0) < cost) return showToast("Insufficient Ad Balance");
+            const updates = {}; updates[`users/${currentUser.uid}/ad_balance`] = increment(-cost); let targetNode = type === 'video' ? 'user_videos' : 'user_campaigns'; const newKey = push(ref(db, targetNode)).key; updates[`${targetNode}/${newKey}`] = { uid: currentUser.uid, title: title, link: url, total_views: views, remaining_views: views, timer: timer, reward: price/2, status: 'Pending', timestamp: Date.now() }; await update(ref(db), updates); showToast("Campaign Sent for Review!");
+        };
 
-            const updates = {}; updates[`users/${currentUser.uid}/ad_balance`] = increment(-cost);
-            let targetNode = type === 'video' ? 'user_videos' : 'user_campaigns'; const newKey = push(ref(db, targetNode)).key;
-            updates[`${targetNode}/${newKey}`] = { uid: currentUser.uid, title: title, link: url, total_views: views, remaining_views: views, timer: timer, reward: price/2, status: 'active', timestamp: Date.now() };
-            await update(ref(db), updates); showToast("Campaign Created!");
-        }
-
-        window.transferFunds = async () => {
-            if(!window.checkAdgateBeforeTask()) return;
-            const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`));
-            if(amt > (snap.val().balance || 0)) return showToast("Insufficient Balance");
-            await update(ref(db, `users/${currentUser.uid}`), { balance: increment(-amt), ad_balance: increment(amt) }); showToast("Transferred");
-        }
-
-        window.depositFunds = () => {
-            if(!window.checkAdgateBeforeTask()) return;
-            const amt = document.getElementById('dep-amt').value; const utr = document.getElementById('dep-utr').value;
-            if(amt < 500) return showToast("Min 500 INR"); if(!utr) return showToast("Enter Transaction ID");
-            push(ref(db, 'deposit_requests'), { uid: currentUser.uid, order_id: currentOrderId, amount_inr: amt, coins_reward: amt * 100, user_utr: utr, status: 'Pending', timestamp: Date.now() });
-            showToast("Deposit Request Sent!"); document.getElementById('dep-utr').value=""; document.getElementById('dep-amt').value="";
-            currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`;
-        }
-
-        function loadMyCampaigns() {
-            const mList = document.getElementById('my-campaigns-list'); mList.innerHTML = "";
-            const renderC = (c, type) => { let badge = c.val().status==='active'?'badge-active':(c.val().status==='completed'?'badge-completed':'badge-pending'); mList.innerHTML += `<div style="border-bottom:1px solid #333; padding:10px;"><strong>[${type}] ${c.val().title}</strong> <span class="badge ${badge}">${c.val().status.toUpperCase()}</span><br><small>Views: ${c.val().remaining_views}/${c.val().total_views}</small></div>`; };
-            onValue(query(ref(db, 'user_campaigns'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'PTC')); });
-            onValue(query(ref(db, 'user_videos'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => { if(s.exists()) s.forEach(c => renderC(c, 'VIDEO')); });
-        }
-
-        function loadHistory() {
-            onValue(query(ref(db, 'withdrawals'), orderByChild('uid'), equalTo(currentUser.uid)), (s) => {
-                const d = document.getElementById('withdraw-list'); d.innerHTML = "";
-                if(s.exists()) s.forEach(c => { d.innerHTML += `<div style="padding:10px; border-bottom:1px solid #333; display:flex; justify-content:space-between;"><span>${c.val().amount} Coins</span><span style="color:${c.val().status==='Paid'?'#10b981':'#f59e0b'}">${c.val().status}</span></div>`; });
+        window.loadMyCampaigns = () => {
+            const nodes =['user_campaigns', 'user_videos', 'user_social_campaigns']; let html =[];
+            Promise.all(nodes.map(n => get(query(ref(db, n), orderByChild('uid'), equalTo(currentUser.uid))))).then(snaps => {
+                snaps.forEach((s, i) => {
+                    if (s.exists()) { let typeName = i === 0 ? "PTC" : (i === 1 ? "Video" : "Social Task"); s.forEach(c => { let d = c.val(); let title = d.title || d.type.toUpperCase().replace('_', ' '); let stat = d.remaining_views <= 0 ? "Completed" : d.status; let badge = stat === "Completed" ? "badge-completed" : (stat === "Pending" ? "badge-pending" : "badge-active"); html.push(`<div style="border:1px solid #334155; padding:10px; margin-bottom:10px; border-radius:5px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><b>${title}</b> <span class="badge ${badge}">${stat}</span></div><div style="font-size:0.85rem; color:#94a3b8;">Type: ${typeName} | Progress: ${d.total_views - d.remaining_views}/${d.total_views}</div></div>`); }); }
+                }); document.getElementById('my-campaigns-list').innerHTML = html.length ? html.join('') : "<p style='color:#64748b;'>No campaigns yet.</p>";
             });
-        }
+        };
 
-        // --- WITHDRAW LOGIC ($1 MINIMUM STRICT) ---
+        window.transferFunds = async () => { if(!window.checkAdgateBeforeTask()) return; const amt = parseInt(document.getElementById('transfer-amt').value); const snap = await get(ref(db, `users/${currentUser.uid}`)); if(amt > (snap.val().balance || 0)) return showToast("Insufficient Balance"); await update(ref(db, `users/${currentUser.uid}`), { balance: increment(-amt), ad_balance: increment(amt) }); showToast("Transferred"); }
+        window.depositFunds = () => { if(!window.checkAdgateBeforeTask()) return; const amt = document.getElementById('dep-amt').value; const utr = document.getElementById('dep-utr').value; if(amt < 500) return showToast("Min 500 INR"); if(!utr) return showToast("Enter Transaction ID"); push(ref(db, 'deposit_requests'), { uid: currentUser.uid, order_id: currentOrderId, amount_inr: amt, coins_reward: amt * 100, user_utr: utr, status: 'Pending', timestamp: Date.now() }); showToast("Deposit Request Sent!"); document.getElementById('dep-utr').value=""; document.getElementById('dep-amt').value=""; currentOrderId = `TXN-${Math.floor(100000 + Math.random() * 900000)}`; }
+
+        // --- WITHDRAW LOGIC ---
         document.getElementById('w-amt').addEventListener('input', (e) => { document.getElementById('w-val').innerText = `$${(e.target.value * window.globalCoinRate).toFixed(2)}`; });
-        
         window.requestWithdraw = async () => {
-            if(!window.checkAdgateBeforeTask()) return;
-            const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; 
-            const snap = await get(ref(db, `users/${currentUser.uid}`)); const bal = snap.val().balance || 0;
-            
-            if(!addr) return showToast("Enter Details"); 
-            if(amt * window.globalCoinRate < window.globalMinWithdraw) return showToast(`Min $${window.globalMinWithdraw} USD`); 
-            if(amt > bal) return showToast("Insufficient Funds");
-
-            const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(-amt); await update(ref(db), updates);
-            push(ref(db, 'withdrawals'), { uid: currentUser.uid, amount: amt, usd: (amt*window.globalCoinRate).toFixed(2), address: addr, method: document.getElementById('w-method').value, status: 'Pending', timestamp: Date.now() });
-            showToast("Withdrawal Sent!"); document.getElementById('w-amt').value = '';
+            if(!window.checkAdgateBeforeTask()) return; const amt = parseFloat(document.getElementById('w-amt').value); const addr = document.getElementById('w-addr').value; const snap = await get(ref(db, `users/${currentUser.uid}`)); const bal = snap.val().balance || 0;
+            if(!addr) return showToast("Enter Details"); if(amt * window.globalCoinRate < window.globalMinWithdraw) return showToast(`Min $${window.globalMinWithdraw} USD`); if(amt > bal) return showToast("Insufficient Funds");
+            const updates = {}; updates[`users/${currentUser.uid}/balance`] = increment(-amt); await update(ref(db), updates); push(ref(db, 'withdrawals'), { uid: currentUser.uid, amount: amt, usd: (amt*window.globalCoinRate).toFixed(2), address: addr, method: document.getElementById('w-method').value, status: 'Pending', timestamp: Date.now() }); showToast("Withdrawal Sent!"); document.getElementById('w-amt').value = '';
         }
 
         window.sendTicket = () => { if(!window.checkAdgateBeforeTask()) return; const msg = document.getElementById('h-msg').value; if(msg) { push(ref(db, 'support_tickets'), { uid: currentUser.uid, subject: document.getElementById('h-subject').value, message: msg }); document.getElementById('h-msg').value=""; showToast("Sent"); } }
         
-        window.switchVidTab = (tab) => { document.getElementById('official-vid-tab').classList.add('hidden'); document.getElementById('community-vid-tab').classList.add('hidden'); document.getElementById(tab+'-tab').classList.remove('hidden'); document.querySelectorAll('.vid-tab-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); };
-        window.nav = (id, el) => {['dashboard','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => document.getElementById(x+'-view').classList.add('hidden')); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); } }
-        window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+        window.nav = (id, el) => {['dashboard','social-tasks','ptc','shortlinks','tasks','withdraw','help','history','advertise','videos'].forEach(x => { let view = document.getElementById(x+'-view'); if(view) view.classList.add('hidden'); }); document.getElementById(id+'-view').classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); if(el) el.classList.add('active'); else if(event && event.currentTarget && event.currentTarget.classList) event.currentTarget.classList.add('active'); if(window.innerWidth < 768) { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); } }
+        window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); };
+        window.switchVidTab = (tabId) => { document.getElementById('official-vid-tab').classList.add('hidden'); document.getElementById('community-vid-tab').classList.add('hidden'); document.getElementById(tabId).classList.remove('hidden'); document.querySelectorAll('.vid-tab-btn').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); };
+        window.switchSocialTab = (tab) => { document.querySelectorAll('.social-list').forEach(el => el.classList.add('hidden')); document.getElementById(`social-${tab}-list`).classList.remove('hidden'); event.currentTarget.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.currentTarget.classList.add('active'); };
+
         function showToast(m) { const t=document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
-        // FAKE PAYOUT POPUP TRIGGER
-        const fNames =["Alex99", "Rahul***", "Priya_S", "CryptoKing", "John Doe", "Ali_786", "Sara.M", "VikasK"];
-        const fMethods = ["PayPal", "FaucetPay", "Bank Transfer"];
-        function triggerFakePayout() {
-            const popup = document.getElementById('fake-payout-popup');
-            document.getElementById('po-name').innerText = fNames[Math.floor(Math.random() * fNames.length)];
-            document.getElementById('po-amt').innerText = `$${(Math.random() * (15 - 1) + 1).toFixed(2)}`;
-            document.getElementById('po-method').innerText = fMethods[Math.floor(Math.random() * fMethods.length)];
-            popup.classList.add('show'); setTimeout(() => popup.classList.remove('show'), 4000); setTimeout(triggerFakePayout, Math.floor(Math.random() * 15000) + 10000); 
-        }
+        // FAKE PAYOUT POPUPS
+        const fNames =["Alex99", "Rahul***", "Priya_S", "CryptoKing", "John Doe", "Ali_786", "Sara.M", "VikasK"]; const fMethods =["PayPal", "FaucetPay", "Bank Transfer"];
+        function triggerFakePayout() { const popup = document.getElementById('fake-payout-popup'); document.getElementById('po-name').innerText = fNames[Math.floor(Math.random() * fNames.length)]; document.getElementById('po-amt').innerText = `$${(Math.random() * (15 - 1) + 1).toFixed(2)}`; document.getElementById('po-method').innerText = fMethods[Math.floor(Math.random() * fMethods.length)]; popup.classList.add('show'); setTimeout(() => popup.classList.remove('show'), 4000); setTimeout(triggerFakePayout, Math.floor(Math.random() * 15000) + 10000); }
         setTimeout(triggerFakePayout, 5000); 
-
-        // EXPOSE TO WINDOW
-        window.doPtc=window.doPtc; window.doLink=window.doLink; window.openTask=window.openTask; window.submitTaskReview=window.submitTaskReview;
-        window.requestWithdraw=window.requestWithdraw; window.sendTicket=window.sendTicket; window.nav=window.nav; window.toggleSidebar=window.toggleSidebar;
-        window.prepareAction=window.prepareAction; window.verifyAdGate=window.verifyAdGate; window.executeFinalAction=window.executeFinalAction; window.closeActionModal=window.closeActionModal; window.switchVidTab=window.switchVidTab; window.verifyPtcMath=window.verifyPtcMath; window.showPtcCaptcha=window.showPtcCaptcha; window.initBasketballGame=window.initBasketballGame;
-        window.switchAdTab=window.switchAdTab; window.calcAdCost=window.calcAdCost; window.createCampaign=window.createCampaign; window.transferFunds=window.transferFunds; window.depositFunds=window.depositFunds;
-        window.cancelSl=window.cancelSl; window.successSlReward=window.successSlReward; window.checkAdgateBeforeTask=window.checkAdgateBeforeTask;
     </script>
 </body>
 </html>
